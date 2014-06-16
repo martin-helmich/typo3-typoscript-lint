@@ -1,0 +1,28 @@
+services:
+  tokenize_command:
+    class: Helmich\TsParser\Command\TokenizeCommand
+    calls:
+      - [injectTokenizer, ["@tokenizer"]]
+      - [injectTokenPrinter, ["@token_printer_code"]]
+  tokenizer:
+    class: Helmich\TsParser\Tokenizer\Tokenizer
+  token_printer_structured:
+    class: Helmich\TsParser\Tokenizer\Printer\StructuredTokenPrinter
+  token_printer_code:
+    class: Helmich\TsParser\Tokenizer\Printer\CodeTokenPrinter
+#      - [setNamespaceConverter, ["@namespace_converter_astbased"]]
+#  file_locator:
+#    class: Helmich\Namespacify\File\FileLocator
+#  namespace_converter_astbased:
+#    class: Helmich\Namespacify\Converter\ASTBasedNamespaceConverter
+#    arguments: ["@php_parser"]
+#  namespace_converter_forward:
+#    class: Helmich\Namespacify\Converter\ForwardNamespaceConverter
+#  namespace_converter_backward:
+#    class: Helmich\Namespacify\Converter\BackwardNamespaceConverter
+#    arguments: ["@php_parser"]
+#  php_parser:
+#    class: 'PhpParser\Parser'
+#    arguments: ["@php_lexer"]
+#  php_lexer:
+#    class: 'PhpParser\Lexer'

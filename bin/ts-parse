@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * This file is part of namespacify.
+ * https://github.com/martin-helmich/namespacify
+ *
+ * (C) 2014 Martin Helmich <kontakt@martin-helmich.de>
+ *
+ * For license information, view the LICENSE.md file.
+ */
+
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Config\FileLocator;
+
+if (file_exists(__DIR__ . '/../vendor/autoload.php'))
+{
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
+else if (file_exists(__DIR__ . '/../../../autoload.php'))
+{
+    require_once __DIR__ . '/../../../autoload.php';
+}
+else
+{
+    die('Could not find an autoload.php. Did you set up all dependencies?');
+}
+
+$container = new ContainerBuilder();
+$loader    = new YamlFileLoader($container, new FileLocator(__DIR__ . '/..'));
+$loader->load('services.yml');
+
+$application = new Application();
+
+/** @noinspection PhpParamsInspection */
+$application->add($container->get('tokenize_command'));
+$application->run();

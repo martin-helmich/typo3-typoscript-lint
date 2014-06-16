@@ -1,0 +1,51 @@
+<?php
+namespace Helmich\TsParser\Tokenizer;
+
+
+interface TokenInterface
+{
+
+
+
+    const TYPE_WHITESPACE = "WS";
+    const TYPE_COMMENT_ONELINE = "COMMENT";
+    const TYPE_COMMENT_MULTILINE = "COMMENT_MULTILINE";
+    const TYPE_OPERATOR_ASSIGNMENT = "OP_ASSIGN";
+    const TYPE_OPERATOR_MODIFY = "OP_MODIFY";
+    const TYPE_OPERATOR_COPY = "OP_COPY";
+    const TYPE_OPERATOR_REFERENCE = "OP_REF";
+    const TYPE_OPERATOR_DELETE = "OP_DELETE";
+    const TYPE_STRING = "STR";
+    const TYPE_OBJECT_IDENTIFIER = "OBJ_IDENT";
+    const TYPE_OBJECT_ACCESSOR = "OBJ_ACCESSOR";
+    const TYPE_RIGHTVALUE = "RVALUE";
+    const TYPE_RIGHTVALUE_MULTILINE = "RVALUE_MULTILINE";
+    const TYPE_BRACE_OPEN = "BR_OPEN";
+    const TYPE_BRACE_CLOSE = "BR_CLOSE";
+    const TYPE_CONSTANT_ACCESSOR = "CONST_ACCESSOR";
+    const TYPE_CONDITION = "COND";
+    const TYPE_CONDITION_ELSE = "COND_ELSE";
+    const TYPE_CONDITION_END = "COND_END";
+
+
+
+    /**
+     * @return string
+     */
+    public function getType();
+
+
+
+    /**
+     * @return string
+     */
+    public function getValue();
+
+
+
+    /**
+     * @return int
+     */
+    public function getLine();
+
+}

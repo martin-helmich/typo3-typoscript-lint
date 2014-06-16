@@ -1,0 +1,38 @@
+{
+    "name": "helmich/ts-parser",
+    "description": "Parser for the TYPO3 configuration language TypoScript.",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/martin-helmich",
+    "authors": [
+        {
+            "name": "Martin Helmich",
+            "email": "m.helmich@mittwald.de",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/martin-helmich/ts-parser/issues"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4",
+        "symfony/console": "2.4.*",
+        "symfony/dependency-injection": "2.4.*",
+        "symfony/config": "2.4.*",
+        "symfony/yaml": "2.4.*"
+    },
+    "require-dev": {
+    },
+    "bin": [
+        "ts-parse"
+    ],
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "Helmich\\TsParser": "src/"
+        }
+    }
+}
