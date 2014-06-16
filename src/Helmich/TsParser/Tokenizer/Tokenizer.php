@@ -9,20 +9,20 @@ class Tokenizer implements TokenizerInterface
 
     const TOKEN_WHITESPACE = ',^[ \t\n]+,s';
     const TOKEN_COMMENT_ONELINE = ',^(#|/)[^\n]*,';
-    const TOKEN_COMMENT_MULTILINE = ',^/\*.*?\*/,s';
     const TOKEN_COMMENT_MULTILINE_BEGIN = ',^/\*,';
     const TOKEN_COMMENT_MULTILINE_END = ',^\*/,';
-    const TOKEN_OBJECT_IDENTIFIER = ',^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*,';
-    const TOKEN_OBJECT_ACCESSOR = ',^\.,';
-    const TOKEN_RIGHTVALUE = ',^[.]*(?!\n),';
-    const TOKEN_BRACE_OPEN = ',^{,';
-    const TOKEN_BRACE_CLOSE = ',^},';
     const TOKEN_CONDITION = ',^(\[(browser|version|system|device|useragent|language|IP|hostname|applicationContext|hour|minute|month|year|dayofweek|dayofmonth|dayofyear|usergroup|loginUser|page\|[a-zA-Z0-9_]+|treeLevel|PIDinRootline|PIDupinRootline|compatVersion|globalVar|globalString|userFunc)\s*=\s(.*?)\](\|\||&&|$))+,';
     const TOKEN_CONDITION_ELSE = ',^\[else\],i';
     const TOKEN_CONDITION_END = ',^\[(global|end)\],i';
-    const TOKEN_BINARY_OPERATOR = ',^(=|:=|<|<=),';
-    const TOKEN_UNARY_OPERATOR = ',^(>),';
-    const TOKEN_OPERATOR_LINE = ',^([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)(\s*)(=|:=|<|<=|>|\{|\()(\s*)(.*)(\s*)$,';
+
+    const TOKEN_OPERATOR_LINE = ',^
+        ([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)   # Left value (object accessor)
+        (\s*)                                     # Whitespace
+        (=|:=|<|<=|>|\{|\()                       # Operator
+        (\s*)                                     # More whitespace
+        (.*)                                      # Right value
+        (\s*)                                     # Trailing whitespace
+    $,x';
 
 
 

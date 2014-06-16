@@ -1,6 +1,6 @@
 sniffs:
-  indentation:
-    class: Indentation
+  - class: Indentation
     parameters:
       useSpaces: true
       indentPerLevel: 4
+  - class: DeadCode

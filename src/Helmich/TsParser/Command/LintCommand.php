@@ -52,6 +52,7 @@ class LintCommand extends Command
             ->setName('lint')
             ->setDescription('Check coding style for TypoScript file.')
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use.')
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output format.')
             ->addArgument('filename', InputArgument::REQUIRED, 'Input filename');
     }
 
@@ -65,6 +66,7 @@ class LintCommand extends Command
 
         $configuration = $this->linterConfigurationLocator->loadConfiguration($input->getOption('config'), $output);
         $printer = new CheckstyleReportPrinter($output);
+        $printer = new ConsoleReportPrinter($output);
         $report  = new Report();
 
         $this->linter->lintFile($filename, $report, $configuration, $output);

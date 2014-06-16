@@ -49,6 +49,10 @@ class File
      */
     public function getWarnings()
     {
+        usort(
+            $this->warnings,
+            function (Warning $a, Warning $b) { return $a->getLine() - $b->getLine(); }
+        );
         return $this->warnings;
     }
 

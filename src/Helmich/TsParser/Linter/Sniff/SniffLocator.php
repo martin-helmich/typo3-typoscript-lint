@@ -25,7 +25,8 @@ class SniffLocator
                     throw new \Exception('Class "' . $sniffConfiguration['class'] . '" could not be loaded!', 1402948667);
                 }
 
-                $this->sniffs[] = new $sniffConfiguration['class']($sniffConfiguration['parameters']);
+                $parameters = isset($sniffConfiguration['parameters']) ? $sniffConfiguration['parameters'] : [];
+                $this->sniffs[] = new $sniffConfiguration['class']($parameters);
             }
         }
     }
