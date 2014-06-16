@@ -4,3 +4,5 @@ sniffs:
       useSpaces: true
       indentPerLevel: 4
   - class: DeadCode
+  - class: OperatorWhitespace
+  - class: RepeatingRValue

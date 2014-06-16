@@ -15,6 +15,8 @@ class Tokenizer implements TokenizerInterface
     const TOKEN_CONDITION_ELSE = ',^\[else\],i';
     const TOKEN_CONDITION_END = ',^\[(global|end)\],i';
 
+    const TOKEN_OBJECT_NAME = ',^(CASE|CLEARGIF|COA(?:_INT)?|COBJ_ARRAY|COLUMNS|CTABLE|EDITPANEL|FILES?|FLUIDTEMPLATE|FORM|HMENU|HRULER|IMAGE|IMG_RESOURCE|IMGTEXT|LOAD_REGISTER|MEDIA|MULTIMEDIA|OTABLE|QTOBJECT|RECORDS|RESTORE_REGISTER|SEARCHRESULT|SVG|SWFOBJECT|TEMPLATE|USER(?:_INT)?|GIFBUILDER|[GT]MENU(?:_LAYERS)?|(?:G|T|JS|IMG)MENUITEM)$,';
+
     const TOKEN_OPERATOR_LINE = ',^
         ([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)   # Left value (object accessor)
         (\s*)                                     # Whitespace
@@ -133,7 +135,11 @@ class Tokenizer implements TokenizerInterface
             if (preg_match(self::TOKEN_OPERATOR_LINE, $line, $matches))
             {
                 $tokens[] = new Token(Token::TYPE_OBJECT_IDENTIFIER, $matches[1], $currentLine);
-                $tokens[] = new Token(Token::TYPE_WHITESPACE, $matches[2], $currentLine);
+
+                if ($matches[2])
+                {
+                    $tokens[] = new Token(Token::TYPE_WHITESPACE, $matches[2], $currentLine);
+                }
 
                 switch ($matches[3])
                 {
@@ -147,7 +153,16 @@ class Tokenizer implements TokenizerInterface
                         {
                             $tokens[] = new Token(Token::TYPE_WHITESPACE, $matches[4], $currentLine);
                         }
-                        $tokens[] = new Token(Token::TYPE_RIGHTVALUE, $matches[5], $currentLine);
+
+                        if (preg_match(self::TOKEN_OBJECT_NAME, $matches[5]))
+                        {
+                            $tokens[] = new Token(Token::TYPE_OBJECT_CONSTRUCTOR, $matches[5], $currentLine);
+                        }
+                        else
+                        {
+                            $tokens[] = new Token(Token::TYPE_RIGHTVALUE, $matches[5], $currentLine);
+                        }
+
                         if ($matches[6])
                         {
                             $tokens[] = new Token(Token::TYPE_WHITESPACE, $matches[6], $currentLine);

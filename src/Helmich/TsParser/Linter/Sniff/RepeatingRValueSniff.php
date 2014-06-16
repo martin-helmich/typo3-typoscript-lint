@@ -6,10 +6,16 @@ use Helmich\TsParser\Linter\LinterConfiguration;
 use Helmich\TsParser\Linter\Report\File;
 use Helmich\TsParser\Linter\Report\Warning;
 use Helmich\TsParser\Tokenizer\TokenInterface;
-use Helmich\TsParser\Tokenizer\Tokenizer;
 
-class DeadCodeSniff implements TokenStreamSniffInterface
+class RepeatingRValueSniff implements TokenStreamSniffInterface
 {
+
+
+
+    const CONSTANT_EXPRESSION = ',\{\$[a-zA-Z0-9_\.]+\},';
+
+
+    private $knownRightValues = [];
 
 
 
@@ -32,20 +38,30 @@ class DeadCodeSniff implements TokenStreamSniffInterface
     {
         foreach ($tokens as $token)
         {
-            if (!($token->getType() === TokenInterface::TYPE_COMMENT_ONELINE || $token->getType() === TokenInterface::TYPE_COMMENT_MULTILINE))
+            if ($token->getType() !== TokenInterface::TYPE_RIGHTVALUE || strlen($token->getValue()) < 8)
             {
                 continue;
             }
 
-            $commentContent = preg_replace(',^\s*(#|/\*|/)\s*,', '', $token->getValue());
+            if (preg_match(self::CONSTANT_EXPRESSION, $token->getValue()))
+            {
+                continue;
+            }
 
-            if (preg_match(Tokenizer::TOKEN_OPERATOR_LINE, $commentContent, $matches))
+            if (!array_key_exists($token->getValue(), $this->knownRightValues))
+            {
+                $this->knownRightValues[$token->getValue()] = 0;
+            }
+
+            $this->knownRightValues[$token->getValue()]++;
+
+            if ($this->knownRightValues[$token->getValue()] > 1)
             {
                 $warning = new Warning(
                     $token->getLine(),
-                    0,
-                    'Found commented code (' . $matches[0] . ').',
-                    Warning::SEVERITY_INFO,
+                    NULL,
+                    'Duplicated value "' . $token->getValue() . '". Consider extracting it into a constant.',
+                    Warning::SEVERITY_WARNING,
                     __CLASS__
                 );
                 $file->addWarning($warning);
