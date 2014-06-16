@@ -2,8 +2,8 @@
 <?php
 
 /*
- * This file is part of namespacify.
- * https://github.com/martin-helmich/namespacify
+ * This file is part of tsparse.
+ * https://github.com/martin-helmich/ts-parse
  *
  * (C) 2014 Martin Helmich <kontakt@martin-helmich.de>
  *
@@ -28,6 +28,8 @@ else
     die('Could not find an autoload.php. Did you set up all dependencies?');
 }
 
+define('TSPARSE_ROOT', basename(__DIR__));
+
 $container = new ContainerBuilder();
 $loader    = new YamlFileLoader($container, new FileLocator(__DIR__ . '/..'));
 $loader->load('services.yml');
@@ -36,4 +38,5 @@ $application = new Application();
 
 /** @noinspection PhpParamsInspection */
 $application->add($container->get('tokenize_command'));
+$application->add($container->get('lint_command'));
 $application->run();

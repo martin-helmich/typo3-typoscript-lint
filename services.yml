@@ -4,12 +4,26 @@ services:
     calls:
       - [injectTokenizer, ["@tokenizer"]]
       - [injectTokenPrinter, ["@token_printer_code"]]
+  lint_command:
+    class: Helmich\TsParser\Command\LintCommand
+    calls:
+      - [injectLinter, [@linter]]
+      - [injectLinterConfigurationLocator, [@linter_configuration_locator]]
   tokenizer:
     class: Helmich\TsParser\Tokenizer\Tokenizer
   token_printer_structured:
     class: Helmich\TsParser\Tokenizer\Printer\StructuredTokenPrinter
   token_printer_code:
     class: Helmich\TsParser\Tokenizer\Printer\CodeTokenPrinter
+  linter:
+    class: Helmich\TsParser\Linter\Linter
+    arguments: [@tokenizer, @sniff_locator]
+  linter_configuration:
+    class: Helmich\TsParser\Linter\LinterConfiguration
+  linter_configuration_locator:
+    class: Helmich\TsParser\Linter\Configuration\ConfigurationLocator
+  sniff_locator:
+    class: Helmich\TsParser\Linter\Sniff\SniffLocator
 #      - [setNamespaceConverter, ["@namespace_converter_astbased"]]
 #  file_locator:
 #    class: Helmich\Namespacify\File\FileLocator
