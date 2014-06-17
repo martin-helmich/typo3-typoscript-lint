@@ -8,6 +8,8 @@ use Helmich\TsParser\Parser\AST\ObjectPath;
 use Helmich\TsParser\Parser\AST\Operator\Assignment;
 use Helmich\TsParser\Parser\AST\Operator\Copy;
 use Helmich\TsParser\Parser\AST\Operator\Delete;
+use Helmich\TsParser\Parser\AST\Operator\Modification;
+use Helmich\TsParser\Parser\AST\Operator\ModificationCall;
 use Helmich\TsParser\Parser\AST\Operator\ObjectCreation;
 use Helmich\TsParser\Parser\AST\Operator\Reference;
 use Helmich\TsParser\Parser\AST\Scalar;
@@ -159,6 +161,17 @@ class Parser
                 }
                 $i += 2;
             }
+            else if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_OPERATOR_MODIFY)
+            {
+                $this->validateModifyOperatorRightValue($tokens[$i + 2]);
+
+                preg_match(Tokenizer::TOKEN_OBJECT_MODIFIER, $tokens[$i+2]->getValue(), $matches);
+
+                $call = new ModificationCall($matches['name'], $matches['arguments']);
+                $statements[] = new Modification($objectPath, $call);
+
+                $i += 2;
+            }
             else if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_OPERATOR_DELETE)
             {
                 if ($tokens[$i + 2]->getType() !== TokenInterface::TYPE_WHITESPACE)
@@ -266,6 +279,29 @@ class Parser
                 sprintf('Unexpected token %s in line %d.', $tokens[$i]->getType(), $tokens[$i]->getLine()),
                 1403011202,
                 $tokens[$i]->getLine()
+            );
+        }
+    }
+
+
+
+    private function validateModifyOperatorRightValue(TokenInterface $token)
+    {
+        if ($token->getType() !== TokenInterface::TYPE_RIGHTVALUE)
+        {
+            throw new ParseError(
+                'Unexpected token ' . $token->getType() . ' after modify operator.',
+                1403010294,
+                $token->getLine()
+            );
+        }
+
+        if (!preg_match(Tokenizer::TOKEN_OBJECT_MODIFIER, $token->getValue()))
+        {
+            throw new ParseError(
+                'Right side of modify operator does not look like a modifier: "' . $token->getValue() . '".',
+                1403010700,
+                $token->getLine()
             );
         }
     }

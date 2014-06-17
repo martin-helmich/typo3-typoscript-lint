@@ -18,6 +18,13 @@ class Tokenizer implements TokenizerInterface
     const TOKEN_OBJECT_NAME = ',^(CASE|CLEARGIF|COA(?:_INT)?|COBJ_ARRAY|COLUMNS|CTABLE|EDITPANEL|FILES?|FLUIDTEMPLATE|FORM|HMENU|HRULER|IMAGE|IMG_RESOURCE|IMGTEXT|LOAD_REGISTER|MEDIA|MULTIMEDIA|OTABLE|QTOBJECT|RECORDS|RESTORE_REGISTER|SEARCHRESULT|SVG|SWFOBJECT|TEMPLATE|USER(?:_INT)?|GIFBUILDER|[GT]MENU(?:_LAYERS)?|(?:G|T|JS|IMG)MENUITEM)$,';
     const TOKEN_OBJECT_ACCESSOR = ',^([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)$,';
 
+    const TOKEN_OBJECT_MODIFIER = ',^
+        (?<name>[a-zA-Z0-9]+)  # Modifier name
+        (?:\s)*
+        \(
+        (?<arguments>[^\)]*)   # Argument list
+        \)
+    $,x';
     const TOKEN_OPERATOR_LINE = ',^
         ([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)   # Left value (object accessor)
         (\s*)                                     # Whitespace
