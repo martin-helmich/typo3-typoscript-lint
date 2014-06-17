@@ -33,6 +33,12 @@ class Tokenizer implements TokenizerInterface
         (.*)                                      # Right value
         (\s*)                                     # Trailing whitespace
     $,x';
+    const TOKEN_INCLUDE_STATEMENT = ',^
+        <INCLUDE_TYPOSCRIPT:\s+
+        source="(?<type>FILE|DIR):(?<filename>[^"]+)"
+        (?:\s+extension="(?<extension>[^"]+)")?
+        \s*>
+    $,x';
 
 
 
@@ -137,6 +143,12 @@ class Tokenizer implements TokenizerInterface
             else if (preg_match(self::TOKEN_CONDITION_END, $line, $matches))
             {
                 $tokens[] = new Token(TokenInterface::TYPE_CONDITION_END, $matches[0], $currentLine);
+                continue;
+            }
+
+            if (preg_match(self::TOKEN_INCLUDE_STATEMENT, $line, $matches))
+            {
+                $tokens[] = new Token(TokenInterface::TYPE_INCLUDE, $matches[0], $currentLine);
                 continue;
             }
 

@@ -24,6 +24,7 @@ interface TokenInterface
     const TYPE_OPERATOR_COPY = "OP_COPY";
     const TYPE_OPERATOR_REFERENCE = "OP_REF";
     const TYPE_OPERATOR_DELETE = "OP_DELETE";
+    const TYPE_INCLUDE = "INCLUDE";
 
 
 

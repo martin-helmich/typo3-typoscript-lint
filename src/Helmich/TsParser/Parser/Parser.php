@@ -3,6 +3,8 @@ namespace Helmich\TsParser\Parser;
 
 
 use Helmich\TsParser\Parser\AST\ConditionalStatement;
+use Helmich\TsParser\Parser\AST\DirectoryIncludeStatement;
+use Helmich\TsParser\Parser\AST\FileIncludeStatement;
 use Helmich\TsParser\Parser\AST\NestedAssignment;
 use Helmich\TsParser\Parser\AST\ObjectPath;
 use Helmich\TsParser\Parser\AST\Operator\Assignment;
@@ -165,9 +167,9 @@ class Parser
             {
                 $this->validateModifyOperatorRightValue($tokens[$i + 2]);
 
-                preg_match(Tokenizer::TOKEN_OBJECT_MODIFIER, $tokens[$i+2]->getValue(), $matches);
+                preg_match(Tokenizer::TOKEN_OBJECT_MODIFIER, $tokens[$i + 2]->getValue(), $matches);
 
-                $call = new ModificationCall($matches['name'], $matches['arguments']);
+                $call         = new ModificationCall($matches['name'], $matches['arguments']);
                 $statements[] = new Modification($objectPath, $call);
 
                 $i += 2;
@@ -252,6 +254,21 @@ class Parser
                 {
                     $this->parseTokens($tokens, $i, $ifStatements, NULL);
                 }
+            }
+        }
+        else if ($tokens[$i]->getType() === TokenInterface::TYPE_INCLUDE)
+        {
+            preg_match(Tokenizer::TOKEN_INCLUDE_STATEMENT, $tokens[$i]->getValue(), $matches);
+
+            if ($matches['type'] === 'FILE')
+            {
+                $statements[] = new FileIncludeStatement($matches['filename']);
+            }
+            else
+            {
+                $statements[] = new DirectoryIncludeStatement(
+                    $matches['filename'], isset($matches['extension']) ? $matches['extension'] : NULL
+                );
             }
         }
         else if ($tokens[$i]->getType() === TokenInterface::TYPE_WHITESPACE)

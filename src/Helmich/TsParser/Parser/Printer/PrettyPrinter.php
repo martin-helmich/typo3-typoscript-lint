@@ -3,6 +3,8 @@ namespace Helmich\TsParser\Parser\Printer;
 
 
 use Helmich\TsParser\Parser\AST\ConditionalStatement;
+use Helmich\TsParser\Parser\AST\DirectoryIncludeStatement;
+use Helmich\TsParser\Parser\AST\FileIncludeStatement;
 use Helmich\TsParser\Parser\AST\NestedAssignment;
 use Helmich\TsParser\Parser\AST\Operator\Assignment;
 use Helmich\TsParser\Parser\AST\Operator\Copy;
@@ -23,7 +25,7 @@ class PrettyPrinter implements ASTPrinterInterface
      */
     public function printStatements(array $statements, OutputInterface $output)
     {
-        $this->printNestedStatements($statements, $output, 0);
+        $this->printStatementList($statements, $output, 0);
     }
 
 
@@ -34,15 +36,13 @@ class PrettyPrinter implements ASTPrinterInterface
      * @param int                                               $nesting
      * @return string
      */
-    private function printNestedStatements(array $statements, OutputInterface $output, $nesting = 0)
+    private function printStatementList(array $statements, OutputInterface $output, $nesting = 0)
     {
         foreach ($statements as $statement)
         {
             if ($statement instanceof NestedAssignment)
             {
-                $output->writeln($this->getIndent($nesting) . $statement->object->relativeName . ' {');
-                $this->printNestedStatements($statement->statements, $output, $nesting + 1);
-                $output->writeln($this->getIndent($nesting) . '}');
+                $this->printNestedAssignment($output, $nesting, $statement);
             }
             else if ($statement instanceof Assignment)
             {
@@ -70,17 +70,24 @@ class PrettyPrinter implements ASTPrinterInterface
             }
             else if ($statement instanceof ConditionalStatement)
             {
-                $output->writeln('');
-                $output->writeln($statement->condition);
-                $this->printNestedStatements($statement->ifStatements, $output, $nesting);
-
-                if (count($statement->elseStatements) > 0)
+                $this->printConditionalStatement($output, $nesting, $statement);
+            }
+            else if ($statement instanceof FileIncludeStatement)
+            {
+                $output->writeln('<INCLUDE_TYPOSCRIPT: source="FILE:' . $statement->filename . '">');
+            }
+            else if ($statement instanceof DirectoryIncludeStatement)
+            {
+                if ($statement->extension)
                 {
-                    $output->writeln('[else]');
-                    $this->printNestedStatements($statement->elseStatements, $output, $nesting);
+                    $output->writeln(
+                        '<INCLUDE_TYPOSCRIPT: source="DIR:' . $statement->directory . '" extension="' . $statement->extension . '">'
+                    );
                 }
-
-                $output->writeln('[global]');
+                else
+                {
+                    $output->writeln('<INCLUDE_TYPOSCRIPT: source="DIR:' . $statement->directory . '">');
+                }
             }
         }
     }
@@ -90,5 +97,41 @@ class PrettyPrinter implements ASTPrinterInterface
     private function getIndent($nesting)
     {
         return str_repeat('    ', $nesting);
+    }
+
+
+
+    /**
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param                                                   $nesting
+     * @param \Helmich\TsParser\Parser\AST\NestedAssignment     $statement
+     */
+    private function printNestedAssignment(OutputInterface $output, $nesting, NestedAssignment $statement)
+    {
+        $output->writeln($this->getIndent($nesting) . $statement->object->relativeName . ' {');
+        $this->printStatementList($statement->statements, $output, $nesting + 1);
+        $output->writeln($this->getIndent($nesting) . '}');
+    }
+
+
+
+    /**
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param int                                               $nesting
+     * @param \Helmich\TsParser\Parser\AST\ConditionalStatement $statement
+     */
+    private function printConditionalStatement(OutputInterface $output, $nesting, $statement)
+    {
+        $output->writeln('');
+        $output->writeln($statement->condition);
+        $this->printStatementList($statement->ifStatements, $output, $nesting);
+
+        if (count($statement->elseStatements) > 0)
+        {
+            $output->writeln('[else]');
+            $this->printStatementList($statement->elseStatements, $output, $nesting);
+        }
+
+        $output->writeln('[global]');
     }
 }
