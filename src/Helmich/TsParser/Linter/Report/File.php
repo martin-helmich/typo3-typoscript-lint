@@ -13,7 +13,7 @@ class File
     /**
      * @var \Helmich\TsParser\Linter\Report\Warning[]
      */
-    private $warnings;
+    private $warnings = [];
 
 
 

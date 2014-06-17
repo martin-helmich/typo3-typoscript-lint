@@ -25,7 +25,7 @@ class SniffLocator
                     throw new \Exception('Class "' . $sniffConfiguration['class'] . '" could not be loaded!', 1402948667);
                 }
 
-                $parameters = isset($sniffConfiguration['parameters']) ? $sniffConfiguration['parameters'] : [];
+                $parameters     = isset($sniffConfiguration['parameters']) ? $sniffConfiguration['parameters'] : [];
                 $this->sniffs[] = new $sniffConfiguration['class']($parameters);
             }
         }
@@ -46,6 +46,28 @@ class SniffLocator
         foreach ($this->sniffs as $sniff)
         {
             if ($sniff instanceof TokenStreamSniffInterface)
+            {
+                $tokenSniffs[] = $sniff;
+            }
+        }
+        return $tokenSniffs;
+    }
+
+
+
+    /**
+     * @param LinterConfiguration $configuration
+     * @return \Helmich\TsParser\Linter\Sniff\SyntaxTreeSniffInterface[]
+     * @throws \Exception
+     */
+    public function getSyntaxTreeSniffs(LinterConfiguration $configuration)
+    {
+        $this->loadSniffs($configuration);
+
+        $tokenSniffs = [];
+        foreach ($this->sniffs as $sniff)
+        {
+            if ($sniff instanceof SyntaxTreeSniffInterface)
             {
                 $tokenSniffs[] = $sniff;
             }

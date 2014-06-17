@@ -3,7 +3,7 @@ services:
     class: Helmich\TsParser\Command\TokenizeCommand
     calls:
       - [injectTokenizer, ["@tokenizer"]]
-      - [injectTokenPrinter, ["@token_printer_code"]]
+      - [injectTokenPrinter, ["@token_printer_structured"]]
   lint_command:
     class: Helmich\TsParser\Command\LintCommand
     calls:
@@ -21,7 +21,7 @@ services:
     class: Helmich\TsParser\Tokenizer\Printer\CodeTokenPrinter
   linter:
     class: Helmich\TsParser\Linter\Linter
-    arguments: [@tokenizer, @sniff_locator]
+    arguments: [@tokenizer, @parser, @sniff_locator]
   linter_configuration:
     class: Helmich\TsParser\Linter\LinterConfiguration
   linter_configuration_locator:
@@ -31,19 +31,3 @@ services:
   parser:
     class: Helmich\TsParser\Parser\Parser
     arguments: [@tokenizer]
-#      - [setNamespaceConverter, ["@namespace_converter_astbased"]]
-#  file_locator:
-#    class: Helmich\Namespacify\File\FileLocator
-#  namespace_converter_astbased:
-#    class: Helmich\Namespacify\Converter\ASTBasedNamespaceConverter
-#    arguments: ["@php_parser"]
-#  namespace_converter_forward:
-#    class: Helmich\Namespacify\Converter\ForwardNamespaceConverter
-#  namespace_converter_backward:
-#    class: Helmich\Namespacify\Converter\BackwardNamespaceConverter
-#    arguments: ["@php_parser"]
-#  php_parser:
-#    class: 'PhpParser\Parser'
-#    arguments: ["@php_lexer"]
-#  php_lexer:
-#    class: 'PhpParser\Lexer'

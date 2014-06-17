@@ -20,7 +20,7 @@ use Helmich\TsParser\Tokenizer\TokenInterface;
 use Helmich\TsParser\Tokenizer\Tokenizer;
 use Helmich\TsParser\Tokenizer\TokenizerInterface;
 
-class Parser
+class Parser implements ParserInterface
 {
 
 
@@ -37,12 +37,46 @@ class Parser
 
 
 
-    public function parse($content)
+    /**
+     * Parses a stream resource.
+     *
+     * This can be any kind of stream supported by PHP (e.g. a filename or a URL).
+     *
+     * @param string $stream The stream resource.
+     * @return \Helmich\TsParser\Parser\AST\Statement[] The syntax tree.
+     */
+    public function parseStream($stream)
+    {
+        $content = file_get_contents($stream);
+        return $this->parseString($content);
+    }
+
+
+
+    /**
+     * Parses a TypoScript string.
+     *
+     * @param string $content The string to parse.
+     * @return \Helmich\TsParser\Parser\AST\Statement[] The syntax tree.
+     */
+    public function parseString($content)
+    {
+        $tokens = $this->tokenizer->tokenizeString($content);
+        return $this->parseTokens($tokens);
+    }
+
+
+
+    /**
+     * Parses a token stream.
+     *
+     * @param \Helmich\TsParser\Tokenizer\TokenInterface[] $tokens The token stream to parse.
+     * @return \Helmich\TsParser\Parser\AST\Statement[] The syntax tree.
+     */
+    public function parseTokens(array $tokens)
     {
         $statements = [];
-
-        $tokens = $this->tokenizer->tokenizeString($content);
-        $tokens = $this->filterTokenStream($tokens);
+        $tokens     = $this->filterTokenStream($tokens);
 
         $count = count($tokens);
 
@@ -58,7 +92,7 @@ class Parser
                 }
             }
 
-            $this->parseTokens($tokens, $i, $statements, NULL);
+            $this->parseToken($tokens, $i, $statements, NULL);
         }
 
         return $statements;
@@ -85,17 +119,17 @@ class Parser
                 $objectPath = new ObjectPath($parentObject->absoluteName . '.' . $tokens[$i]->getValue(), $tokens[$i]->getValue());
                 if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_BRACE_OPEN)
                 {
-                    $i++;
+                    $i += 2;
                     $statements[] = $this->parseNestedStatements($objectPath, $tokens, $i);
                     continue;
                 }
             }
 
-            $this->parseTokens($tokens, $i, $statements, $parentObject);
+            $this->parseToken($tokens, $i, $statements, $parentObject);
 
             if ($tokens[$i]->getType() === TokenInterface::TYPE_BRACE_CLOSE)
             {
-                $statement = new NestedAssignment($parentObject, $statements);
+                $statement = new NestedAssignment($parentObject, $statements, $tokens[$i]->getLine());
                 $i++;
                 return $statement;
             }
@@ -114,7 +148,7 @@ class Parser
      * @throws ParseError
      * @return \Helmich\TsParser\Parser\AST\NestedAssignment
      */
-    private function parseTokens(array $tokens, &$i, array &$statements, ObjectPath $context = NULL)
+    private function parseToken(array $tokens, &$i, array &$statements, ObjectPath $context = NULL)
     {
         if ($tokens[$i]->getType() === TokenInterface::TYPE_OBJECT_IDENTIFIER)
         {
@@ -126,13 +160,18 @@ class Parser
             {
                 if ($tokens[$i + 2]->getType() === TokenInterface::TYPE_OBJECT_CONSTRUCTOR)
                 {
-                    $statements[] = new ObjectCreation($objectPath, new Scalar($tokens[$i + 2]->getValue()));
+                    $statements[] = new ObjectCreation($objectPath, new Scalar($tokens[$i + 2]->getValue()), $tokens[$i + 2]->getLine());
                     $i += 2;
                 }
                 elseif ($tokens[$i + 2]->getType() === TokenInterface::TYPE_RIGHTVALUE)
                 {
-                    $statements[] = new Assignment($objectPath, new Scalar($tokens[$i + 2]->getValue()));
+                    $statements[] = new Assignment($objectPath, new Scalar($tokens[$i + 2]->getValue()), $tokens[$i + 2]->getLine());
                     $i += 2;
+                }
+                elseif ($tokens[$i + 2]->getType() === TokenInterface::TYPE_WHITESPACE)
+                {
+                    $statements[] = new Assignment($objectPath, new Scalar(''), $tokens[$i]->getLine());
+                    $i += 1;
                 }
             }
             else if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_OPERATOR_COPY
@@ -155,11 +194,11 @@ class Parser
 
                 if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_OPERATOR_COPY)
                 {
-                    $statements[] = new Copy($objectPath, $target);
+                    $statements[] = new Copy($objectPath, $target, $tokens[$i+1]->getLine());
                 }
                 else
                 {
-                    $statements[] = new Reference($objectPath, $target);
+                    $statements[] = new Reference($objectPath, $target, $tokens[$i+1]->getLine());
                 }
                 $i += 2;
             }
@@ -170,7 +209,7 @@ class Parser
                 preg_match(Tokenizer::TOKEN_OBJECT_MODIFIER, $tokens[$i + 2]->getValue(), $matches);
 
                 $call         = new ModificationCall($matches['name'], $matches['arguments']);
-                $statements[] = new Modification($objectPath, $call);
+                $statements[] = new Modification($objectPath, $call, $tokens[$i+2]->getLine());
 
                 $i += 2;
             }
@@ -185,7 +224,12 @@ class Parser
                     );
                 }
 
-                $statements[] = new Delete($objectPath);
+                $statements[] = new Delete($objectPath, $tokens[$i+1]->getLine());
+                $i += 1;
+            }
+            else if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_RIGHTVALUE_MULTILINE)
+            {
+                $statements[] = new Assignment($objectPath, new Scalar($tokens[$i + 1]->getValue()), $tokens[$i + 1]->getLine());
                 $i += 1;
             }
         }
@@ -204,14 +248,15 @@ class Parser
             $ifStatements   = [];
             $elseStatements = [];
 
-            $condition    = $tokens[$i]->getValue();
-            $inElseBranch = FALSE;
+            $condition     = $tokens[$i]->getValue();
+            $conditionLine = $tokens[$i]->getLine();
+            $inElseBranch  = FALSE;
 
             for ($i++; $i < $count; $i++)
             {
                 if ($tokens[$i]->getType() === TokenInterface::TYPE_CONDITION_END)
                 {
-                    $statements[] = new ConditionalStatement($condition, $ifStatements, $elseStatements);
+                    $statements[] = new ConditionalStatement($condition, $ifStatements, $elseStatements, $conditionLine);
                     $i++;
                     break;
                 }
@@ -248,11 +293,11 @@ class Parser
 
                 if ($inElseBranch)
                 {
-                    $this->parseTokens($tokens, $i, $elseStatements, NULL);
+                    $this->parseToken($tokens, $i, $elseStatements, NULL);
                 }
                 else
                 {
-                    $this->parseTokens($tokens, $i, $ifStatements, NULL);
+                    $this->parseToken($tokens, $i, $ifStatements, NULL);
                 }
             }
         }
@@ -262,12 +307,12 @@ class Parser
 
             if ($matches['type'] === 'FILE')
             {
-                $statements[] = new FileIncludeStatement($matches['filename']);
+                $statements[] = new FileIncludeStatement($matches['filename'], $tokens[$i]->getLine());
             }
             else
             {
                 $statements[] = new DirectoryIncludeStatement(
-                    $matches['filename'], isset($matches['extension']) ? $matches['extension'] : NULL
+                    $matches['filename'], isset($matches['extension']) ? $matches['extension'] : NULL, $tokens[$i]->getLine()
                 );
             }
         }
@@ -336,7 +381,7 @@ class Parser
             );
         }
 
-        if (!preg_match(Tokenizer::TOKEN_OBJECT_ACCESSOR, $token->getValue()))
+        if (!preg_match(Tokenizer::TOKEN_OBJECT_REFERENCE, $token->getValue()))
         {
             throw new ParseError(
                 'Right side of copy operator does not look like an object path: "' . $token->getValue() . '".',
@@ -360,8 +405,12 @@ class Parser
             TokenInterface::TYPE_COMMENT_ONELINE
         ];
 
+        $maxLine = 0;
+
         foreach ($tokens as $token)
         {
+            $maxLine = max($token->getLine(), $maxLine);
+
             // Trim unnecessary whitespace, but leave line breaks! These are important!
             if ($token->getType() === TokenInterface::TYPE_WHITESPACE)
             {
@@ -380,6 +429,12 @@ class Parser
                 $filteredTokens[] = $token;
             }
         }
+
+        // Add two linebreak tokens; during parsing, we usually do not look more than two
+        // tokens ahead; this hack ensures that there will always be at least two more tokens
+        // present and we do not have to check whether these tokens exists.
+        $filteredTokens[] = new Token(TokenInterface::TYPE_WHITESPACE, "\n", $maxLine + 1);
+        $filteredTokens[] = new Token(TokenInterface::TYPE_WHITESPACE, "\n", $maxLine + 2);
 
         return $filteredTokens;
     }

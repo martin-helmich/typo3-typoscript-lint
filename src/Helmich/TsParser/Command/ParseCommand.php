@@ -9,6 +9,7 @@ use Helmich\TsParser\Linter\Report\Report;
 use Helmich\TsParser\Linter\ReportPrinter\CheckstyleReportPrinter;
 use Helmich\TsParser\Linter\ReportPrinter\ConsoleReportPrinter;
 use Helmich\TsParser\Parser\Parser;
+use Helmich\TsParser\Parser\ParserInterface;
 use Helmich\TsParser\Parser\Printer\PrettyPrinter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,13 +23,13 @@ class ParseCommand extends Command
 
 
     /**
-     * @var \Helmich\TsParser\Parser\Parser
+     * @var \Helmich\TsParser\Parser\ParserInterface
      */
     private $parser;
 
 
 
-    public function injectParser(Parser $parser)
+    public function injectParser(ParserInterface $parser)
     {
         $this->parser = $parser;
     }
@@ -50,7 +51,7 @@ class ParseCommand extends Command
         $filename = $input->getArgument('filename');
 
         $printer = new PrettyPrinter();
-        $statements = $this->parser->parse(file_get_contents($filename));
+        $statements = $this->parser->parseStream($filename);
 
         $printer->printStatements($statements, $output);
     }

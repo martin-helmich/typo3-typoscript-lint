@@ -2,16 +2,37 @@
 namespace Helmich\TsParser\Parser\AST\Operator;
 
 
-class ModificationCall {
+/**
+ * A modification call (usually on the right-hand side of a modification statement).
+ *
+ * @package    Helmich\TsParser
+ * @subpackage Parser\AST\Operator
+ */
+class ModificationCall
+{
 
+
+
+    /**
+     * The method name.
+     * @var string
+     */
     public $method;
+
+
+    /**
+     * The argument list.
+     * @var string
+     */
     public $arguments;
 
 
 
     /**
-     * @param string $method
-     * @param string $arguments
+     * Modification call constructor.
+     *
+     * @param string $method    The method name.
+     * @param string $arguments The argument list.
      */
     public function __construct($method, $arguments)
     {

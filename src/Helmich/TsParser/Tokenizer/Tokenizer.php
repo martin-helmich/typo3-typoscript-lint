@@ -17,6 +17,7 @@ class Tokenizer implements TokenizerInterface
 
     const TOKEN_OBJECT_NAME = ',^(CASE|CLEARGIF|COA(?:_INT)?|COBJ_ARRAY|COLUMNS|CTABLE|EDITPANEL|FILES?|FLUIDTEMPLATE|FORM|HMENU|HRULER|IMAGE|IMG_RESOURCE|IMGTEXT|LOAD_REGISTER|MEDIA|MULTIMEDIA|OTABLE|QTOBJECT|RECORDS|RESTORE_REGISTER|SEARCHRESULT|SVG|SWFOBJECT|TEMPLATE|USER(?:_INT)?|GIFBUILDER|[GT]MENU(?:_LAYERS)?|(?:G|T|JS|IMG)MENUITEM)$,';
     const TOKEN_OBJECT_ACCESSOR = ',^([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)$,';
+    const TOKEN_OBJECT_REFERENCE = ',^\.?([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)$,';
 
     const TOKEN_OBJECT_MODIFIER = ',^
         (?<name>[a-zA-Z0-9]+)  # Modifier name
@@ -179,7 +180,7 @@ class Tokenizer implements TokenizerInterface
                         {
                             $tokens[] = new Token(Token::TYPE_OBJECT_CONSTRUCTOR, $matches[5], $currentLine);
                         }
-                        else if ($matches[5])
+                        else if (strlen($matches[5]))
                         {
                             $tokens[] = new Token(Token::TYPE_RIGHTVALUE, $matches[5], $currentLine);
                         }

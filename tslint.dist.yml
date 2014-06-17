@@ -6,3 +6,4 @@ sniffs:
   - class: DeadCode
   - class: OperatorWhitespace
   - class: RepeatingRValue
+  - class: DuplicateAssignment
