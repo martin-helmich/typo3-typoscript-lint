@@ -16,11 +16,12 @@ class Tokenizer implements TokenizerInterface
     const TOKEN_CONDITION_END = ',^\[(global|end)\],i';
 
     const TOKEN_OBJECT_NAME = ',^(CASE|CLEARGIF|COA(?:_INT)?|COBJ_ARRAY|COLUMNS|CTABLE|EDITPANEL|FILES?|FLUIDTEMPLATE|FORM|HMENU|HRULER|IMAGE|IMG_RESOURCE|IMGTEXT|LOAD_REGISTER|MEDIA|MULTIMEDIA|OTABLE|QTOBJECT|RECORDS|RESTORE_REGISTER|SEARCHRESULT|SVG|SWFOBJECT|TEMPLATE|USER(?:_INT)?|GIFBUILDER|[GT]MENU(?:_LAYERS)?|(?:G|T|JS|IMG)MENUITEM)$,';
+    const TOKEN_OBJECT_ACCESSOR = ',^([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)$,';
 
     const TOKEN_OPERATOR_LINE = ',^
         ([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)   # Left value (object accessor)
         (\s*)                                     # Whitespace
-        (=|:=|<|<=|>|\{|\()                       # Operator
+        (=|:=|<=|<|>|\{|\()                       # Operator
         (\s*)                                     # More whitespace
         (.*)                                      # Right value
         (\s*)                                     # Trailing whitespace
@@ -147,6 +148,7 @@ class Tokenizer implements TokenizerInterface
                     case ':=':
                     case '<':
                     case '<=':
+                    case '>':
                         $tokens[] = new Token($this->getTokenTypeForBinaryOperator($matches[3]), $matches[3], $currentLine);
 
                         if ($matches[4])
@@ -158,7 +160,7 @@ class Tokenizer implements TokenizerInterface
                         {
                             $tokens[] = new Token(Token::TYPE_OBJECT_CONSTRUCTOR, $matches[5], $currentLine);
                         }
-                        else
+                        else if ($matches[5])
                         {
                             $tokens[] = new Token(Token::TYPE_RIGHTVALUE, $matches[5], $currentLine);
                         }
@@ -167,9 +169,6 @@ class Tokenizer implements TokenizerInterface
                         {
                             $tokens[] = new Token(Token::TYPE_WHITESPACE, $matches[6], $currentLine);
                         }
-                        break;
-                    case '>':
-                        $tokens[] = new Token(TokenInterface::TYPE_OPERATOR_DELETE, $matches[3], $currentLine);
                         break;
                     case '{':
                         $tokens[] = new Token(Token::TYPE_BRACE_OPEN, $matches[3], $currentLine);
@@ -232,6 +231,8 @@ class Tokenizer implements TokenizerInterface
                 return TokenInterface::TYPE_OPERATOR_REFERENCE;
             case ':=':
                 return TokenInterface::TYPE_OPERATOR_MODIFY;
+            case '>':
+                return TokenInterface::TYPE_OPERATOR_DELETE;
         }
         throw new TokenizerException('Unknown binary operator "' . $operator . '"!');
     }

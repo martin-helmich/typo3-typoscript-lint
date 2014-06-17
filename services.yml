@@ -9,6 +9,10 @@ services:
     calls:
       - [injectLinter, [@linter]]
       - [injectLinterConfigurationLocator, [@linter_configuration_locator]]
+  parse_command:
+    class: Helmich\TsParser\Command\ParseCommand
+    calls:
+      - [injectParser, [@parser]]
   tokenizer:
     class: Helmich\TsParser\Tokenizer\Tokenizer
   token_printer_structured:
@@ -24,6 +28,9 @@ services:
     class: Helmich\TsParser\Linter\Configuration\ConfigurationLocator
   sniff_locator:
     class: Helmich\TsParser\Linter\Sniff\SniffLocator
+  parser:
+    class: Helmich\TsParser\Parser\Parser
+    arguments: [@tokenizer]
 #      - [setNamespaceConverter, ["@namespace_converter_astbased"]]
 #  file_locator:
 #    class: Helmich\Namespacify\File\FileLocator

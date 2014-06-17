@@ -39,4 +39,5 @@ $application = new Application();
 /** @noinspection PhpParamsInspection */
 $application->add($container->get('tokenize_command'));
 $application->add($container->get('lint_command'));
+$application->add($container->get('parse_command'));
 $application->run();
