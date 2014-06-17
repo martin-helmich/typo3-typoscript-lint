@@ -45,9 +45,9 @@ class Traverser
 
     public function walk()
     {
-        $this->visitors->enterTree();
+        $this->visitors->enterTree($this->statements);
         $this->walkRecursive($this->statements);
-        $this->visitors->exitTree();
+        $this->visitors->exitTree($this->statements);
     }
 
 

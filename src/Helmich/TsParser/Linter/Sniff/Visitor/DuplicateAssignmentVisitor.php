@@ -35,7 +35,7 @@ class DuplicateAssignmentVisitor implements Visitor
 
 
 
-    public function enterTree()
+    public function enterTree(array $statements)
     {
     }
 
@@ -80,7 +80,7 @@ class DuplicateAssignmentVisitor implements Visitor
 
 
 
-    public function exitTree()
+    public function exitTree(array $statements)
     {
     }
 }

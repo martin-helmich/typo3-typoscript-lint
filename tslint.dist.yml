@@ -7,3 +7,4 @@ sniffs:
   - class: OperatorWhitespace
   - class: RepeatingRValue
   - class: DuplicateAssignment
+  - class: NestingConsistency

@@ -9,6 +9,7 @@ services:
     calls:
       - [injectLinter, [@linter]]
       - [injectLinterConfigurationLocator, [@linter_configuration_locator]]
+      - [injectReportPrinterLocator, [@printer_locator]]
   parse_command:
     class: Helmich\TsParser\Command\ParseCommand
     calls:
@@ -26,6 +27,8 @@ services:
     class: Helmich\TsParser\Linter\LinterConfiguration
   linter_configuration_locator:
     class: Helmich\TsParser\Linter\Configuration\ConfigurationLocator
+  printer_locator:
+    class: Helmich\TsParser\Linter\ReportPrinter\PrinterLocator
   sniff_locator:
     class: Helmich\TsParser\Linter\Sniff\SniffLocator
   parser:

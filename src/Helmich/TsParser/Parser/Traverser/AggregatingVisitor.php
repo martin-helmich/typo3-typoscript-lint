@@ -21,11 +21,11 @@ class AggregatingVisitor implements Visitor
 
 
 
-    public function enterTree()
+    public function enterTree(array $statements)
     {
         foreach ($this->visitors as $visitor)
         {
-            $visitor->enterTree();
+            $visitor->enterTree($statements);
         }
     }
 
@@ -51,11 +51,11 @@ class AggregatingVisitor implements Visitor
 
 
 
-    public function exitTree()
+    public function exitTree(array $statements)
     {
         foreach ($this->visitors as $visitor)
         {
-            $visitor->exitTree();
+            $visitor->exitTree($statements);
         }
     }
 }

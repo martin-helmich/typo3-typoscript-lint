@@ -9,7 +9,7 @@ interface Visitor
 
 
 
-    public function enterTree();
+    public function enterTree(array $statements);
 
 
 
@@ -21,6 +21,6 @@ interface Visitor
 
 
 
-    public function exitTree();
+    public function exitTree(array $statements);
 
 }

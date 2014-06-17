@@ -88,7 +88,7 @@ class Parser implements ParserInterface
                 if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_BRACE_OPEN)
                 {
                     $i += 2;
-                    $statements[] = $this->parseNestedStatements($objectPath, $tokens, $i);
+                    $statements[] = $this->parseNestedStatements($objectPath, $tokens, $i, $tokens[$i]->getLine());
                 }
             }
 
@@ -104,10 +104,11 @@ class Parser implements ParserInterface
      * @param \Helmich\TsParser\Parser\AST\ObjectPath      $parentObject
      * @param \Helmich\TsParser\Tokenizer\TokenInterface[] $tokens
      * @param                                              $i
+     * @param int                                          $startLine
      * @throws ParseError
      * @return \Helmich\TsParser\Parser\AST\NestedAssignment
      */
-    private function parseNestedStatements(ObjectPath $parentObject, array $tokens, &$i)
+    private function parseNestedStatements(ObjectPath $parentObject, array $tokens, &$i, $startLine)
     {
         $statements = [];
         $count      = count($tokens);
@@ -117,10 +118,11 @@ class Parser implements ParserInterface
             if ($tokens[$i]->getType() === TokenInterface::TYPE_OBJECT_IDENTIFIER)
             {
                 $objectPath = new ObjectPath($parentObject->absoluteName . '.' . $tokens[$i]->getValue(), $tokens[$i]->getValue());
+
                 if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_BRACE_OPEN)
                 {
                     $i += 2;
-                    $statements[] = $this->parseNestedStatements($objectPath, $tokens, $i);
+                    $statements[] = $this->parseNestedStatements($objectPath, $tokens, $i, $tokens[$i]->getLine());
                     continue;
                 }
             }
@@ -129,7 +131,7 @@ class Parser implements ParserInterface
 
             if ($tokens[$i]->getType() === TokenInterface::TYPE_BRACE_CLOSE)
             {
-                $statement = new NestedAssignment($parentObject, $statements, $tokens[$i]->getLine());
+                $statement = new NestedAssignment($parentObject, $statements, $startLine);
                 $i++;
                 return $statement;
             }
@@ -194,11 +196,11 @@ class Parser implements ParserInterface
 
                 if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_OPERATOR_COPY)
                 {
-                    $statements[] = new Copy($objectPath, $target, $tokens[$i+1]->getLine());
+                    $statements[] = new Copy($objectPath, $target, $tokens[$i + 1]->getLine());
                 }
                 else
                 {
-                    $statements[] = new Reference($objectPath, $target, $tokens[$i+1]->getLine());
+                    $statements[] = new Reference($objectPath, $target, $tokens[$i + 1]->getLine());
                 }
                 $i += 2;
             }
@@ -209,7 +211,7 @@ class Parser implements ParserInterface
                 preg_match(Tokenizer::TOKEN_OBJECT_MODIFIER, $tokens[$i + 2]->getValue(), $matches);
 
                 $call         = new ModificationCall($matches['name'], $matches['arguments']);
-                $statements[] = new Modification($objectPath, $call, $tokens[$i+2]->getLine());
+                $statements[] = new Modification($objectPath, $call, $tokens[$i + 2]->getLine());
 
                 $i += 2;
             }
@@ -224,7 +226,7 @@ class Parser implements ParserInterface
                     );
                 }
 
-                $statements[] = new Delete($objectPath, $tokens[$i+1]->getLine());
+                $statements[] = new Delete($objectPath, $tokens[$i + 1]->getLine());
                 $i += 1;
             }
             else if ($tokens[$i + 1]->getType() === TokenInterface::TYPE_RIGHTVALUE_MULTILINE)
@@ -282,11 +284,11 @@ class Parser implements ParserInterface
                         $i += 2;
                         if ($inElseBranch)
                         {
-                            $elseStatements[] = $this->parseNestedStatements($objectPath, $tokens, $i);
+                            $elseStatements[] = $this->parseNestedStatements($objectPath, $tokens, $i, $tokens[$i + 1]->getLine());
                         }
                         else
                         {
-                            $ifStatements[] = $this->parseNestedStatements($objectPath, $tokens, $i);
+                            $ifStatements[] = $this->parseNestedStatements($objectPath, $tokens, $i, $tokens[$i + 1]->getLine());
                         }
                     }
                 }
