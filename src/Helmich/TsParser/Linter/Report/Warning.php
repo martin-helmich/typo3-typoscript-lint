@@ -3,8 +3,12 @@ namespace Helmich\TsParser\Linter\Report;
 
 
 /**
- * Class Warning
- * @package Helmich\TsParser\Linter\Report
+ * A single checkstyle warning.
+ *
+ * @author     Martin Helmich <typo3@martin-helmich.de>
+ * @license    MIT
+ * @package    Helmich\TsParser
+ * @subpackage Linter\Report
  */
 class Warning
 {
@@ -38,11 +42,13 @@ class Warning
 
 
     /**
-     * @param int    $line
-     * @param int    $column
-     * @param string $message
-     * @param string $severity
-     * @param string $source
+     * Constructs a new warning.
+     *
+     * @param int    $line     The original source line the warning belongs to.
+     * @param int    $column   The source column.
+     * @param string $message  The warning message.
+     * @param string $severity The warning severity (see Warning::SEVERITY_* constants).
+     * @param string $source   An arbitrary identifier for the generator of this warning.
      */
     public function __construct($line, $column, $message, $severity, $source)
     {
@@ -56,7 +62,9 @@ class Warning
 
 
     /**
-     * @return int
+     * Gets the original source line.
+     *
+     * @return int The original source line.
      */
     public function getLine()
     {
@@ -66,7 +74,9 @@ class Warning
 
 
     /**
-     * @return int
+     * Gets the original source column, if applicable (else NULL).
+     *
+     * @return int The original source column, or NULL.
      */
     public function getColumn()
     {
@@ -76,7 +86,9 @@ class Warning
 
 
     /**
-     * @return string
+     * Gets the warning message.
+     *
+     * @return string The warning message.
      */
     public function getMessage()
     {
@@ -86,7 +98,9 @@ class Warning
 
 
     /**
-     * @return string
+     * Gets the warning severity.
+     *
+     * @return string The warning severity (should be one of the Warning::SEVERITY_* constants).
      */
     public function getSeverity()
     {
@@ -96,7 +110,9 @@ class Warning
 
 
     /**
-     * @return string
+     * Gets the warning source identifier.
+     *
+     * @return string The warning source identifier.
      */
     public function getSource()
     {

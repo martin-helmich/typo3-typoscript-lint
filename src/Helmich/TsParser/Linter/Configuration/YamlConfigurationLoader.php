@@ -6,7 +6,14 @@ use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Yaml\Yaml;
 
 
-
+/**
+ * Configuration loader for YAML files.
+ *
+ * @author     Martin Helmich <typo3@martin-helmich.de>
+ * @license    MIT
+ * @package    Helmich\TsParser
+ * @subpackage Linter\Configuration
+ */
 class YamlConfigurationLoader extends FileLoader
 {
 
@@ -21,7 +28,7 @@ class YamlConfigurationLoader extends FileLoader
      */
     public function load($resource, $type = NULL)
     {
-        $path = $this->locator->locate($resource);
+        $path         = $this->locator->locate($resource);
         $configValues = Yaml::parse($path);
 
         return $configValues;

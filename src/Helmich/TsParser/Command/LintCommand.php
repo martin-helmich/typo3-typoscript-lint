@@ -2,18 +2,26 @@
 namespace Helmich\TsParser\Command;
 
 
-use Helmich\TsParser\Linter\Configuration\ConfigurationLocator;
-use Helmich\TsParser\Linter\LinterInterface;
-use Helmich\TsParser\Linter\Report\Report;
-use Helmich\TsParser\Linter\ReportPrinter\ConsoleReportPrinter;
-use Helmich\TsParser\Linter\ReportPrinter\PrinterLocator;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\StreamOutput;
+use Helmich\TsParser\Linter\Configuration\ConfigurationLocator,
+    Helmich\TsParser\Linter\LinterInterface,
+    Helmich\TsParser\Linter\Report\Report,
+    Helmich\TsParser\Linter\ReportPrinter\PrinterLocator;
+use Symfony\Component\Console\Command\Command,
+    Symfony\Component\Console\Input\InputArgument,
+    Symfony\Component\Console\Input\InputInterface,
+    Symfony\Component\Console\Input\InputOption,
+    Symfony\Component\Console\Output\OutputInterface,
+    Symfony\Component\Console\Output\StreamOutput;
 
+
+/**
+ * Command class that performs linting on a set of TypoScript files.
+ *
+ * @author     Martin Helmich <typo3@martin-helmich.de>
+ * @license    MIT
+ * @package    Helmich\TsParser
+ * @subpackage Command
+ */
 class LintCommand extends Command
 {
 
@@ -32,6 +40,12 @@ class LintCommand extends Command
 
 
 
+    /**
+     * Injects a linter.
+     *
+     * @param \Helmich\TsParser\Linter\LinterInterface $linter The linter to use.
+     * @return void
+     */
     public function injectLinter(LinterInterface $linter)
     {
         $this->linter = $linter;
@@ -39,6 +53,12 @@ class LintCommand extends Command
 
 
 
+    /**
+     * Injects a locator for the linter configuration.
+     *
+     * @param \Helmich\TsParser\Linter\Configuration\ConfigurationLocator $configurationLocator The configuration locator.
+     * @return void
+     */
     public function injectLinterConfigurationLocator(ConfigurationLocator $configurationLocator)
     {
         $this->linterConfigurationLocator = $configurationLocator;
@@ -46,6 +66,12 @@ class LintCommand extends Command
 
 
 
+    /**
+     * Injects a locator for report printers.
+     *
+     * @param \Helmich\TsParser\Linter\ReportPrinter\PrinterLocator $printerLocator A report printer locator.
+     * @return void
+     */
     public function injectReportPrinterLocator(PrinterLocator $printerLocator)
     {
         $this->printerLocator = $printerLocator;
@@ -53,6 +79,11 @@ class LintCommand extends Command
 
 
 
+    /**
+     * Configures this command.
+     *
+     * @return void
+     */
     protected function configure()
     {
         $this
@@ -66,6 +97,13 @@ class LintCommand extends Command
 
 
 
+    /**
+     * Executes this command.
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface   $input  Input options.
+     * @param \Symfony\Component\Console\Output\OutputInterface $output Output stream.
+     * @return void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filename = $input->getArgument('filename');
@@ -76,7 +114,7 @@ class LintCommand extends Command
             ? $output
             : new StreamOutput(fopen($input->getOption('output'), 'w'));
 
-        $configuration = $this->linterConfigurationLocator->loadConfiguration($input->getOption('config'), $output);
+        $configuration = $this->linterConfigurationLocator->loadConfiguration($input->getOption('config'));
         $printer       = $this->printerLocator->createPrinter($input->getOption('format'), $reportOutput);
         $report        = new Report();
 

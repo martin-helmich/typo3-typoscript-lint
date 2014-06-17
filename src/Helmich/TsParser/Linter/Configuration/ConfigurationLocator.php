@@ -7,20 +7,30 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
-use Symfony\Component\Console\Output\OutputInterface;
 
+
+/**
+ * Helper class that loads linting configuration data.
+ *
+ * @author     Martin Helmich <typo3@martin-helmich.de>
+ * @license    MIT
+ * @package    Helmich\TsParser
+ * @subpackage Linter\Configuration
+ */
 class ConfigurationLocator
 {
 
 
 
     /**
-     * @param string          $configurationFile
-     * @param OutputInterface $output
-     * @return \Helmich\TsParser\Linter\LinterConfiguration
-     * @throws \Exception
+     * Loads the linter configuration.
+     *
+     * @param string $configurationFile The configuration file to load from. This file will be searched in the current
+     *                                  working directory and in the tsparse root directory. Contents from the file
+     *                                  will also be merged with the tslint.dist.yml file in the tsparse root directory.
+     * @return \Helmich\TsParser\Linter\LinterConfiguration The linter configuration from the given configuration file.
      */
-    public function loadConfiguration($configurationFile = NULL, OutputInterface $output)
+    public function loadConfiguration($configurationFile = NULL)
     {
         $locator           = new FileLocator([getcwd(), TSPARSE_ROOT]);
         $configurationFile = $configurationFile ?: 'tslint.yml';
