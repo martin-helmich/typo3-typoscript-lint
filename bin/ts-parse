@@ -10,6 +10,8 @@
  * For license information, view the LICENSE.md file.
  */
 
+use Helmich\TypoScriptParser\TypoScriptParserExtension;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Console\Application;
@@ -31,8 +33,13 @@ else
 define('TSPARSE_ROOT', basename(__DIR__));
 
 $container = new ContainerBuilder();
+$container->registerExtension(new TypoScriptParserExtension());
+
 $loader    = new YamlFileLoader($container, new FileLocator(__DIR__ . '/..'));
 $loader->load('services.yml');
+
+$container->loadFromExtension('typoscript_parser');
+$container->compile();
 
 $application = new Application();
 

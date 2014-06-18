@@ -1,36 +1,27 @@
 services:
   tokenize_command:
-    class: Helmich\TsParser\Command\TokenizeCommand
+    class: Helmich\TypoScriptLint\Command\TokenizeCommand
     calls:
-      - [injectTokenizer, ["@tokenizer"]]
-      - [injectTokenPrinter, ["@token_printer_structured"]]
+      - [injectTokenizer, [@tokenizer]]
+      - [injectTokenPrinter, [@token_printer_structured]]
   lint_command:
-    class: Helmich\TsParser\Command\LintCommand
+    class: Helmich\TypoScriptLint\Command\LintCommand
     calls:
       - [injectLinter, [@linter]]
       - [injectLinterConfigurationLocator, [@linter_configuration_locator]]
       - [injectReportPrinterLocator, [@printer_locator]]
   parse_command:
-    class: Helmich\TsParser\Command\ParseCommand
+    class: Helmich\TypoScriptLint\Command\ParseCommand
     calls:
       - [injectParser, [@parser]]
-  tokenizer:
-    class: Helmich\TsParser\Tokenizer\Tokenizer
-  token_printer_structured:
-    class: Helmich\TsParser\Tokenizer\Printer\StructuredTokenPrinter
-  token_printer_code:
-    class: Helmich\TsParser\Tokenizer\Printer\CodeTokenPrinter
   linter:
-    class: Helmich\TsParser\Linter\Linter
+    class: Helmich\TypoScriptLint\Linter\Linter
     arguments: [@tokenizer, @parser, @sniff_locator]
   linter_configuration:
-    class: Helmich\TsParser\Linter\LinterConfiguration
+    class: Helmich\TypoScriptLint\Linter\LinterConfiguration
   linter_configuration_locator:
-    class: Helmich\TsParser\Linter\Configuration\ConfigurationLocator
+    class: Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
   printer_locator:
-    class: Helmich\TsParser\Linter\ReportPrinter\PrinterLocator
+    class: Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator
   sniff_locator:
-    class: Helmich\TsParser\Linter\Sniff\SniffLocator
-  parser:
-    class: Helmich\TsParser\Parser\Parser
-    arguments: [@tokenizer]
+    class: Helmich\TypoScriptLint\Linter\Sniff\SniffLocator

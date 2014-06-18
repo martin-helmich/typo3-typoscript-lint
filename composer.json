@@ -4,6 +4,9 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/martin-helmich",
+    "repositories": [
+        { "type": "vcs", "url": "file:///home/mhelmich/Git/Privat/typo3-typoscript-parser" }
+    ],
     "authors": [
         {
             "name": "Martin Helmich",
@@ -20,7 +23,8 @@
         "symfony/console": "2.4.*",
         "symfony/dependency-injection": "2.4.*",
         "symfony/config": "2.4.*",
-        "symfony/yaml": "2.4.*"
+        "symfony/yaml": "2.4.*",
+        "helmich/typo3-typoscript-parser": "*"
     },
     "require-dev": {
     },
@@ -32,7 +36,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Helmich\\TsParser": "src/"
+            "Helmich\\TypoScriptLint": "src/"
         }
     }
 }
