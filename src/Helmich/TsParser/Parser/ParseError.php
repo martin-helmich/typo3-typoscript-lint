@@ -4,6 +4,7 @@ namespace Helmich\TsParser\Parser;
 
 use Exception;
 
+
 class ParseError extends \Exception
 {
 

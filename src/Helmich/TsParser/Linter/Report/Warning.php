@@ -1,6 +1,9 @@
 <?php
 namespace Helmich\TsParser\Linter\Report;
 
+use Helmich\TsParser\Parser\ParseError;
+use Helmich\TsParser\Tokenizer\TokenizerException;
+
 
 /**
  * A single checkstyle warning.
@@ -38,6 +41,44 @@ class Warning
 
     /** @var string */
     private $source;
+
+
+
+    /**
+     * Creates a new warning from a parse error.
+     *
+     * @param \Helmich\TsParser\Parser\ParseError $parseError The parse error to convert into a warning.
+     * @return \Helmich\TsParser\Linter\Report\Warning The converted warning.
+     */
+    public static function createFromParseError(ParseError $parseError)
+    {
+        return new self(
+            $parseError->getSourceLine(),
+            NULL,
+            "Parse error: " . $parseError->getMessage(),
+            self::SEVERITY_ERROR,
+            get_class($parseError)
+        );
+    }
+
+
+
+    /**
+     * Creates a new warning from a tokenizer error.
+     *
+     * @param \Helmich\TsParser\Tokenizer\TokenizerException $tokenizerException The tokenizer error to convert into a warning.
+     * @return \Helmich\TsParser\Linter\Report\Warning The converted warning.
+     */
+    public static function createFromTokenizerError(TokenizerException $tokenizerException)
+    {
+        return new self(
+            $tokenizerException->getSourceLine(),
+            NULL,
+            "Tokenization error: " . $tokenizerException->getMessage(),
+            self::SEVERITY_ERROR,
+            get_class($tokenizerException)
+        );
+    }
 
 
 

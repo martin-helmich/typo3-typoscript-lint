@@ -3,6 +3,7 @@ namespace Helmich\TsParser\Linter\ReportPrinter;
 
 
 use Helmich\TsParser\Linter\Report\Report;
+use Helmich\TsParser\Linter\Report\Warning;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
@@ -51,13 +52,24 @@ class ConsoleReportPrinter implements Printer
         $this->output->writeln('');
         $this->output->writeln('<comment>CHECKSTYLE REPORT</comment>');
 
+        $styleMap = [
+            Warning::SEVERITY_ERROR => 'error',
+            Warning::SEVERITY_WARNING => 'comment',
+            Warning::SEVERITY_INFO => 'info',
+        ];
+
         foreach ($report->getFiles() as $file)
         {
             $this->output->writeln("=> <comment>{$file->getFilename()}</comment>.");
             foreach ($file->getWarnings() as $warning)
             {
-                $count ++;
-                $this->output->writeln(sprintf('<comment>%4d <info> %s</info></comment>', $warning->getLine(), $warning->getMessage()));
+                $count++;
+
+                $style = $styleMap[$warning->getSeverity()];
+
+                $this->output->writeln(
+                    sprintf('<comment>%4d <%s> %s </%s></comment>', $warning->getLine(), $style, $warning->getMessage(), $style)
+                );
             }
         }
 

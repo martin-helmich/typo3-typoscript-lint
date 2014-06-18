@@ -4,8 +4,11 @@ namespace Helmich\TsParser\Linter;
 
 use Helmich\TsParser\Linter\Report\File;
 use Helmich\TsParser\Linter\Report\Report;
+use Helmich\TsParser\Linter\Report\Warning;
 use Helmich\TsParser\Linter\Sniff\SniffLocator;
+use Helmich\TsParser\Parser\ParseError;
 use Helmich\TsParser\Parser\ParserInterface;
+use Helmich\TsParser\Tokenizer\TokenizerException;
 use Helmich\TsParser\Tokenizer\TokenizerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -44,13 +47,24 @@ class Linter implements LinterInterface
      */
     public function lintFile($filename, Report $report, LinterConfiguration $configuration, OutputInterface $output)
     {
-        $tokens     = $this->tokenizer->tokenizeStream($filename);
-        $statements = $this->parser->parseTokens($tokens);
-
         $file = new File($filename);
 
-        $this->lintTokenStream($tokens, $file, $configuration, $output);
-        $this->lintSyntaxTree($statements, $file, $configuration, $output);
+        try
+        {
+            $tokens     = $this->tokenizer->tokenizeStream($filename);
+            $statements = $this->parser->parseTokens($tokens);
+
+            $this->lintTokenStream($tokens, $file, $configuration, $output);
+            $this->lintSyntaxTree($statements, $file, $configuration, $output);
+        }
+        catch (TokenizerException $tokenizerException)
+        {
+            $file->addWarning(Warning::createFromTokenizerError($tokenizerException));
+        }
+        catch (ParseError $parseError)
+        {
+            $file->addWarning(Warning::createFromParseError($parseError));
+        }
 
         if (count($file->getWarnings()) > 0)
         {
