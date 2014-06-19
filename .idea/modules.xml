@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/tsparse.iml" filepath="$PROJECT_DIR$/.idea/tsparse.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/typo3-typo3script-lint.iml" filepath="$PROJECT_DIR$/.idea/typo3-typo3script-lint.iml" />
     </modules>
   </component>
 </project>
