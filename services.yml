@@ -21,7 +21,26 @@ services:
     class: Helmich\TypoScriptLint\Linter\LinterConfiguration
   linter_configuration_locator:
     class: Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
+    arguments: [@config_loader, @config_processor]
   printer_locator:
     class: Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator
   sniff_locator:
     class: Helmich\TypoScriptLint\Linter\Sniff\SniffLocator
+
+  # Configuration management
+  config_locator:
+    class: Symfony\Component\Config\FileLocator
+    arguments:
+      - ['%dir.cwd%', '%dir.tslint_root%']
+  config_yaml_loader:
+    class: Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
+    arguments: [@config_locator]
+  config_loader_resolver:
+    class: Symfony\Component\Config\Loader\LoaderResolver
+    arguments:
+      - [@config_yaml_loader]
+  config_loader:
+    class: Symfony\Component\Config\Loader\DelegatingLoader
+    arguments: [@config_loader_resolver]
+  config_processor:
+    class: Symfony\Component\Config\Definition\Processor

@@ -1,4 +1,6 @@
 /.idea/workspace.xml
+/bin/phpunit
+/build/
 /vendor/
 /tstest/
 /composer.lock

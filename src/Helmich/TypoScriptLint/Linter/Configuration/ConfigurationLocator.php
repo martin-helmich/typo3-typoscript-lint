@@ -4,9 +4,7 @@ namespace Helmich\TypoScriptLint\Linter\Configuration;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\DelegatingLoader;
-use Symfony\Component\Config\Loader\LoaderResolver;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
 
 /**
@@ -22,29 +20,51 @@ class ConfigurationLocator
 
 
 
+    /** @var \Symfony\Component\Config\Loader\LoaderInterface */
+    private $loader;
+
+
+    /** @var \Symfony\Component\Config\Definition\Processor */
+    private $processor;
+
+
+
+    /**
+     * Constructs a new configuration locator.
+     *
+     * @param \Symfony\Component\Config\Loader\LoaderInterface $loader    A configuration loader.
+     * @param \Symfony\Component\Config\Definition\Processor   $processor A configuration processor.
+     */
+    public function __construct(LoaderInterface $loader, Processor $processor)
+    {
+        $this->loader    = $loader;
+        $this->processor = $processor;
+    }
+
+
+
     /**
      * Loads the linter configuration.
      *
-     * @param string $configurationFile The configuration file to load from. This file will be searched in the current
-     *                                  working directory and in the tsparse root directory. Contents from the file
-     *                                  will also be merged with the tslint.dist.yml file in the tsparse root directory.
+     * @param string                                             $configurationFile The configuration file to load from.
+     *                                                                              This file will be searched in the
+     *                                                                              current working directory and in
+     *                                                                              the tslint root directory. Contents
+     *                                                                              from the file will also be merged
+     *                                                                              with the tslint.dist.yml file in
+     *                                                                              the tslint root directory.
+     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration $configuration     The configuration on which to set
+     *                                                                              the loaded configuration values.
      * @return \Helmich\TypoScriptLint\Linter\LinterConfiguration The linter configuration from the given configuration file.
      */
-    public function loadConfiguration($configurationFile = NULL)
+    public function loadConfiguration($configurationFile = NULL, LinterConfiguration $configuration = NULL)
     {
-        $locator           = new FileLocator([getcwd(), TSPARSE_ROOT]);
-        $configurationFile = $configurationFile ?: 'tslint.yml';
+        $distConfig  = $this->loader->load('tslint.dist.yml');
+        $localConfig = $this->loader->load($configurationFile);
 
-        $loaderResolver   = new LoaderResolver(array(new YamlConfigurationLoader($locator)));
-        $delegatingLoader = new DelegatingLoader($loaderResolver);
+        $configuration = $configuration ?: new LinterConfiguration();
 
-        $distConfig  = $delegatingLoader->load('tslint.dist.yml');
-        $localConfig = $delegatingLoader->load($configurationFile);
-
-        $configuration = new LinterConfiguration();
-
-        $processor              = new Processor();
-        $processedConfiguration = $processor->processConfiguration(
+        $processedConfiguration = $this->processor->processConfiguration(
             $configuration,
             [$distConfig, $localConfig]
         );

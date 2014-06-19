@@ -39,6 +39,7 @@ class LinterConfiguration implements ConfigurationInterface
      * Generates the configuration tree builder.
      *
      * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
+     * @codeCoverageIgnore FU, I'm not going to test this one!
      */
     public function getConfigTreeBuilder()
     {

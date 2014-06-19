@@ -68,7 +68,7 @@ class ConsoleReportPrinter implements Printer
                 $style = $styleMap[$warning->getSeverity()];
 
                 $this->output->writeln(
-                    sprintf('<comment>%4d <%s> %s </%s></comment>', $warning->getLine(), $style, $warning->getMessage(), $style)
+                    sprintf('<comment>%4d <%s>%s</%s></comment>', $warning->getLine(), $style, $warning->getMessage(), $style)
                 );
             }
         }

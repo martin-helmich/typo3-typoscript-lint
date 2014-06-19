@@ -2,8 +2,10 @@
 namespace Helmich\TypoScriptLint\Linter\Configuration;
 
 
+use Helmich\TypoScriptLint\Util\Filesystem;
+use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\FileLoader;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Parser as YamlParser;
 
 
 /**
@@ -19,6 +21,32 @@ class YamlConfigurationLoader extends FileLoader
 
 
 
+    /** @var \Symfony\Component\Yaml\Parser */
+    private $yamlParser;
+
+
+    /** @var \Helmich\TypoScriptLint\Util\Filesystem */
+    private $filesystem;
+
+
+
+    /**
+     * Constructs a new YAML-based configuration loader.
+     *
+     * @param \Symfony\Component\Config\FileLocatorInterface $locator    The file locator.
+     * @param \Symfony\Component\Yaml\Parser                 $yamlParser The YAML parser.
+     * @param \Helmich\TypoScriptLint\Util\Filesystem        $filesystem A filesystem interface.
+     */
+    public function __construct(FileLocatorInterface $locator, YamlParser $yamlParser, Filesystem $filesystem)
+    {
+        parent::__construct($locator);
+
+        $this->yamlParser = $yamlParser;
+        $this->filesystem = $filesystem;
+    }
+
+
+
     /**
      * Loads a resource.
      *
@@ -29,7 +57,8 @@ class YamlConfigurationLoader extends FileLoader
     public function load($resource, $type = NULL)
     {
         $path         = $this->locator->locate($resource);
-        $configValues = Yaml::parse($path);
+        $file         = $this->filesystem->openFile($path);
+        $configValues = $this->yamlParser->parse($file->getContents());
 
         return $configValues;
     }

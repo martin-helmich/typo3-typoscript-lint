@@ -2,6 +2,7 @@
 namespace Helmich\TypoScriptLint\Command;
 
 
+use Helmich\TypoScriptLint\Exception\BadOutputFileException;
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator,
     Helmich\TypoScriptLint\Linter\LinterInterface,
     Helmich\TypoScriptLint\Linter\Report\Report,
@@ -103,12 +104,20 @@ class LintCommand extends Command
      * @param \Symfony\Component\Console\Input\InputInterface   $input  Input options.
      * @param \Symfony\Component\Console\Output\OutputInterface $output Output stream.
      * @return void
+     *
+     * @throws \Helmich\TypoScriptLint\Exception\BadOutputFileException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filename = $input->getArgument('filename');
 
         $output->writeln("Linting input file <comment>{$filename}</comment>.");
+
+        $outputTarget = $input->getOption('output');
+        if (FALSE == $outputTarget)
+        {
+            throw new BadOutputFileException('Bad output file.');
+        }
 
         $reportOutput = $input->getOption('output') === '-'
             ? $output
