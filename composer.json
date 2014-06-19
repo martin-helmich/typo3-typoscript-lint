@@ -1,12 +1,9 @@
 {
-    "name": "helmich/ts-parser",
-    "description": "Parser for the TYPO3 configuration language TypoScript.",
+    "name": "helmich/typo3-typoscript-lint",
+    "description": "Static code analysis for the TypoScript configuration language.",
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/martin-helmich",
-    "repositories": [
-        { "type": "vcs", "url": "file:///home/mhelmich/Git/Privat/typo3-typoscript-parser" }
-    ],
     "authors": [
         {
             "name": "Martin Helmich",
@@ -15,7 +12,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/martin-helmich/ts-parser/issues"
+        "issues": "https://github.com/martin-helmich/typo3-typoscript-lint/issues"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

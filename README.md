@@ -141,7 +141,7 @@ By default, it will print a report on the console. To generate a checkstyle-form
 `typoscript-lint` looks for a file `tslint.yml` in the current working directory.
 If such a file is found, it will be merged with the `tslint.dist.yml` from the
 installation root directory. Have a look at [said file](tslint.dist.yml) for an
-idea of what you can configure.
+idea of what you can configure (granted, not much yet).
 
 ### Future features
 
