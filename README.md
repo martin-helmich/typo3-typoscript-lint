@@ -4,8 +4,7 @@ TypoScript Lint: CGL validation for TypoScript
 Author
 ------
 
-Martin Helmich
-typo3@martin-helmich.de
+Martin Helmich (typo3 at martin-helmich dot de)
 
 Synopsis
 --------
