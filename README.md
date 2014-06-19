@@ -1,5 +1,5 @@
-tsparse: TypoScript parsing and linting
-=======================================
+TypoScript Lint: CGL validation for TypoScript
+==============================================
 
 Author
 ------
@@ -12,11 +12,8 @@ Synopsis
 
 This package contains a tool that can parse TYPO3's configuration language,
 "TypoScript", into an syntax tree and perform static code analysis on the
-parsed code. `tslint` can generate [Checkstyle](http://checkstyle.sourceforge.net/)-compatible output and can be used
+parsed code. `typoscript-lint` can generate [Checkstyle](http://checkstyle.sourceforge.net/)-compatible output and can be used
 in Continuous Integration environments.
-
-It can also be used as a library to access and modify the generated AST
-directly.
 
 Why?!
 -----
@@ -26,7 +23,7 @@ article for the [T3N](http://t3n.de) magazine on Continuous Integration for
 TYPO3 projects, introducing tools like [JSHint](http://www.jshint.com/) or [CSSLint](http://csslint.net/),
 and I noticed that no comparable tools exist for TypoScript. So I thought,
 "What the heck, let's go" and at some point realized that my little programming
-excercise might actually be useful. So, that's that. Enjoy.
+excercise might actually be useful to someone. So, that's that. Enjoy.
 
 Code validation
 ---------------
@@ -133,8 +130,20 @@ In this case, both statements could be nested in each other.
 
 Call tslint as follows:
 
-    bin/ts-parse lint path/to/your.ts
+    bin/typoscript-lint lint path/to/your.ts
 
 By default, it will print a report on the console. To generate a checkstyle-format XML file, call as follows:
 
-    bin/ts-parse -f xml -o checkstyle.xml path/to/your.ts
+    bin/typoscript-lint -f xml -o checkstyle.xml path/to/your.ts
+
+### Configuration
+
+`typoscript-lint` looks for a file `tslint.yml` in the current working directory.
+If such a file is found, it will be merged with the `tslint.dist.yml` from the
+installation root directory. Have a look at [said file](tslint.dist.yml) for an
+idea of what you can configure.
+
+### Future features
+
+- Sniffs for more code smells (ideas are welcome)
+- Full test coverage (no, I did not do TDD. Shame on me.)
