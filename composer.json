@@ -28,7 +28,7 @@
         "phpunit/phpunit": "~4.1.0"
     },
     "bin": [
-        "ts-parse"
+        "typoscript-lint"
     ],
     "config": {
         "bin-dir": "bin"
