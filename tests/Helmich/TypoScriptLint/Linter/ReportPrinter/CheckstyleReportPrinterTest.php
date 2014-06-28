@@ -19,7 +19,7 @@ class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
 
 
     const EXPECTED_XML_DOCUMENT = '<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="tslint-1.0">
+<checkstyle version="typoscript-lint-1.0.0">
   <file name="foobar.tys">
     <error line="123" severity="info" message="Message #1" source="foobar" column="12"/>
     <error line="124" severity="warning" message="Message #2" source="foobar"/>
@@ -44,6 +44,9 @@ class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
     {
         $this->output  = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')->getMock();
         $this->printer = new CheckstyleReportPrinter($this->output);
+
+        define('APP_NAME', 'typoscript-lint');
+        define('APP_VERSION', '1.0.0');
     }
 
 

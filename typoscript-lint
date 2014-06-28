@@ -10,11 +10,14 @@
  * For license information, view the LICENSE.md file.
  */
 
+use Helmich\TypoScriptLint\Application;
 use Helmich\TypoScriptParser\TypoScriptParserExtension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Config\FileLocator;
+
+const APP_NAME = 'typoscript-lint';
+const APP_VERSION = 'dev';
 
 if (file_exists(__DIR__ . '/vendor/autoload.php'))
 {
@@ -41,10 +44,5 @@ $loader->load('services.yml');
 $container->loadFromExtension('typoscript_parser');
 $container->compile();
 
-$application = new Application();
-
-/** @noinspection PhpParamsInspection */
-$application->add($container->get('tokenize_command'));
-$application->add($container->get('lint_command'));
-$application->add($container->get('parse_command'));
+$application = new Application($container);
 $application->run();

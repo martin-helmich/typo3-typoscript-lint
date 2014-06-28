@@ -51,7 +51,7 @@ class CheckstyleReportPrinter implements Printer
         $xml = new \DOMDocument('1.0', 'UTF-8');
 
         $root = $xml->createElement('checkstyle');
-        $root->setAttribute('version', 'tslint-1.0');
+        $root->setAttribute('version', APP_NAME . '-' . APP_VERSION);
 
         foreach ($report->getFiles() as $file)
         {

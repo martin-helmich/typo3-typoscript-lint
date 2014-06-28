@@ -111,7 +111,7 @@ class LintCommand extends Command
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use.')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format.', 'text')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout).', '-')
-            ->addArgument('filenames', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Input filename');
+            ->addArgument('filename', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'File or directory names');
     }
 
 
@@ -127,7 +127,7 @@ class LintCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filenames = $input->getArgument('filenames');
+        $filenames = $input->getArgument('filename');
 
         $outputTarget = $input->getOption('output');
         if (FALSE == $outputTarget)
