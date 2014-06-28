@@ -53,7 +53,7 @@ class Finder
 
         foreach ($fileOrDirectoryNames as $fileOrDirectoryName)
         {
-            $fileInfo = $this->filesystem->getFileInfo($fileOrDirectoryName);
+            $fileInfo = $this->filesystem->openFile($fileOrDirectoryName);
             if ($fileInfo->isFile())
             {
                 $filenames[] = $fileOrDirectoryName;

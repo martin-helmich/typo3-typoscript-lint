@@ -2,25 +2,23 @@
 namespace Helmich\TypoScriptLint\Util;
 
 
-class Filesystem
+use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
+use Symfony\Component\Finder\SplFileInfo;
+
+
+class Filesystem extends SymfonyFilesystem
 {
 
 
 
     /**
-     * @param string $filename
-     * @return \Helmich\TypoScriptLint\Util\File
+     * @param $filename
+     * @return \Symfony\Component\Finder\SplFileInfo
      */
     public function openFile($filename)
     {
-        return new File($filename);
-    }
-
-
-
-    public function getFileInfo($filename)
-    {
-        return new \SplFileInfo($filename);
+        $relative = $this->makePathRelative($filename, getcwd());
+        return new SplFileInfo($filename, dirname($relative), $relative);
     }
 
 }

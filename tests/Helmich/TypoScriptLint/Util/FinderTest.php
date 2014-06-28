@@ -34,9 +34,9 @@ class FinderTest extends \PHPUnit_Framework_TestCase
 
         $finder = new Finder($sfFinder, $filesystem);
 
-        $filesystem->expects($this->at(0))->method('getFileInfo')->with('directory')->willReturn($fi1);
-        $filesystem->expects($this->at(1))->method('getFileInfo')->with('file1')->willReturn($fi2);
-        $filesystem->expects($this->at(2))->method('getFileInfo')->with('file2')->willReturn($fi3);
+        $filesystem->expects($this->at(0))->method('openFile')->with('directory')->willReturn($fi1);
+        $filesystem->expects($this->at(1))->method('openFile')->with('file1')->willReturn($fi2);
+        $filesystem->expects($this->at(2))->method('openFile')->with('file2')->willReturn($fi3);
 
         $filenames = $finder->getFilenames(['directory', 'file1', 'file2']);
 

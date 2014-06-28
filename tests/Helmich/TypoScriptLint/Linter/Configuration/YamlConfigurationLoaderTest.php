@@ -3,9 +3,6 @@ namespace Helmich\TypoScriptLint\Linter\Configuration;
 
 
 /**
- * Class YamlConfigurationLoaderTest
- *
- * @package Helmich\TypoScriptLint\Linter\Configuration
  * @covers  Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
  */
 class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
@@ -39,7 +36,7 @@ class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadLocatesReadsAndParsesFile()
     {
-        $file = $this->getMockBuilder('Helmich\TypoScriptLint\Util\File')->setConstructorArgs(['php://memory'])->getMock();
+        $file = $this->getMockBuilder('Symfony\\Component\\Finder\\SplFileInfo')->setConstructorArgs(['php://memory', '', ''])->getMock();
         $file->expects($this->once())->method('getContents')->willReturn('foo: bar');
 
         $this->fileLocator->expects($this->once())->method('locate')->with('foobar.yml')->willReturn('dir/foobar.yml');
