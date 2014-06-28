@@ -34,7 +34,7 @@ services:
       - ['%dir.cwd%', '%dir.tslint_root%']
   config_yaml_loader:
     class: Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
-    arguments: [@config_locator]
+    arguments: [@config_locator, @yaml_parser, @filesystem]
   config_loader_resolver:
     class: Symfony\Component\Config\Loader\LoaderResolver
     arguments:
@@ -44,3 +44,9 @@ services:
     arguments: [@config_loader_resolver]
   config_processor:
     class: Symfony\Component\Config\Definition\Processor
+  yaml_parser:
+    class: Symfony\Component\Yaml\Parser
+
+  # Tool classes
+  filesystem:
+    class: Helmich\TypoScriptLint\Util\Filesystem
