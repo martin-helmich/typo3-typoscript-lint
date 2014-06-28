@@ -3,16 +3,17 @@ namespace Helmich\TypoScriptLint\Command;
 
 
 use Helmich\TypoScriptLint\Exception\BadOutputFileException;
-use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator,
-    Helmich\TypoScriptLint\Linter\LinterInterface,
-    Helmich\TypoScriptLint\Linter\Report\Report,
-    Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator;
-use Symfony\Component\Console\Command\Command,
-    Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console\Output\OutputInterface,
-    Symfony\Component\Console\Output\StreamOutput;
+use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
+use Helmich\TypoScriptLint\Linter\LinterInterface;
+use Helmich\TypoScriptLint\Linter\Report\Report;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator;
+use Helmich\TypoScriptLint\Util\Finder;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\StreamOutput;
 
 
 /**
@@ -38,6 +39,10 @@ class LintCommand extends Command
 
     /** @var \Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator */
     private $printerLocator;
+
+
+    /** @var \Helmich\TypoScriptLint\Util\Finder */
+    private $finder;
 
 
 
@@ -81,6 +86,19 @@ class LintCommand extends Command
 
 
     /**
+     * Injects a finder for finding files.
+     *
+     * @param \Helmich\TypoScriptLint\Util\Finder $finder The finder.
+     * @return void
+     */
+    public function injectFinder(Finder $finder)
+    {
+        $this->finder = $finder;
+    }
+
+
+
+    /**
      * Configures this command.
      *
      * @return void
@@ -93,7 +111,7 @@ class LintCommand extends Command
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use.')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format.', 'text')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout).', '-')
-            ->addArgument('filename', InputArgument::REQUIRED, 'Input filename');
+            ->addArgument('filenames', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Input filename');
     }
 
 
@@ -109,9 +127,7 @@ class LintCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filename = $input->getArgument('filename');
-
-        $output->writeln("Linting input file <comment>{$filename}</comment>.");
+        $filenames = $input->getArgument('filenames');
 
         $outputTarget = $input->getOption('output');
         if (FALSE == $outputTarget)
@@ -127,7 +143,11 @@ class LintCommand extends Command
         $printer       = $this->printerLocator->createPrinter($input->getOption('format'), $reportOutput);
         $report        = new Report();
 
-        $this->linter->lintFile($filename, $report, $configuration, $output);
+        foreach ($this->finder->getFilenames($filenames) as $filename)
+        {
+            $output->writeln("Linting input file <comment>{$filename}</comment>.");
+            $this->linter->lintFile($filename, $report, $configuration, $output);
+        }
 
         $printer->writeReport($report);
     }

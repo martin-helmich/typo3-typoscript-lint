@@ -24,7 +24,8 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
     private
         $linter,
         $linterConfigurationLocator,
-        $printerLocator;
+        $printerLocator,
+        $finder;
 
 
 
@@ -36,12 +37,16 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->printerLocator             = $this->getMockBuilder('\Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator')->getMock();
+        $this->finder                     = $this->getMockBuilder('Helmich\\TypoScriptLint\\Util\\Finder')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->command = new LintCommand();
 
         $this->command->injectLinter($this->linter);
         $this->command->injectLinterConfigurationLocator($this->linterConfigurationLocator);
         $this->command->injectReportPrinterLocator($this->printerLocator);
+        $this->command->injectFinder($this->finder);
     }
 
 
@@ -64,6 +69,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
     {
         $in = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $in->expects($this->once())->method('getOption')->with('output')->willReturn(NULL);
+        $in->expects($this->once())->method('getArgument')->with('filenames')->willReturn(['foo.ts']);
 
         $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
 
@@ -75,6 +81,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
     public function testCommandCallsLinterWithCorrectDependencies()
     {
         $in = $this->getMock('Symfony\Component\Console\Input\InputInterface');
+        $in->expects($this->any())->method('getArgument')->with('filenames')->willReturn(['foo.ts']);
         $in->expects($this->any())->method('getOption')->willReturnMap(
             [
                 ['output', '-'],
@@ -83,13 +90,14 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $config = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock();
+        $config  = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock();
         $printer = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\ReportPrinter\Printer')->getMock();
 
         $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
 
         $this->linterConfigurationLocator->expects($this->once())->method('loadConfiguration')->with('config.yml')->willReturn($config);
         $this->printerLocator->expects($this->once())->method('createPrinter')->with('txt', $this->identicalTo($out))->willReturn($printer);
+        $this->finder->expects($this->once())->method('getFilenames')->willReturnArgument(0);
 
         $this->runCommand($in, $out);
     }

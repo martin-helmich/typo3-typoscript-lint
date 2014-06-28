@@ -16,4 +16,11 @@ class Filesystem
         return new File($filename);
     }
 
+
+
+    public function getFileInfo($filename)
+    {
+        return new \SplFileInfo($filename);
+    }
+
 }

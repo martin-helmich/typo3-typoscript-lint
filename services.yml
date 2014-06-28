@@ -10,6 +10,7 @@ services:
       - [injectLinter, [@linter]]
       - [injectLinterConfigurationLocator, [@linter_configuration_locator]]
       - [injectReportPrinterLocator, [@printer_locator]]
+      - [injectFinder, [@finder]]
   parse_command:
     class: Helmich\TypoScriptLint\Command\ParseCommand
     calls:
@@ -50,3 +51,8 @@ services:
   # Tool classes
   filesystem:
     class: Helmich\TypoScriptLint\Util\Filesystem
+  finder:
+    class: Helmich\TypoScriptLint\Util\Finder
+    arguments: [@symfony_finder, @filesystem]
+  symfony_finder:
+    class: Symfony\Component\Finder\Finder
