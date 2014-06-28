@@ -32,7 +32,7 @@ else
 
 $container = new ContainerBuilder();
 $container->setParameter('dir.cwd', getcwd());
-$container->setParameter('dir.tslint_root', basename(__DIR__));
+$container->setParameter('dir.tslint_root', __DIR__);
 $container->registerExtension(new TypoScriptParserExtension());
 
 $loader    = new YamlFileLoader($container, new FileLocator(__DIR__));
