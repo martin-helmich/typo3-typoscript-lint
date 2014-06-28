@@ -60,7 +60,7 @@ class ConfigurationLocator
     public function loadConfiguration($configurationFile = NULL, LinterConfiguration $configuration = NULL)
     {
         $distConfig  = $this->loader->load('tslint.dist.yml');
-        $localConfig = $this->loader->load($configurationFile);
+        $localConfig = $configurationFile ? $this->loader->load($configurationFile) : [];
 
         $configuration = $configuration ?: new LinterConfiguration();
 
