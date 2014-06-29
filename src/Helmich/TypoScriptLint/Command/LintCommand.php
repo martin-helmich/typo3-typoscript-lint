@@ -9,11 +9,14 @@ use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator;
 use Helmich\TypoScriptLint\Util\Finder;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 /**
@@ -43,6 +46,10 @@ class LintCommand extends Command
 
     /** @var \Helmich\TypoScriptLint\Util\Finder */
     private $finder;
+
+
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+    private $eventDispatcher;
 
 
 
@@ -98,6 +105,13 @@ class LintCommand extends Command
 
 
 
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+
+
     /**
      * Configures this command.
      *
@@ -111,6 +125,7 @@ class LintCommand extends Command
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use.')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format.', 'text')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout).', '-')
+            ->addOption('exit-code', 'e', InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings.')
             ->addArgument('filename', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'File or directory names');
     }
 
@@ -127,9 +142,10 @@ class LintCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filenames = $input->getArgument('filename');
+        $filenames        = $input->getArgument('filename');
+        $outputTarget     = $input->getOption('output');
+        $exitWithExitCode = $input->getOption('exit-code');
 
-        $outputTarget = $input->getOption('output');
         if (FALSE == $outputTarget)
         {
             throw new BadOutputFileException('Bad output file.');
@@ -150,6 +166,18 @@ class LintCommand extends Command
         }
 
         $printer->writeReport($report);
+
+        if ($exitWithExitCode)
+        {
+            $exitCode = ($report->countWarnings() > 0) ? 2 : 0;
+            $this->eventDispatcher->addListener(
+                ConsoleEvents::TERMINATE,
+                function (ConsoleTerminateEvent $event) use ($exitCode)
+                {
+                    $event->setExitCode($exitCode);
+                }
+            );
+        }
     }
 
 

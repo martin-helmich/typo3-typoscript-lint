@@ -45,4 +45,21 @@ class Report
 
 
 
+    /**
+     * Returns the number of warnings for the entire report.
+     *
+     * @return int The number of warnings for the entire report.
+     */
+    public function countWarnings()
+    {
+        $count = 0;
+        foreach ($this->files as $file)
+        {
+            $count += count($file->getWarnings());
+        }
+        return $count;
+    }
+
+
+
 }

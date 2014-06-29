@@ -11,6 +11,7 @@ services:
       - [injectLinterConfigurationLocator, [@linter_configuration_locator]]
       - [injectReportPrinterLocator, [@printer_locator]]
       - [injectFinder, [@finder]]
+      - [injectEventDispatcher, [@dispatcher]]
   parse_command:
     class: Helmich\TypoScriptLint\Command\ParseCommand
     calls:
@@ -56,3 +57,5 @@ services:
     arguments: [@symfony_finder, @filesystem]
   symfony_finder:
     class: Symfony\Component\Finder\Finder
+  dispatcher:
+    synthetic: true

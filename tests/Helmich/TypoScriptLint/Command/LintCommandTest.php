@@ -68,7 +68,13 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
     public function testCommandThrowsExceptionWhenBadOutputFileIsGiven()
     {
         $in = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $in->expects($this->once())->method('getOption')->with('output')->willReturn(NULL);
+        $in->expects($this->any())->method('getOption')->willReturnMap(
+            [
+                ['output', NULL],
+                ['format', 'txt'],
+                ['config', 'config.yml']
+            ]
+        );
         $in->expects($this->once())->method('getArgument')->with('filename')->willReturn(['foo.ts']);
 
         $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
