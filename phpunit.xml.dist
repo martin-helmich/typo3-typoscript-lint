@@ -4,8 +4,7 @@
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
-        forceCoversAnnotation="true"
-        strict="true">
+        forceCoversAnnotation="true">
     <testsuites>
         <testsuite name="TYPO3 TypoScript parser">
             <directory phpVersion="5.4.0" phpVersionOperator=">=">tests</directory>
