@@ -11,7 +11,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @require php 5.6
+     * @requires PHP 5.6
      */
     public function testFilenameListIsGenerated()
     {
