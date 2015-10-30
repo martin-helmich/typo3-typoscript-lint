@@ -25,7 +25,7 @@ class LinterConfiguration implements ConfigurationInterface
         $sniffs = [];
         foreach ($this->configuration['sniffs'] as $class => $configuration)
         {
-            if ($configuration['disabled'])
+            if (isset($configuration['disabled']) && $configuration['disabled'])
             {
                 continue;
             }
