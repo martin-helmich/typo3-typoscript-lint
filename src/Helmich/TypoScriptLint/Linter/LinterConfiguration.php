@@ -25,6 +25,11 @@ class LinterConfiguration implements ConfigurationInterface
         $sniffs = [];
         foreach ($this->configuration['sniffs'] as $class => $configuration)
         {
+            if ($configuration['disabled'])
+            {
+                continue;
+            }
+
             $class = class_exists($class) ? $class : 'Helmich\\TypoScriptLint\\Linter\\Sniff\\' . $class . 'Sniff';
 
             $configuration['class'] = $class;
@@ -38,7 +43,7 @@ class LinterConfiguration implements ConfigurationInterface
     /**
      * Generates the configuration tree builder.
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
+     * @return TreeBuilder The tree builder
      * @codeCoverageIgnore FU, I'm not going to test this one!
      */
     public function getConfigTreeBuilder()
@@ -55,6 +60,7 @@ class LinterConfiguration implements ConfigurationInterface
             ->children()
             ->scalarNode('class')->end()
             ->variableNode('parameters')->end()
+            ->booleanNode('disabled')->defaultValue(FALSE)->end()
             ->end()
             ->end()
             ->end()
