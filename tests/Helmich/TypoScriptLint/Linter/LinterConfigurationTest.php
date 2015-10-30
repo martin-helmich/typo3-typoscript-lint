@@ -7,7 +7,7 @@ use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 
 /**
  * @package Helmich\TypoScriptLint\Linter
- * @covers  LinterConfiguration
+ * @covers  Helmich\TypoScriptLint\Linter\LinterConfiguration
  */
 class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
 {
