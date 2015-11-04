@@ -20,11 +20,11 @@ class ConfigurationLocator
 
 
 
-    /** @var \Symfony\Component\Config\Loader\LoaderInterface */
+    /** @var LoaderInterface */
     private $loader;
 
 
-    /** @var \Symfony\Component\Config\Definition\Processor */
+    /** @var Processor */
     private $processor;
 
 
@@ -32,8 +32,8 @@ class ConfigurationLocator
     /**
      * Constructs a new configuration locator.
      *
-     * @param \Symfony\Component\Config\Loader\LoaderInterface $loader    A configuration loader.
-     * @param \Symfony\Component\Config\Definition\Processor   $processor A configuration processor.
+     * @param LoaderInterface $loader    A configuration loader.
+     * @param Processor       $processor A configuration processor.
      */
     public function __construct(LoaderInterface $loader, Processor $processor)
     {
@@ -46,16 +46,12 @@ class ConfigurationLocator
     /**
      * Loads the linter configuration.
      *
-     * @param string                                             $configurationFile The configuration file to load from.
-     *                                                                              This file will be searched in the
-     *                                                                              current working directory and in
-     *                                                                              the tslint root directory. Contents
-     *                                                                              from the file will also be merged
-     *                                                                              with the tslint.dist.yml file in
-     *                                                                              the tslint root directory.
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration $configuration     The configuration on which to set
-     *                                                                              the loaded configuration values.
-     * @return \Helmich\TypoScriptLint\Linter\LinterConfiguration The linter configuration from the given configuration file.
+     * @param string              $configurationFile The configuration file to load from. This file will be searched in
+     *                                               the current working directory and in the tslint root directory.
+     *                                               Contents from the file will also be merged with the tslint.dist.yml
+     *                                               file in the tslint root directory.
+     * @param LinterConfiguration $configuration     The configuration on which to set the loaded configuration values.
+     * @return LinterConfiguration The linter configuration from the given configuration file.
      */
     public function loadConfiguration($configurationFile = NULL, LinterConfiguration $configuration = NULL)
     {

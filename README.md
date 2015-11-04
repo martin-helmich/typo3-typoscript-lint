@@ -144,7 +144,21 @@ If such a file is found, it will be merged with the `tslint.dist.yml` from the
 installation root directory. Have a look at [said file](tslint.dist.yml) for an
 idea of what you can configure (granted, not much yet).
 
+Since a local configuration file will be merged with the distributed
+configuration file, you *cannot* disable sniffs by simply removing them from the
+local configuration file (see this [bug report][issue-deadcode]
+for more information). To disable a sniff, use the `disabled` configuration
+property. For example, to disable the `DeadCode` sniff:
+
+```yaml
+sniffs:
+  - class: DeadCode
+    disabled: true
+```
+
 ### Future features
 
 - Sniffs for more code smells (ideas are welcome)
 - Full test coverage (no, I did not do TDD. Shame on me.)
+
+[issue-deadcode]: https://github.com/martin-helmich/typo3-typoscript-lint/issues/1
