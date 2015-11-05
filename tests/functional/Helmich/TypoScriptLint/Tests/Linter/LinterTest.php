@@ -77,7 +77,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
 
     public function getFunctionalTestFixtures()
     {
-        $files = glob(__DIR__ . '/Fixtures/*/*.ts');
+        $files = glob(__DIR__ . '/Fixtures/*/*.typoscript');
         foreach ($files as $file)
         {
             $output = dirname($file) . '/output.txt';
