@@ -1,0 +1,2 @@
+2;;Value of object "foo.bar" is overwritten in line 4.;warning;Helmich\TypoScriptLint\Linter\Sniff\DuplicateAssignmentSniff
+4;;Assignment to value "foo.bar", altough nested statement for path "foo" exists at line 1.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff

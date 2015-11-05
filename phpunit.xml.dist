@@ -3,11 +3,13 @@
         bootstrap="vendor/autoload.php"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        forceCoversAnnotation="true">
+        convertWarningsToExceptions="true">
     <testsuites>
-        <testsuite name="TYPO3 TypoScript parser">
-            <directory phpVersion="5.4.0" phpVersionOperator=">=">tests</directory>
+        <testsuite name="Unit tests">
+            <directory phpVersion="5.4.0" phpVersionOperator=">=">tests/unit</directory>
+        </testsuite>
+        <testsuite name="Functional tests">
+            <directory>tests/functional</directory>
         </testsuite>
     </testsuites>
     <filter>

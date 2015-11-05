@@ -1,0 +1,4 @@
+foo {
+    bar = Hello World
+    baz = Hello World
+}
