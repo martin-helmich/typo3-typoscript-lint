@@ -70,7 +70,20 @@ class LinterTest extends \PHPUnit_Framework_TestCase
         );
 
         $actualWarnings = $report->getFiles()[0]->getWarnings();
-        $this->assertEquals($expectedWarnings, $actualWarnings);
+        try
+        {
+            $this->assertEquals($expectedWarnings, $actualWarnings);
+        }
+        catch (\PHPUnit_Framework_AssertionFailedError $error)
+        {
+            foreach($actualWarnings as $warning)
+            {
+                echo $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
+                    $warning->getSeverity() . ";" . $warning->getSource() . "\n";
+            }
+
+            throw $error;
+        }
     }
 
 

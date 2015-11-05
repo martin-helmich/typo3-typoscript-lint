@@ -1,0 +1,1 @@
+5;;Multiple nested statements for object path "foo". Consider merging them into one statement.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff

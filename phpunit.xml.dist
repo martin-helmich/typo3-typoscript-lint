@@ -3,8 +3,7 @@
         bootstrap="vendor/autoload.php"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        forceCoversAnnotation="true">
+        convertWarningsToExceptions="true">
     <testsuites>
         <testsuite name="Unit tests">
             <directory phpVersion="5.4.0" phpVersionOperator=">=">tests/unit</directory>

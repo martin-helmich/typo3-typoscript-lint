@@ -1,0 +1,1 @@
+3;;Duplicated value "Hello World". Consider extracting it into a constant.;warning;Helmich\TypoScriptLint\Linter\Sniff\RepeatingRValueSniff
