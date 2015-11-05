@@ -1,0 +1,4 @@
+foo {
+    bar.baz = 5
+    #baz.foo = Hello World
+}
