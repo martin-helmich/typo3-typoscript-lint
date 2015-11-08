@@ -11,6 +11,7 @@ use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
 class DeadCodeSniff implements TokenStreamSniffInterface
 {
 
+
     const ANNOTATION_COMMENT = '/^\s*([a-z0-9]+=(.*?))(;\s*[a-z0-9]+=(.*?))*\s*$/';
 
 
