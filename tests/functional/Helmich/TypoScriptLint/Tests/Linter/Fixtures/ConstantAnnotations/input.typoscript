@@ -1,0 +1,32 @@
+## Define custom categories
+# customsubcategory=pdf=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.category.pdf
+
+plugin.tx_web2pdf {
+    view {
+        # cat=plugin.tx_web2pdf/file; type=string; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.file.templates
+        templateRootPath = EXT:web2pdf/Resources/Private/Templates/
+        # cat=plugin.tx_web2pdf/file; type=string; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.file.partials
+        partialRootPath = EXT:web2pdf/Resources/Private/Partials/
+        # cat=plugin.tx_web2pdf/file; type=string; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.file.layouts
+        layoutRootPath = EXT:web2pdf/Resources/Private/Layouts/
+    }
+
+    settings {
+        # cat=plugin.tx_web2pdf/pdf/1; type=options[A4,A3]; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.pageFormat
+        pdfPageFormat = A4
+        # cat=plugin.tx_web2pdf/pdf/2; type=options[LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.pageOrientation.portrait=P,LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.pageOrientation.landscape=L]; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.pageOrientation
+        pdfPageOrientation = P
+        # cat=plugin.tx_web2pdf/pdf/3; type=int+; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.leftMargin
+        pdfLeftMargin = 15
+        # cat=plugin.tx_web2pdf/pdf/4; type=int+; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.rightMargin
+        pdfRightMargin = 15
+        # cat=plugin.tx_web2pdf/pdf/5; type=int+; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.topMargin
+        pdfTopMargin = 15
+        # cat=plugin.tx_web2pdf/pdf/6; type=options[LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.styleSheet.print=print,LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.styleSheet.screen=screen]; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.styleSheet
+        pdfStyleSheet = allAndPrint
+        # cat=plugin.tx_web2pdf/pdf/8; type=boolean; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.useCustomFooter
+        useCustomFooter = 0
+        # cat=plugin.tx_web2pdf/pdf/8; type=boolean; label=LLL:EXT:web2pdf/Resources/Private/Language/locallang.xlf:constants.pdf.useCustomHeader
+        useCustomHeader = 0
+    }
+}
