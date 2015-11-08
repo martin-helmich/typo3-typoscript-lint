@@ -69,20 +69,24 @@ class LinterTest extends \PHPUnit_Framework_TestCase
             new NullOutput()
         );
 
-        $actualWarnings = $report->getFiles()[0]->getWarnings();
-        try
+        $this->assertCount(count($expectedWarnings) > 0 ? 1 : 0, $report->getFiles());
+        if (count($expectedWarnings) > 0)
         {
-            $this->assertEquals($expectedWarnings, $actualWarnings);
-        }
-        catch (\PHPUnit_Framework_AssertionFailedError $error)
-        {
-            foreach($actualWarnings as $warning)
+            $actualWarnings = $report->getFiles()[0]->getWarnings();
+            try
             {
-                echo $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
-                    $warning->getSeverity() . ";" . $warning->getSource() . "\n";
+                $this->assertEquals($expectedWarnings, $actualWarnings);
             }
+            catch (\PHPUnit_Framework_AssertionFailedError $error)
+            {
+                foreach($actualWarnings as $warning)
+                {
+                    echo $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
+                        $warning->getSeverity() . ";" . $warning->getSource() . "\n";
+                }
 
-            throw $error;
+                throw $error;
+            }
         }
     }
 
@@ -95,6 +99,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
         {
             $output = dirname($file) . '/output.txt';
             $outputLines = explode("\n", file_get_contents($output));
+            $outputLines = array_filter($outputLines, 'strlen');
 
             $reports = array_map(function($line) use ($file) {
                 $values = str_getcsv($line, ';');
