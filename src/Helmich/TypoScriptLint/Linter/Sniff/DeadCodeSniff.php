@@ -12,6 +12,8 @@ class DeadCodeSniff implements TokenStreamSniffInterface
 {
 
 
+    const ANNOTATION_COMMENT = '/^\s*([a-z0-9]+=(.*?))(;\s*[a-z0-9]+=(.*?))*\s*$/';
+
 
     /**
      * @param array $parameters
@@ -39,7 +41,11 @@ class DeadCodeSniff implements TokenStreamSniffInterface
 
             $commentContent = preg_replace(',^\s*(#|/\*|/)\s*,', '', $token->getValue());
 
-            if (preg_match(Tokenizer::TOKEN_OPERATOR_LINE, $commentContent, $matches))
+            if (preg_match(static::ANNOTATION_COMMENT, $commentContent))
+            {
+                continue;
+            }
+            else if (preg_match(Tokenizer::TOKEN_OPERATOR_LINE, $commentContent, $matches))
             {
                 $warning = new Warning(
                     $token->getLine(),
