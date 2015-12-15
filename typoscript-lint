@@ -12,25 +12,20 @@
 
 use Helmich\TypoScriptLint\Application;
 use Helmich\TypoScriptParser\TypoScriptParserExtension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-const APP_NAME = 'typoscript-lint';
+const APP_NAME    = 'typoscript-lint';
 const APP_VERSION = 'dev';
 
-if (file_exists(__DIR__ . '/vendor/autoload.php'))
-{
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
-}
-else if (file_exists(__DIR__ . '/../../autoload.php'))
-{
+} else if (file_exists(__DIR__ . '/../../autoload.php')) {
     /** @noinspection PhpIncludeInspection */
     require_once __DIR__ . '/../../autoload.php';
-}
-else
-{
+} else {
     die('Could not find an autoload.php. Did you set up all dependencies?');
 }
 
@@ -42,7 +37,7 @@ $container->setParameter('dir.tslint_root', __DIR__);
 $container->set('dispatcher', $dispatcher);
 $container->registerExtension(new TypoScriptParserExtension());
 
-$loader    = new YamlFileLoader($container, new FileLocator(__DIR__));
+$loader = new YamlFileLoader($container, new FileLocator(__DIR__));
 $loader->load('services.yml');
 
 $container->loadFromExtension('typoscript_parser');

@@ -1,24 +1,20 @@
 <?php
 namespace Helmich\TypoScriptLint\Command;
 
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
  * Class LintCommandTest
+ *
  * @package Helmich\TypoScriptLint\Command
  * @covers  \Helmich\TypoScriptLint\Command\LintCommand
  */
 class LintCommandTest extends \PHPUnit_Framework_TestCase
 {
 
-
-
     /** @var \Helmich\TypoScriptLint\Command\LintCommand */
     private $command;
-
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private
@@ -27,16 +23,18 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         $printerLocator,
         $finder;
 
-
-
     public function setUp()
     {
-        $this->linter                     = $this->getMockBuilder('\Helmich\TypoScriptLint\Linter\LinterInterface')->getMock();
+        $this->linter                     = $this->getMockBuilder(
+            '\Helmich\TypoScriptLint\Linter\LinterInterface'
+        )->getMock();
         $this->linterConfigurationLocator = $this
             ->getMockBuilder('\Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->printerLocator             = $this->getMockBuilder('\Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator')->getMock();
+        $this->printerLocator             = $this->getMockBuilder(
+            '\Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator'
+        )->getMock();
         $this->finder                     = $this->getMockBuilder('Helmich\\TypoScriptLint\\Util\\Finder')
             ->disableOriginalConstructor()
             ->getMock();
@@ -49,18 +47,14 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         $this->command->injectFinder($this->finder);
     }
 
-
-
     private function runCommand(InputInterface $in, OutputInterface $out)
     {
         $class = new \ReflectionClass($this->command);
 
         $method = $class->getMethod('execute');
-        $method->setAccessible(TRUE);
+        $method->setAccessible(true);
         $method->invoke($this->command, $in, $out);
     }
-
-
 
     /**
      * @expectedException \Helmich\TypoScriptLint\Exception\BadOutputFileException
@@ -70,7 +64,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         $in = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $in->expects($this->any())->method('getOption')->willReturnMap(
             [
-                ['output', NULL],
+                ['output', null],
                 ['format', 'txt'],
                 ['config', 'config.yml']
             ]
@@ -81,8 +75,6 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->runCommand($in, $out);
     }
-
-
 
     public function testCommandCallsLinterWithCorrectDependencies()
     {
@@ -96,16 +88,22 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $config  = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock();
+        $config  = $this->getMockBuilder(
+            'Helmich\TypoScriptLint\Linter\LinterConfiguration'
+        )->disableOriginalConstructor()->getMock();
         $printer = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\ReportPrinter\Printer')->getMock();
 
         $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
 
-        $this->linterConfigurationLocator->expects($this->once())->method('loadConfiguration')->with('config.yml')->willReturn($config);
-        $this->printerLocator->expects($this->once())->method('createPrinter')->with('txt', $this->identicalTo($out))->willReturn($printer);
+        $this->linterConfigurationLocator->expects($this->once())->method('loadConfiguration')->with(
+            'config.yml'
+        )->willReturn($config);
+        $this->printerLocator->expects($this->once())->method('createPrinter')->with(
+            'txt',
+            $this->identicalTo($out)
+        )->willReturn($printer);
         $this->finder->expects($this->once())->method('getFilenames')->willReturnArgument(0);
 
         $this->runCommand($in, $out);
     }
-
 }

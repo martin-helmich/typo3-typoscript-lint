@@ -1,7 +1,6 @@
 <?php
 namespace Helmich\TypoScriptLint\Command;
 
-
 use Helmich\TypoScriptLint\Exception\BadOutputFileException;
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterInterface;
@@ -18,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 /**
  * Command class that performs linting on a set of TypoScript files.
  *
@@ -30,28 +28,20 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class LintCommand extends Command
 {
 
-
-
     /** @var \Helmich\TypoScriptLint\Linter\LinterInterface */
     private $linter;
-
 
     /** @var \Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator */
     private $linterConfigurationLocator;
 
-
     /** @var \Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator */
     private $printerLocator;
-
 
     /** @var \Helmich\TypoScriptLint\Util\Finder */
     private $finder;
 
-
     /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
     private $eventDispatcher;
-
-
 
     /**
      * Injects a linter.
@@ -64,8 +54,6 @@ class LintCommand extends Command
         $this->linter = $linter;
     }
 
-
-
     /**
      * Injects a locator for the linter configuration.
      *
@@ -76,8 +64,6 @@ class LintCommand extends Command
     {
         $this->linterConfigurationLocator = $configurationLocator;
     }
-
-
 
     /**
      * Injects a locator for report printers.
@@ -90,8 +76,6 @@ class LintCommand extends Command
         $this->printerLocator = $printerLocator;
     }
 
-
-
     /**
      * Injects a finder for finding files.
      *
@@ -103,14 +87,10 @@ class LintCommand extends Command
         $this->finder = $finder;
     }
 
-
-
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
-
-
 
     /**
      * Configures this command.
@@ -125,11 +105,14 @@ class LintCommand extends Command
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use.')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format.', 'text')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout).', '-')
-            ->addOption('exit-code', 'e', InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings.')
+            ->addOption(
+                'exit-code',
+                'e',
+                InputOption::VALUE_NONE,
+                'Set this flag to exit with a non-zero exit code when there are warnings.'
+            )
             ->addArgument('filename', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'File or directory names');
     }
-
-
 
     /**
      * Executes this command.
@@ -146,8 +129,7 @@ class LintCommand extends Command
         $outputTarget     = $input->getOption('output');
         $exitWithExitCode = $input->getOption('exit-code');
 
-        if (FALSE == $outputTarget)
-        {
+        if (false == $outputTarget) {
             throw new BadOutputFileException('Bad output file.');
         }
 
@@ -159,26 +141,21 @@ class LintCommand extends Command
         $printer       = $this->printerLocator->createPrinter($input->getOption('format'), $reportOutput);
         $report        = new Report();
 
-        foreach ($this->finder->getFilenames($filenames) as $filename)
-        {
+        foreach ($this->finder->getFilenames($filenames) as $filename) {
             $output->writeln("Linting input file <comment>{$filename}</comment>.");
             $this->linter->lintFile($filename, $report, $configuration, $output);
         }
 
         $printer->writeReport($report);
 
-        if ($exitWithExitCode)
-        {
+        if ($exitWithExitCode) {
             $exitCode = ($report->countWarnings() > 0) ? 2 : 0;
             $this->eventDispatcher->addListener(
                 ConsoleEvents::TERMINATE,
-                function (ConsoleTerminateEvent $event) use ($exitCode)
-                {
+                function (ConsoleTerminateEvent $event) use ($exitCode) {
                     $event->setExitCode($exitCode);
                 }
             );
         }
     }
-
-
 }

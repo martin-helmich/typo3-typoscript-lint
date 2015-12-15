@@ -8,12 +8,8 @@ use Symfony\Component\DependencyInjection\Container;
 class Application extends SymfonyApplication
 {
 
-
-
     /** @var \Symfony\Component\DependencyInjection\Container */
     private $container;
-
-
 
     public function __construct(Container $container)
     {
@@ -21,24 +17,18 @@ class Application extends SymfonyApplication
         parent::__construct(APP_NAME, APP_VERSION);
     }
 
-
-
     protected function getCommandName(InputInterface $input)
     {
         return 'lint';
     }
 
-
-
     protected function getDefaultCommands()
     {
-        $defaultCommands = parent::getDefaultCommands();
+        $defaultCommands   = parent::getDefaultCommands();
         $defaultCommands[] = $this->container->get('lint_command');
 
         return $defaultCommands;
     }
-
-
 
     public function getDefinition()
     {
@@ -47,7 +37,4 @@ class Application extends SymfonyApplication
 
         return $inputDefinition;
     }
-
-
-
 }

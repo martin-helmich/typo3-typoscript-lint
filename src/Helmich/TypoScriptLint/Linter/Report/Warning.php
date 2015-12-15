@@ -4,7 +4,6 @@ namespace Helmich\TypoScriptLint\Linter\Report;
 use Helmich\TypoScriptParser\Parser\ParseError;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
 
-
 /**
  * A single checkstyle warning.
  *
@@ -16,33 +15,24 @@ use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
 class Warning
 {
 
-
-
     const SEVERITY_INFO = "info";
     const SEVERITY_WARNING = "warning";
     const SEVERITY_ERROR = "error";
 
-
     /** @var int */
     private $line;
-
 
     /** @var int */
     private $column;
 
-
     /** @var string */
     private $message;
-
 
     /** @var string */
     private $severity;
 
-
     /** @var string */
     private $source;
-
-
 
     /**
      * Creates a new warning from a parse error.
@@ -54,14 +44,12 @@ class Warning
     {
         return new self(
             $parseError->getSourceLine(),
-            NULL,
+            null,
             "Parse error: " . $parseError->getMessage(),
             self::SEVERITY_ERROR,
             get_class($parseError)
         );
     }
-
-
 
     /**
      * Creates a new warning from a tokenizer error.
@@ -73,14 +61,12 @@ class Warning
     {
         return new self(
             $tokenizerException->getSourceLine(),
-            NULL,
+            null,
             "Tokenization error: " . $tokenizerException->getMessage(),
             self::SEVERITY_ERROR,
             get_class($tokenizerException)
         );
     }
-
-
 
     /**
      * Constructs a new warning.
@@ -100,8 +86,6 @@ class Warning
         $this->source   = $source;
     }
 
-
-
     /**
      * Gets the original source line.
      *
@@ -111,8 +95,6 @@ class Warning
     {
         return $this->line;
     }
-
-
 
     /**
      * Gets the original source column, if applicable (else NULL).
@@ -124,8 +106,6 @@ class Warning
         return $this->column;
     }
 
-
-
     /**
      * Gets the warning message.
      *
@@ -135,8 +115,6 @@ class Warning
     {
         return $this->message;
     }
-
-
 
     /**
      * Gets the warning severity.
@@ -148,8 +126,6 @@ class Warning
         return $this->severity;
     }
 
-
-
     /**
      * Gets the warning source identifier.
      *
@@ -159,7 +135,4 @@ class Warning
     {
         return $this->source;
     }
-
-
-
 }

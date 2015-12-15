@@ -1,11 +1,9 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Configuration;
 
-
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Loader\LoaderInterface;
-
 
 /**
  * Helper class that loads linting configuration data.
@@ -18,16 +16,11 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class ConfigurationLocator
 {
 
-
-
     /** @var LoaderInterface */
     private $loader;
 
-
     /** @var Processor */
     private $processor;
-
-
 
     /**
      * Constructs a new configuration locator.
@@ -41,8 +34,6 @@ class ConfigurationLocator
         $this->processor = $processor;
     }
 
-
-
     /**
      * Loads the linter configuration.
      *
@@ -53,7 +44,7 @@ class ConfigurationLocator
      * @param LinterConfiguration $configuration     The configuration on which to set the loaded configuration values.
      * @return LinterConfiguration The linter configuration from the given configuration file.
      */
-    public function loadConfiguration($configurationFile = NULL, LinterConfiguration $configuration = NULL)
+    public function loadConfiguration($configurationFile = null, LinterConfiguration $configuration = null)
     {
         $distConfig  = $this->loader->load('tslint.dist.yml');
         $localConfig = $configurationFile ? $this->loader->load($configurationFile) : [];
@@ -68,5 +59,4 @@ class ConfigurationLocator
         $configuration->setConfiguration($processedConfiguration);
         return $configuration;
     }
-
 }

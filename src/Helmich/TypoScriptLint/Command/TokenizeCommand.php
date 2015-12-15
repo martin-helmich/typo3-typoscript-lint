@@ -1,14 +1,12 @@
 <?php
 namespace Helmich\TypoScriptLint\Command;
 
-
-use Helmich\TypoScriptParser\Tokenizer\TokenizerInterface,
-    Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface;
-use Symfony\Component\Console\Command\Command,
-    Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface;
-
+use Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface;
+use Helmich\TypoScriptParser\Tokenizer\TokenizerInterface;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Helper command that generates a token stream from a TypoScript input file.
@@ -24,16 +22,11 @@ use Symfony\Component\Console\Command\Command,
 class TokenizeCommand extends Command
 {
 
-
-
     /** @var \Helmich\TypoScriptParser\Tokenizer\TokenizerInterface */
     private $tokenizer;
 
-
     /** @var \Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface */
     private $tokenPrinter;
-
-
 
     /**
      * Injects a tokenizer.
@@ -47,8 +40,6 @@ class TokenizeCommand extends Command
         $this->tokenizer = $tokenizer;
     }
 
-
-
     /**
      * Injects a token printer.
      *
@@ -60,8 +51,6 @@ class TokenizeCommand extends Command
     {
         $this->tokenPrinter = $tokenPrinter;
     }
-
-
 
     /**
      * Configures this command.
@@ -75,8 +64,6 @@ class TokenizeCommand extends Command
             ->setDescription('Produce a token stream from a TypoScript input file.')
             ->addArgument('filename', InputArgument::REQUIRED, 'Input filename');
     }
-
-
 
     /**
      * Executes this command.
@@ -95,7 +82,4 @@ class TokenizeCommand extends Command
 
         $output->write($this->tokenPrinter->printTokenStream($tokens));
     }
-
-
-
 }

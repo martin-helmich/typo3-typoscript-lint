@@ -1,7 +1,6 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Report;
 
-
 /**
  * Checkstyle report containing warnings for a single TypoScript file.
  *
@@ -13,16 +12,11 @@ namespace Helmich\TypoScriptLint\Linter\Report;
 class File
 {
 
-
-
     /** @var string */
     private $filename;
 
-
     /** @var \Helmich\TypoScriptLint\Linter\Report\Warning[] */
     private $warnings = [];
-
-
 
     /**
      * Constructs a new file report.
@@ -34,8 +28,6 @@ class File
         $this->filename = $filename;
     }
 
-
-
     /**
      * Gets the filename.
      *
@@ -45,8 +37,6 @@ class File
     {
         return $this->filename;
     }
-
-
 
     /**
      * Adds a new warning for this file.
@@ -59,8 +49,6 @@ class File
         $this->warnings[] = $warning;
     }
 
-
-
     /**
      * Gets all warnings for this file. The warnings will be sorted by line
      * numbers, not by order of addition to this report.
@@ -71,11 +59,10 @@ class File
     {
         usort(
             $this->warnings,
-            function (Warning $a, Warning $b) { return $a->getLine() - $b->getLine(); }
+            function (Warning $a, Warning $b) {
+                return $a->getLine() - $b->getLine();
+            }
         );
         return $this->warnings;
     }
-
-
-
 }

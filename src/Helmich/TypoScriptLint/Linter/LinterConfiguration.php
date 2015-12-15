@@ -7,26 +7,18 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class LinterConfiguration implements ConfigurationInterface
 {
 
-
-
     private $configuration;
-
-
 
     public function setConfiguration(array $configuration)
     {
         $this->configuration = $configuration;
     }
 
-
-
     public function getSniffConfigurations()
     {
         $sniffs = [];
-        foreach ($this->configuration['sniffs'] as $class => $configuration)
-        {
-            if (isset($configuration['disabled']) && $configuration['disabled'])
-            {
+        foreach ($this->configuration['sniffs'] as $class => $configuration) {
+            if (isset($configuration['disabled']) && $configuration['disabled']) {
                 continue;
             }
 
@@ -37,8 +29,6 @@ class LinterConfiguration implements ConfigurationInterface
         }
         return $sniffs;
     }
-
-
 
     /**
      * Generates the configuration tree builder.
@@ -60,7 +50,7 @@ class LinterConfiguration implements ConfigurationInterface
             ->children()
             ->scalarNode('class')->end()
             ->variableNode('parameters')->end()
-            ->booleanNode('disabled')->defaultValue(FALSE)->end()
+            ->booleanNode('disabled')->defaultValue(false)->end()
             ->end()
             ->end()
             ->end()

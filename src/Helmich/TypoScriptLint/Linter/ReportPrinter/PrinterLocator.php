@@ -1,9 +1,7 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
-
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 /**
  * Locates a report printer based on user input.
@@ -13,8 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PrinterLocator
 {
-
-
 
     /**
      * Finds a suitable printer for printing lint results.
@@ -26,8 +22,7 @@ class PrinterLocator
      */
     public function createPrinter($outputFormat, OutputInterface $output)
     {
-        switch ($outputFormat)
-        {
+        switch ($outputFormat) {
             case 'checkstyle':
             case 'xml':
                 return new CheckstyleReportPrinter($output);
@@ -38,5 +33,4 @@ class PrinterLocator
                 throw new \InvalidArgumentException('Invalid report printer "' . $outputFormat . '"!');
         }
     }
-
 }

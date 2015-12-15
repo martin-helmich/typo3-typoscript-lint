@@ -1,7 +1,6 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
-
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\NestedAssignment;
 use Helmich\TypoScriptParser\Parser\AST\ObjectPath;
@@ -18,19 +17,13 @@ use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
 class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
 {
 
-
-
     /** @var DuplicateAssignmentVisitor */
     private $visitor;
-
-
 
     public function setUp()
     {
         $this->visitor = new NestingConsistencyVisitor();
     }
-
-
 
     public function testWarningIsGeneratedForDuplicateNestingStatements()
     {
@@ -58,8 +51,6 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-
     public function testWarningIsGeneratedForMultipleAssignmentsWithCommonPrefix()
     {
         $statements = [
@@ -81,8 +72,6 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
             $warnings[1]->getMessage()
         );
     }
-
-
 
     public function testWarningIsGeneratedForAssignmentWhenNestedAssignmentWithCommonPrefixExists()
     {
@@ -106,8 +95,6 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-
     public function testConditionalStatementsDoNotRaiseWarnings()
     {
         $statements = [
@@ -127,12 +114,10 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $warnings);
     }
 
-
     private function applyVisitorOnStatements(array $statements)
     {
         $traverser = new Traverser($statements);
         $traverser->addVisitor($this->visitor);
         $traverser->walk();
     }
-
 }

@@ -1,7 +1,6 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter;
 
-
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
@@ -15,20 +14,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Linter implements LinterInterface
 {
 
-
-
     /** @var \Helmich\TypoScriptParser\Tokenizer\TokenizerInterface */
     private $tokenizer;
-
 
     /** @var \Helmich\TypoScriptParser\Parser\ParserInterface */
     private $parser;
 
-
     /** @var \Helmich\TypoScriptLint\Linter\Sniff\SniffLocator */
     private $sniffLocator;
-
-
 
     public function __construct(TokenizerInterface $tokenizer, ParserInterface $parser, SniffLocator $sniffLocator)
     {
@@ -37,42 +30,32 @@ class Linter implements LinterInterface
         $this->sniffLocator = $sniffLocator;
     }
 
-
-
     /**
-     * @param string                                            $filename
-     * @param \Helmich\TypoScriptLint\Linter\Report\Report            $report
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration      $configuration
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param string                                             $filename
+     * @param \Helmich\TypoScriptLint\Linter\Report\Report       $report
+     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration $configuration
+     * @param \Symfony\Component\Console\Output\OutputInterface  $output
      */
     public function lintFile($filename, Report $report, LinterConfiguration $configuration, OutputInterface $output)
     {
         $file = new File($filename);
 
-        try
-        {
+        try {
             $tokens     = $this->tokenizer->tokenizeStream($filename);
             $statements = $this->parser->parseTokens($tokens);
 
             $this->lintTokenStream($tokens, $file, $configuration, $output);
             $this->lintSyntaxTree($statements, $file, $configuration, $output);
-        }
-        catch (TokenizerException $tokenizerException)
-        {
+        } catch (TokenizerException $tokenizerException) {
             $file->addWarning(Warning::createFromTokenizerError($tokenizerException));
-        }
-        catch (ParseError $parseError)
-        {
+        } catch (ParseError $parseError) {
             $file->addWarning(Warning::createFromParseError($parseError));
         }
 
-        if (count($file->getWarnings()) > 0)
-        {
+        if (count($file->getWarnings()) > 0) {
             $report->addFile($file);
         }
     }
-
-
 
     /**
      * @param \Helmich\TypoScriptParser\Tokenizer\TokenInterface[] $tokens
@@ -80,18 +63,19 @@ class Linter implements LinterInterface
      * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration   $configuration
      * @param \Symfony\Component\Console\Output\OutputInterface    $output
      */
-    private function lintTokenStream(array $tokens, File $file, LinterConfiguration $configuration, OutputInterface $output)
-    {
+    private function lintTokenStream(
+        array $tokens,
+        File $file,
+        LinterConfiguration $configuration,
+        OutputInterface $output
+    ) {
         $sniffs = $this->sniffLocator->getTokenStreamSniffs($configuration);
 
-        foreach ($sniffs as $sniff)
-        {
+        foreach ($sniffs as $sniff) {
             $output->writeln('=> <info>Executing sniff <comment>' . get_class($sniff) . '</comment>.</info>');
             $sniff->sniff($tokens, $file, $configuration);
         }
     }
-
-
 
     /**
      * @param \Helmich\TypoScriptParser\Parser\AST\Statement[]   $statements
@@ -99,12 +83,15 @@ class Linter implements LinterInterface
      * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration $configuration
      * @param \Symfony\Component\Console\Output\OutputInterface  $output
      */
-    private function lintSyntaxTree(array $statements, File $file, LinterConfiguration $configuration, OutputInterface $output)
-    {
+    private function lintSyntaxTree(
+        array $statements,
+        File $file,
+        LinterConfiguration $configuration,
+        OutputInterface $output
+    ) {
         $sniffs = $this->sniffLocator->getSyntaxTreeSniffs($configuration);
 
-        foreach ($sniffs as $sniff)
-        {
+        foreach ($sniffs as $sniff) {
             $output->writeln('=> <info>Executing sniff <comment>' . get_class($sniff) . '</comment>.</info>');
             $sniff->sniff($statements, $file, $configuration);
         }

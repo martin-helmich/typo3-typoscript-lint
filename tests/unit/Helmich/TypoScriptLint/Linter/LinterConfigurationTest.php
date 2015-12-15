@@ -1,9 +1,7 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter;
 
-
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
-
 
 /**
  * @package Helmich\TypoScriptLint\Linter
@@ -11,8 +9,6 @@ use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
  */
 class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
 {
-
-
 
     public function testGetSniffConfigurationsReturnsFQCNs()
     {
@@ -35,14 +31,12 @@ class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $sniffConfigs[0]['foo']);
     }
 
-
-
     public function testDisabledSniffsAreSkipped()
     {
         $configArray = [
             'sniffs' => [
                 'DeadCode' => [
-                    'disabled' => TRUE,
+                    'disabled' => true,
                     'foo' => 'bar',
                 ],
             ],
@@ -56,6 +50,4 @@ class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $sniffConfigs);
         $this->assertCount(0, $sniffConfigs);
     }
-
-
 }

@@ -1,9 +1,9 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Sniff;
+
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptParser\Tokenizer\Token;
-
 
 /**
  * @covers Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff
@@ -13,19 +13,13 @@ use Helmich\TypoScriptParser\Tokenizer\Token;
 class DeadCodeSniffTest extends \PHPUnit_Framework_TestCase
 {
 
-
-
     /** @var  DeadCodeSniff */
     private $sniff;
-
-
 
     public function setUp()
     {
         $this->sniff = new DeadCodeSniff([]);
     }
-
-
 
     public function testWarningIsGeneratedForCommentsThatLookLikeCode()
     {
@@ -46,5 +40,4 @@ class DeadCodeSniffTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Found commented code (foo = test2).', $warnings[0]->getMessage());
         $this->assertEquals(2, $warnings[0]->getLine());
     }
-
 }

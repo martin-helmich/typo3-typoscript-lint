@@ -1,7 +1,6 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
-
 use Helmich\TypoScriptLint\Linter\Report\Warning;
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\NestedAssignment;
@@ -9,16 +8,11 @@ use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
 use Helmich\TypoScriptParser\Parser\Traverser\Visitor;
 
-
 class NestingConsistencyVisitor implements Visitor
 {
 
-
-
     /** @var \Helmich\TypoScriptLint\Linter\Report\Warning[] */
     private $warnings = [];
-
-
 
     /**
      * @return \Helmich\TypoScriptLint\Linter\Report\Warning[]
@@ -28,41 +22,28 @@ class NestingConsistencyVisitor implements Visitor
         return $this->warnings;
     }
 
-
-
     public function enterTree(array $statements)
     {
         $this->walkStatementList($statements);
     }
 
-
-
     public function enterNode(Statement $statement)
     {
-        if ($statement instanceof NestedAssignment)
-        {
+        if ($statement instanceof NestedAssignment) {
             $this->walkStatementList($statement->statements);
-        }
-        else if ($statement instanceof ConditionalStatement)
-        {
+        } else if ($statement instanceof ConditionalStatement) {
             $this->walkStatementList($statement->ifStatements);
             $this->walkStatementList($statement->elseStatements);
         }
     }
 
-
-
     public function exitNode(Statement $statement)
     {
     }
 
-
-
     public function exitTree(array $statements)
     {
     }
-
-
 
     /**
      * @param \Helmich\TypoScriptParser\Parser\AST\Statement[] $statements
@@ -73,18 +54,16 @@ class NestingConsistencyVisitor implements Visitor
 
         // Step 2: Discover all plain assignments and determine whether any of them
         // can be moved within one of the nested assignments.
-        foreach ($statements as $statement)
-        {
-            if ($statement instanceof Assignment || $statement instanceof NestedAssignment)
-            {
+        foreach ($statements as $statement) {
+            if ($statement instanceof Assignment || $statement instanceof NestedAssignment) {
                 $commonPrefixWarnings = [];
-                foreach($this->getParentObjectPathsForObjectPath($statement->object->relativeName) as $possibleObjectPath)
-                {
-                    if (isset($knownNestedObjectPaths[$possibleObjectPath]))
-                    {
+                foreach ($this->getParentObjectPathsForObjectPath(
+                    $statement->object->relativeName
+                ) as $possibleObjectPath) {
+                    if (isset($knownNestedObjectPaths[$possibleObjectPath])) {
                         $this->warnings[] = new Warning(
                             $statement->sourceLine,
-                            NULL,
+                            null,
                             sprintf(
                                 'Assignment to value "%s", altough nested statement for path "%s" exists at line %d.',
                                 $statement->object->relativeName,
@@ -96,13 +75,15 @@ class NestingConsistencyVisitor implements Visitor
                         );
                     }
 
-                    foreach ($knownObjectPaths as $key => $line)
-                    {
-                        if ($key !== $statement->object->relativeName && strpos($key, $possibleObjectPath . '.') === 0)
-                        {
+                    foreach ($knownObjectPaths as $key => $line) {
+                        if ($key !== $statement->object->relativeName && strpos(
+                                $key,
+                                $possibleObjectPath . '.'
+                            ) === 0
+                        ) {
                             $commonPrefixWarnings[$key] = new Warning(
                                 $statement->sourceLine,
-                                NULL,
+                                null,
                                 sprintf(
                                     'Common path prefix with assignment to "%s" in line %d. Consider merging them into a nested assignment.',
                                     $key,
@@ -119,8 +100,6 @@ class NestingConsistencyVisitor implements Visitor
         }
     }
 
-
-
     /**
      * @param string $objectPath
      * @return array
@@ -129,15 +108,12 @@ class NestingConsistencyVisitor implements Visitor
     {
         $components = explode('.', $objectPath);
         $paths      = [];
-        for ($i = 1; $i < count($components); $i++)
-        {
+        for ($i = 1; $i < count($components); $i++) {
             $possibleObjectPath = implode('.', array_slice($components, 0, $i));
             $paths[]            = $possibleObjectPath;
         }
         return $paths;
     }
-
-
 
     /**
      * @param array $statements
@@ -145,22 +121,18 @@ class NestingConsistencyVisitor implements Visitor
      */
     private function getAssignedObjectPathsFromStatementList(array $statements)
     {
-        $knownObjectPaths       = [];
+        $knownObjectPaths = [];
         $knownNestedObjectPaths = [];
 
         // Step 1: Discover all nested object assignment statements.
-        foreach ($statements as $statement)
-        {
-            if ($statement instanceof Assignment || $statement instanceof NestedAssignment)
-            {
+        foreach ($statements as $statement) {
+            if ($statement instanceof Assignment || $statement instanceof NestedAssignment) {
                 $knownObjectPaths[$statement->object->relativeName] = $statement->sourceLine;
-                if ($statement instanceof NestedAssignment)
-                {
-                    if (isset($knownNestedObjectPaths[$statement->object->relativeName]))
-                    {
+                if ($statement instanceof NestedAssignment) {
+                    if (isset($knownNestedObjectPaths[$statement->object->relativeName])) {
                         $this->warnings[] = new Warning(
                             $statement->sourceLine,
-                            NULL,
+                            null,
                             sprintf(
                                 'Multiple nested statements for object path "%s". Consider merging them into one statement.',
                                 $statement->object->relativeName
@@ -168,9 +140,7 @@ class NestingConsistencyVisitor implements Visitor
                             Warning::SEVERITY_WARNING,
                             'Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff'
                         );
-                    }
-                    else
-                    {
+                    } else {
                         $knownNestedObjectPaths[$statement->object->relativeName] = $statement->sourceLine;
                     }
                 }

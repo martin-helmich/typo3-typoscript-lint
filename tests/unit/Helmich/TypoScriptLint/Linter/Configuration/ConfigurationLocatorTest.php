@@ -1,7 +1,6 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Configuration;
 
-
 /**
  * Class ConfigurationLocatorTest
  *
@@ -11,16 +10,11 @@ namespace Helmich\TypoScriptLint\Linter\Configuration;
 class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
 {
 
-
-
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $loader, $processor;
 
-
     /** @var \Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator */
     private $locator;
-
-
 
     public function setUp()
     {
@@ -34,16 +28,15 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-
     public function testConfigurationIsLoadedAndProcessed()
     {
         $distConfig   = ['foo' => 'bar'];
         $localConfig  = ['bar' => 'baz'];
         $mergedConfig = ['foo' => 'bar', 'bar' => 'baz'];
 
-        $configuration = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock(
-        );
+        $configuration = $this->getMockBuilder(
+            'Helmich\TypoScriptLint\Linter\LinterConfiguration'
+        )->disableOriginalConstructor()->getMock();
         $configuration->expects($this->once())->method('setConfiguration')->with($mergedConfig);
 
         $this->loader->expects($this->at(0))->method('load')->with('tslint.dist.yml')->willReturn($distConfig);
@@ -52,7 +45,10 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         $this->processor
             ->expects($this->once())
             ->method('processConfiguration')
-            ->with($this->isInstanceOf('Helmich\TypoScriptLint\Linter\LinterConfiguration'), [$distConfig, $localConfig])
+            ->with(
+                $this->isInstanceOf('Helmich\TypoScriptLint\Linter\LinterConfiguration'),
+                [$distConfig, $localConfig]
+            )
             ->willReturn($mergedConfig);
 
         /** @noinspection PhpParamsInspection */
@@ -60,15 +56,14 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($loadedConfiguration, $configuration);
     }
 
-
-
     public function testConfigurationIsLoadedAndProcessedWithDefaultConfigFile()
     {
         $distConfig   = ['foo' => 'bar'];
         $mergedConfig = $distConfig;
 
-        $configuration = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock(
-        );
+        $configuration = $this->getMockBuilder(
+            'Helmich\TypoScriptLint\Linter\LinterConfiguration'
+        )->disableOriginalConstructor()->getMock();
         $configuration->expects($this->once())->method('setConfiguration')->with($mergedConfig);
 
         $this->loader->expects($this->once())->method('load')->with('tslint.dist.yml')->willReturn($distConfig);
@@ -80,8 +75,7 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
             ->willReturn($mergedConfig);
 
         /** @noinspection PhpParamsInspection */
-        $loadedConfiguration = $this->locator->loadConfiguration(NULL, $configuration);
+        $loadedConfiguration = $this->locator->loadConfiguration(null, $configuration);
         $this->assertSame($loadedConfiguration, $configuration);
     }
-
 }

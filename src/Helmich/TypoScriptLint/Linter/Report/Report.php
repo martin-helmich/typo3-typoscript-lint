@@ -1,7 +1,6 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Report;
 
-
 /**
  * Checkstyle report for an entire set of files.
  *
@@ -13,12 +12,8 @@ namespace Helmich\TypoScriptLint\Linter\Report;
 class Report
 {
 
-
-
     /** @var \Helmich\TypoScriptLint\Linter\Report\File[] */
     private $files = [];
-
-
 
     /**
      * Adds a sub-report for a specific file.
@@ -31,8 +26,6 @@ class Report
         $this->files[] = $file;
     }
 
-
-
     /**
      * Returns all file reports.
      *
@@ -43,8 +36,6 @@ class Report
         return $this->files;
     }
 
-
-
     /**
      * Returns the number of warnings for the entire report.
      *
@@ -53,13 +44,9 @@ class Report
     public function countWarnings()
     {
         $count = 0;
-        foreach ($this->files as $file)
-        {
+        foreach ($this->files as $file) {
             $count += count($file->getWarnings());
         }
         return $count;
     }
-
-
-
 }

@@ -1,30 +1,29 @@
 <?php
 namespace Helmich\TypoScriptLint\Util;
 
-
 /**
  * @covers Helmich\TypoScriptLint\Util\Finder
  */
 class FinderTest extends \PHPUnit_Framework_TestCase
 {
 
-
-
     /**
      * @requires PHP 5.6
      */
     public function testFilenameListIsGenerated()
     {
-        $sfFinder   = $this->getMockBuilder('\Symfony\Component\Finder\Finder')->disableOriginalConstructor()->getMock();
-        $filesystem = $this->getMockBuilder('\Helmich\TypoScriptLint\Util\Filesystem')->disableOriginalConstructor()->getMock();
+        $sfFinder   = $this->getMockBuilder('\Symfony\Component\Finder\Finder')->disableOriginalConstructor()->getMock(
+        );
+        $filesystem = $this->getMockBuilder('\Helmich\TypoScriptLint\Util\Filesystem')->disableOriginalConstructor(
+        )->getMock();
 
         $fib = $this->getMockBuilder('SplFileInfo')->disableOriginalConstructor();
         $fi1 = $fib->getMock();
-        $fi1->expects($this->any())->method('isFile')->willReturn(FALSE);
+        $fi1->expects($this->any())->method('isFile')->willReturn(false);
         $fi2 = $fib->getMock();
-        $fi2->expects($this->any())->method('isFile')->willReturn(TRUE);
+        $fi2->expects($this->any())->method('isFile')->willReturn(true);
         $fi3 = $fib->getMock();
-        $fi3->expects($this->any())->method('isFile')->willReturn(TRUE);
+        $fi3->expects($this->any())->method('isFile')->willReturn(true);
 
         $fi4 = $fib->getMock();
         $fi4->expects($this->any())->method('getPathname')->willReturn('directory/file3');
@@ -45,5 +44,4 @@ class FinderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['directory/file3', 'directory/file4', 'file1', 'file2'], $filenames);
     }
-
 }

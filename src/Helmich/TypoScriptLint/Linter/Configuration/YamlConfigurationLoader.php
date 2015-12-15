@@ -1,12 +1,10 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Configuration;
 
-
 use Helmich\TypoScriptLint\Util\Filesystem;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Yaml\Parser as YamlParser;
-
 
 /**
  * Configuration loader for YAML files.
@@ -19,16 +17,11 @@ use Symfony\Component\Yaml\Parser as YamlParser;
 class YamlConfigurationLoader extends FileLoader
 {
 
-
-
     /** @var \Symfony\Component\Yaml\Parser */
     private $yamlParser;
 
-
     /** @var \Helmich\TypoScriptLint\Util\Filesystem */
     private $filesystem;
-
-
 
     /**
      * Constructs a new YAML-based configuration loader.
@@ -45,8 +38,6 @@ class YamlConfigurationLoader extends FileLoader
         $this->filesystem = $filesystem;
     }
 
-
-
     /**
      * Loads a resource.
      *
@@ -54,7 +45,7 @@ class YamlConfigurationLoader extends FileLoader
      * @param string $type     The resource type
      * @return array
      */
-    public function load($resource, $type = NULL)
+    public function load($resource, $type = null)
     {
         $path         = $this->locator->locate($resource);
         $file         = $this->filesystem->openFile($path);
@@ -62,8 +53,6 @@ class YamlConfigurationLoader extends FileLoader
 
         return $configValues;
     }
-
-
 
     /**
      * Returns true if this class supports the given resource.
@@ -73,7 +62,7 @@ class YamlConfigurationLoader extends FileLoader
      *
      * @return bool    true if this class supports the given resource, false otherwise
      */
-    public function supports($resource, $type = NULL)
+    public function supports($resource, $type = null)
     {
         return is_string($resource) && 'yml' === pathinfo(
             $resource,

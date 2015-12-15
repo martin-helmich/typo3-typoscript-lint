@@ -3,7 +3,6 @@ namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
 use Symfony\Component\Console\Output\NullOutput;
 
-
 /**
  * @covers Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator
  * @uses   Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter
@@ -12,19 +11,13 @@ use Symfony\Component\Console\Output\NullOutput;
 class PrinterLocatorTest extends \PHPUnit_Framework_TestCase
 {
 
-
-
     /** @var PrinterLocator */
     private $locator;
-
-
 
     public function setUp()
     {
         $this->locator = new PrinterLocator();
     }
-
-
 
     public function testCheckstylePrinterIsCreated()
     {
@@ -34,8 +27,6 @@ class PrinterLocatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-
     public function testConsolePrinterIsCreated()
     {
         $this->assertInstanceOf(
@@ -44,8 +35,6 @@ class PrinterLocatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -53,5 +42,4 @@ class PrinterLocatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->locator->createPrinter('pdf', new NullOutput());
     }
-
 }

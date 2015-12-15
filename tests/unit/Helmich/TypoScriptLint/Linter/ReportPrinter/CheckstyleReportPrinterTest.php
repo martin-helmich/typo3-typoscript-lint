@@ -1,11 +1,9 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
-
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
-
 
 /**
  * @covers Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter
@@ -15,8 +13,6 @@ use Helmich\TypoScriptLint\Linter\Report\Warning;
  */
 class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
 {
-
-
 
     const EXPECTED_XML_DOCUMENT = '<?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="typoscript-lint-1.0.0">
@@ -30,15 +26,11 @@ class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
 </checkstyle>
 ';
 
-
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $output;
 
-
     /** @var CheckstyleReportPrinter */
     private $printer;
-
-
 
     public function setUp()
     {
@@ -49,8 +41,6 @@ class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
         define('APP_VERSION', '1.0.0');
     }
 
-
-
     /**
      * @medium
      */
@@ -58,7 +48,7 @@ class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
     {
         $file1 = new File('foobar.tys');
         $file1->addWarning(new Warning(123, 12, 'Message #1', Warning::SEVERITY_INFO, 'foobar'));
-        $file1->addWarning(new Warning(124, NULL, 'Message #2', Warning::SEVERITY_WARNING, 'foobar'));
+        $file1->addWarning(new Warning(124, null, 'Message #2', Warning::SEVERITY_WARNING, 'foobar'));
 
         $file2 = new File('bar.txt');
         $file2->addWarning(new Warning(412, 141, 'Message #3', Warning::SEVERITY_ERROR, 'barbaz'));
@@ -71,5 +61,4 @@ class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
 
         $this->printer->writeReport($report);
     }
-
 }

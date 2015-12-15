@@ -1,9 +1,7 @@
 <?php
 namespace Helmich\TypoScriptLint\Util;
 
-
 use Symfony\Component\Finder\Finder as SymfonyFinder;
-
 
 /**
  * Helper class that selects files to analyze from a list of file and directory names.
@@ -16,16 +14,11 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 class Finder
 {
 
-
-
     /** @var \Symfony\Component\Finder\Finder */
     private $finder;
 
-
     /** @var \Helmich\TypoScriptLint\Util\Filesystem */
     private $filesystem;
-
-
 
     /**
      * Constructs a new finder instance.
@@ -39,8 +32,6 @@ class Finder
         $this->filesystem = $filesystem;
     }
 
-
-
     /**
      * Generates a list of file names from a list of file and directory names.
      *
@@ -51,20 +42,15 @@ class Finder
     {
         $filenames = [];
 
-        foreach ($fileOrDirectoryNames as $fileOrDirectoryName)
-        {
+        foreach ($fileOrDirectoryNames as $fileOrDirectoryName) {
             $fileInfo = $this->filesystem->openFile($fileOrDirectoryName);
-            if ($fileInfo->isFile())
-            {
+            if ($fileInfo->isFile()) {
                 $filenames[] = $fileOrDirectoryName;
-            }
-            else
-            {
+            } else {
                 $this->finder->files()->in($fileOrDirectoryName);
 
                 /** @var \Symfony\Component\Finder\SplFileInfo $subFileInfo */
-                foreach ($this->finder as $subFileInfo)
-                {
+                foreach ($this->finder as $subFileInfo) {
                     $filenames[] = $subFileInfo->getPathname();
                 }
             }
@@ -72,5 +58,4 @@ class Finder
 
         return $filenames;
     }
-
 }

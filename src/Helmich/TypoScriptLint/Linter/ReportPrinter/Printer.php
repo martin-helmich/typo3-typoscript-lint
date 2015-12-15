@@ -1,9 +1,7 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
-
 use Helmich\TypoScriptLint\Linter\Report\Report;
-
 
 /**
  * Interface definition for code linting report printers.
@@ -14,8 +12,6 @@ use Helmich\TypoScriptLint\Linter\Report\Report;
 interface Printer
 {
 
-
-
     /**
      * Writes a report.
      *
@@ -23,6 +19,4 @@ interface Printer
      * @return void
      */
     public function writeReport(Report $report);
-
-
 }
