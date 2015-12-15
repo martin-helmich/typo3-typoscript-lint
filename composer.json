@@ -27,7 +27,8 @@
         "helmich/typo3-typoscript-parser": "~1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~5.1"
+        "phpunit/phpunit": "~5.1",
+        "codeclimate/php-test-reporter": "dev-master"
     },
     "bin": [
         "typoscript-lint"

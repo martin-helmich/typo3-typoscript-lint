@@ -10,3 +10,6 @@ install:
 
 script:
   - bin/phpunit
+
+after_success:
+  - bin/test-reporter
