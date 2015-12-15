@@ -9,7 +9,7 @@ install:
   - composer install --prefer-dist
 
 script:
-  - bin/phpunit
+  - bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
   - bin/test-reporter
