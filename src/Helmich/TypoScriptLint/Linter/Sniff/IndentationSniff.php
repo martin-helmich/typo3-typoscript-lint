@@ -15,6 +15,13 @@ class IndentationSniff implements TokenStreamSniffInterface
     private $indentPerLevel = 4;
 
     /**
+     * Defines whether code inside conditions should be indented by one level.
+     *
+     * @var bool
+     */
+    private $indentConditions = false;
+
+    /**
      * @param array $parameters
      */
     public function __construct(array $parameters)
@@ -24,6 +31,9 @@ class IndentationSniff implements TokenStreamSniffInterface
         }
         if (array_key_exists('indentPerLevel', $parameters)) {
             $this->indentPerLevel = $parameters['indentPerLevel'];
+        }
+        if (array_key_exists('indentConditions', $parameters)) {
+            $this->indentConditions = $parameters['indentConditions'];
         }
     }
 
@@ -41,11 +51,10 @@ class IndentationSniff implements TokenStreamSniffInterface
 
         /** @var \Helmich\TypoScriptParser\Tokenizer\TokenInterface[] $tokensInLine */
         foreach ($tokensByLine->getLines() as $line => $tokensInLine) {
+            if ($this->reduceIndentationLevel($tokensInLine)) {
+                $indentationLevel--;
+            }
             foreach ($tokensInLine as $key => $token) {
-                if ($token->getType() === TokenInterface::TYPE_BRACE_CLOSE) {
-                    $indentationLevel--;
-                }
-
                 if ($token->getType() === TokenInterface::TYPE_RIGHTVALUE_MULTILINE) {
                     unset($tokensInLine[$key]);
                     $tokensInLine = array_values($tokensInLine);
@@ -83,12 +92,66 @@ class IndentationSniff implements TokenStreamSniffInterface
                 }
             }
 
-            foreach ($tokensInLine as $token) {
-                if ($token->getType() === TokenInterface::TYPE_BRACE_OPEN) {
-                    $indentationLevel++;
-                }
+            if ($this->raiseIndentationLevel($tokensInLine)) {
+                $indentationLevel++;
             }
         }
+    }
+
+    /**
+     * Check whether indentation should be reduced by one level, for current line.
+     *
+     * Checks tokens in current line, and whether they will reduce the indentation by one.
+     *
+     * @param array $tokensInLine
+     *
+     * @return bool
+     */
+    private function reduceIndentationLevel(array $tokensInLine)
+    {
+        $raisingIndentation = [
+            TokenInterface::TYPE_BRACE_CLOSE,
+        ];
+
+        if ($this->indentConditions) {
+            $raisingIndentation[] = TokenInterface::TYPE_CONDITION_END;
+        }
+
+        foreach ($tokensInLine as $token) {
+            if (in_array($token->getType(), $raisingIndentation)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check whether indentation should be raised by one level, for current line.
+     *
+     * Checks tokens in current line, and whether they will raise the indentation by one.
+     *
+     * @param array $tokensInLine
+     *
+     * @return bool
+     */
+    private function raiseIndentationLevel(array $tokensInLine)
+    {
+        $raisingIndentation = [
+            TokenInterface::TYPE_BRACE_OPEN,
+        ];
+
+        if ($this->indentConditions) {
+            $raisingIndentation[] = TokenInterface::TYPE_CONDITION;
+        }
+
+        foreach ($tokensInLine as $token) {
+            if (in_array($token->getType(), $raisingIndentation)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function createWarning($line, $expectedLevel, $actual)
