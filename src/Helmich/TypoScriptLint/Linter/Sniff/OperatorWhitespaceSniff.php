@@ -4,11 +4,14 @@ namespace Helmich\TypoScriptLint\Linter\Sniff;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Sniff\Inspection\TokenInspections;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
 class OperatorWhitespaceSniff implements TokenStreamSniffInterface
 {
+    use TokenInspections;
+
     /**
      * @param array $parameters
      */
@@ -31,7 +34,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
             $count = count($tokensInLine);
             for ($i = 0; $i < $count; $i++) {
                 if ($tokensInLine[$i]->getType() === TokenInterface::TYPE_OBJECT_IDENTIFIER && isset($tokensInLine[$i + 1])) {
-                    if ($tokensInLine[$i + 1]->getType() !== TokenInterface::TYPE_WHITESPACE) {
+                    if (!self::isWhitespace($tokensInLine[$i + 1])) {
                         $file->addWarning(new Warning(
                             $tokensInLine[$i]->getLine(),
                             null,
@@ -39,7 +42,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                             Warning::SEVERITY_WARNING,
                             __CLASS__
                         ));
-                    } elseif (trim($tokensInLine[$i + 1]->getValue(), "\n") !== ' ') {
+                    } elseif (!self::isWhitespaceOfLength($tokensInLine[$i + 1], 1)) {
                         $file->addWarning(new Warning(
                             $tokensInLine[$i]->getLine(),
                             null,
@@ -50,10 +53,10 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                     }
 
                     // Scan forward until we find the actual operator
-                    for ($j = 0; $j < $count && $tokensInLine[$j]->getType() !== TokenInterface::TYPE_OPERATOR_ASSIGNMENT; $j ++);
+                    for ($j = 0; $j < $count && !self::isOperator($tokensInLine[$j]); $j ++);
 
                     if (isset($tokensInLine[$j + 1])) {
-                        if ($tokensInLine[$j + 1]->getType() !== TokenInterface::TYPE_WHITESPACE) {
+                        if (!self::isWhitespace($tokensInLine[$j + 1])) {
                             $file->addWarning(new Warning(
                                 $tokensInLine[$j]->getLine(),
                                 null,
@@ -61,7 +64,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                                 Warning::SEVERITY_WARNING,
                                 __CLASS__
                             ));
-                        } elseif (trim($tokensInLine[$j + 1]->getValue(), "\n") !== ' ') {
+                        } elseif (!self::isWhitespaceOfLength($tokensInLine[$j + 1], 1)) {
                             $file->addWarning(new Warning(
                                 $tokensInLine[$j]->getLine(),
                                 null,
