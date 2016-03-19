@@ -15,7 +15,9 @@ use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
 use Helmich\TypoScriptParser\Parser\Parser;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
 use Prophecy\Argument;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Yaml\Yaml;
 
 class LinterTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,27 +29,12 @@ class LinterTest extends \PHPUnit_Framework_TestCase
     {
         $tokenizer = new Tokenizer();
         $parser    = new Parser($tokenizer);
-
-        $sniffLocator = $this->prophesize(SniffLocator::class);
-        $sniffLocator->getTokenStreamSniffs(Argument::any())->willReturn(
-            [
-                new DeadCodeSniff([]),
-                new IndentationSniff([]),
-                new OperatorWhitespaceSniff([]),
-                new RepeatingRValueSniff([])
-            ]
-        );
-        $sniffLocator->getSyntaxTreeSniffs(Argument::any())->willReturn(
-            [
-                new DuplicateAssignmentSniff([]),
-                new NestingConsistencySniff([])
-            ]
-        );
+        $locator   = new SniffLocator();
 
         $this->linter = new Linter(
             $tokenizer,
             $parser,
-            $sniffLocator->reveal()
+            $locator
         );
     }
 
@@ -56,8 +43,21 @@ class LinterTest extends \PHPUnit_Framework_TestCase
      */
     public function testLinterCreatesExpectedOutput($typoscriptFile, array $expectedWarnings)
     {
+        $localConfigFilename = dirname($typoscriptFile) . '/tslint.yml';
+        $localConfigData = [];
+        if (file_exists($localConfigFilename)) {
+            $localConfigData = Yaml::parse($localConfigFilename);
+        }
+
+        $globalConfigData = Yaml::parse(file_get_contents(__DIR__ . '/Fixtures/tslint.dist.yml'));
+
         $report = new Report();
         $config = new LinterConfiguration();
+
+        $processor = new Processor();
+        $processed = $processor->processConfiguration($config, [$globalConfigData, $localConfigData]);
+
+        $config->setConfiguration($processed);
 
         $this->linter->lintFile(
             $typoscriptFile,
