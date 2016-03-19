@@ -1,0 +1,7 @@
+[globalString = GP:foo = 1]
+    foo.bar = 3
+[global]
+
+[globalString = GP:foo = 1]
+   foo.bar = 3
+[global]

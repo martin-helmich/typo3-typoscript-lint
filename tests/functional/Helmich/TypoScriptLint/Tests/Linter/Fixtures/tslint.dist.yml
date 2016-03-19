@@ -1,0 +1,11 @@
+sniffs:
+  - class: Indentation
+    parameters:
+      useSpaces: true
+      indentPerLevel: 4
+      indentConditions: false
+  - class: DeadCode
+  - class: OperatorWhitespace
+  - class: RepeatingRValue
+  - class: DuplicateAssignment
+  - class: NestingConsistency
