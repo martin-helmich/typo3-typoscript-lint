@@ -3,3 +3,4 @@ sniffs:
     parameters:
       useSpaces: false
       indentPerLevel: 1
+      indentConditions: false
