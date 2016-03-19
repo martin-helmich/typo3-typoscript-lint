@@ -5,6 +5,7 @@ use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
+use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
 class IndentationSniff implements TokenStreamSniffInterface
@@ -38,10 +39,10 @@ class IndentationSniff implements TokenStreamSniffInterface
     }
 
     /**
-     * @param \Helmich\TypoScriptParser\Tokenizer\TokenInterface[] $tokens
-     * @param \Helmich\TypoScriptLint\Linter\Report\File           $file
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration   $configuration
-     * @return mixed
+     * @param TokenInterface[]    $tokens
+     * @param File                $file
+     * @param LinterConfiguration $configuration
+     * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration)
     {
@@ -49,53 +50,56 @@ class IndentationSniff implements TokenStreamSniffInterface
         $tokensByLine     = new LineGrouper($tokens);
         $indentationLevel = 0;
 
-        /** @var \Helmich\TypoScriptParser\Tokenizer\TokenInterface[] $tokensInLine */
+        /** @var TokenInterface[] $tokensInLine */
         foreach ($tokensByLine->getLines() as $line => $tokensInLine) {
-            if ($this->reduceIndentationLevel($tokensInLine)) {
-                $indentationLevel--;
-            }
+            $indentationLevel = $this->reduceIndentationLevel($indentationLevel, $tokensInLine);
+
+            $expectedIndentationCharacterCount = $this->indentPerLevel * $indentationLevel;
+            $expectedIndentation               = str_repeat(
+                $indentCharacter,
+                $expectedIndentationCharacterCount
+            );
+
             foreach ($tokensInLine as $key => $token) {
                 if ($token->getType() === TokenInterface::TYPE_RIGHTVALUE_MULTILINE) {
                     unset($tokensInLine[$key]);
                     $tokensInLine = array_values($tokensInLine);
                 }
             }
-            $firstToken = count($tokensInLine) > 0 ? $tokensInLine[0] : null;
 
             // Skip empty lines.
-            if (count($tokensInLine) == 1 && $firstToken->getType(
-                ) === TokenInterface::TYPE_WHITESPACE && $firstToken->getValue() === "\n"
-            ) {
+            if ($this->isEmptyLine($tokensInLine)) {
                 continue;
             }
 
-            if ($indentationLevel === 0) {
-                if ($tokensInLine[0]->getType() === TokenInterface::TYPE_WHITESPACE && strlen(
-                        $tokensInLine[0]->getValue()
-                    )
-                ) {
-                    $file->addWarning($this->createWarning($line, $indentationLevel, $tokensInLine[0]->getValue()));
-                }
-            } else {
+            if ($indentationLevel === 0 && $tokensInLine[0]->getType() === TokenInterface::TYPE_WHITESPACE && strlen($tokensInLine[0]->getValue())) {
+                $file->addWarning($this->createWarning($line, $indentationLevel, $tokensInLine[0]->getValue()));
+            } elseif ($indentationLevel > 0) {
                 if ($tokensInLine[0]->getType() !== TokenInterface::TYPE_WHITESPACE) {
                     $file->addWarning($this->createWarning($line, $indentationLevel, ''));
-                } else {
-                    $expectedIndentationCharacterCount = $this->indentPerLevel * $indentationLevel;
-                    $expectedIndentation               = str_repeat(
-                        $indentCharacter,
-                        $expectedIndentationCharacterCount
-                    );
-
-                    if ($tokensInLine[0]->getValue() !== $expectedIndentation) {
-                        $file->addWarning($this->createWarning($line, $indentationLevel, $tokensInLine[0]->getValue()));
-                    }
+                } elseif ($tokensInLine[0]->getValue() !== $expectedIndentation) {
+                    $file->addWarning($this->createWarning($line, $indentationLevel, $tokensInLine[0]->getValue()));
                 }
             }
 
-            if ($this->raiseIndentationLevel($tokensInLine)) {
-                $indentationLevel++;
-            }
+            $indentationLevel = $this->raiseIndentationLevel($indentationLevel, $tokensInLine);
         }
+    }
+
+    /**
+     * Checks if a stream of tokens is an empty line.
+     *
+     * @param TokenInterface[] $tokensInLine
+     * @return bool
+     */
+    private function isEmptyLine(array $tokensInLine)
+    {
+        if (count($tokensInLine) > 1) {
+            return false;
+        }
+
+        $firstToken = $tokensInLine[0];
+        return $firstToken->getType() === TokenInterface::TYPE_WHITESPACE && $firstToken->getValue() === "\n";
     }
 
     /**
@@ -103,11 +107,11 @@ class IndentationSniff implements TokenStreamSniffInterface
      *
      * Checks tokens in current line, and whether they will reduce the indentation by one.
      *
-     * @param array $tokensInLine
-     *
-     * @return bool
+     * @param int $indentationLevel The current indentation level
+     * @param TokenInterface[] $tokensInLine
+     * @return int The new indentation level
      */
-    private function reduceIndentationLevel(array $tokensInLine)
+    private function reduceIndentationLevel($indentationLevel, array $tokensInLine)
     {
         $raisingIndentation = [
             TokenInterface::TYPE_BRACE_CLOSE,
@@ -119,11 +123,11 @@ class IndentationSniff implements TokenStreamSniffInterface
 
         foreach ($tokensInLine as $token) {
             if (in_array($token->getType(), $raisingIndentation)) {
-                return true;
+                return $indentationLevel - 1;
             }
         }
 
-        return false;
+        return $indentationLevel;
     }
 
     /**
@@ -131,11 +135,11 @@ class IndentationSniff implements TokenStreamSniffInterface
      *
      * Checks tokens in current line, and whether they will raise the indentation by one.
      *
-     * @param array $tokensInLine
-     *
-     * @return bool
+     * @param int $indentationLevel The current indentation level
+     * @param TokenInterface[] $tokensInLine
+     * @return int The new indentation level
      */
-    private function raiseIndentationLevel(array $tokensInLine)
+    private function raiseIndentationLevel($indentationLevel, array $tokensInLine)
     {
         $raisingIndentation = [
             TokenInterface::TYPE_BRACE_OPEN,
@@ -147,11 +151,11 @@ class IndentationSniff implements TokenStreamSniffInterface
 
         foreach ($tokensInLine as $token) {
             if (in_array($token->getType(), $raisingIndentation)) {
-                return true;
+                return $indentationLevel + 1;
             }
         }
 
-        return false;
+        return $indentationLevel;
     }
 
     private function createWarning($line, $expectedLevel, $actual)
