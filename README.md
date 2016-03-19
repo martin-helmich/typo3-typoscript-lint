@@ -47,6 +47,11 @@ configuration file, you can define whether you prefer
     # ^----------- This will raise a warning!
     }
 
+By default, the indentation sniff expects code inside TypoScript conditions to
+be **not** indented. You can change this behaviour by setting the
+`indentConditions` flag for the indentation sniff to `true` in your `tslint.yml`
+configuration file (see below).
+
 #### Dead code
 
 Code that was commented out just clutters your source code and obstructs
