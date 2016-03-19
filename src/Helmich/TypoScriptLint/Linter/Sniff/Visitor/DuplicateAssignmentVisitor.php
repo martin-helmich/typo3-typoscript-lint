@@ -5,9 +5,8 @@ use Helmich\TypoScriptLint\Linter\Report\Warning;
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
-use Helmich\TypoScriptParser\Parser\Traverser\Visitor;
 
-class DuplicateAssignmentVisitor implements Visitor
+class DuplicateAssignmentVisitor implements SniffVisitor
 {
 
     /** @var \Helmich\TypoScriptParser\Parser\AST\Operator\Assignment[] */

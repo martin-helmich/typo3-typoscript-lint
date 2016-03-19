@@ -6,9 +6,8 @@ use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\NestedAssignment;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
-use Helmich\TypoScriptParser\Parser\Traverser\Visitor;
 
-class NestingConsistencyVisitor implements Visitor
+class NestingConsistencyVisitor implements SniffVisitor
 {
 
     /** @var \Helmich\TypoScriptLint\Linter\Report\Warning[] */
