@@ -4,12 +4,14 @@ namespace Helmich\TypoScriptLint\Linter\Sniff;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Sniff\Inspection\TokenInspections;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
 class IndentationSniff implements TokenStreamSniffInterface
 {
+    use TokenInspections;
 
     private $useSpaces = true;
 
@@ -72,10 +74,10 @@ class IndentationSniff implements TokenStreamSniffInterface
                 continue;
             }
 
-            if ($indentationLevel === 0 && $tokensInLine[0]->getType() === TokenInterface::TYPE_WHITESPACE && strlen($tokensInLine[0]->getValue())) {
+            if ($indentationLevel === 0 && self::isWhitespace($tokensInLine[0]) && strlen($tokensInLine[0]->getValue())) {
                 $file->addWarning($this->createWarning($line, $indentationLevel, $tokensInLine[0]->getValue()));
             } elseif ($indentationLevel > 0) {
-                if ($tokensInLine[0]->getType() !== TokenInterface::TYPE_WHITESPACE) {
+                if (!self::isWhitespace($tokensInLine[0])) {
                     $file->addWarning($this->createWarning($line, $indentationLevel, ''));
                 } elseif ($tokensInLine[0]->getValue() !== $expectedIndentation) {
                     $file->addWarning($this->createWarning($line, $indentationLevel, $tokensInLine[0]->getValue()));
