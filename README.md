@@ -165,5 +165,6 @@ sniffs:
 
 - Sniffs for more code smells (ideas are welcome)
 - Full test coverage (no, I did not do TDD. Shame on me.)
+- Automated fixing of found errors
 
 [issue-deadcode]: https://github.com/martin-helmich/typo3-typoscript-lint/issues/1
