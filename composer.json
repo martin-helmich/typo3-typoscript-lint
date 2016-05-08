@@ -22,7 +22,7 @@
         "symfony/dependency-injection": "~2.7|~3.0",
         "symfony/config": "~2.7|~3.0",
         "symfony/yaml": "~2.7|~3.0",
-        "symfony/finder": "~2.7.0",
+        "symfony/finder": "~2.7|~3.0",
         "symfony/event-dispatcher": "~2.7",
         "helmich/typo3-typoscript-parser": "~1.0"
     },
