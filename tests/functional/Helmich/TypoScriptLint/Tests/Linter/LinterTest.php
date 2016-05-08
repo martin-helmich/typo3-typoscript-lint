@@ -46,7 +46,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
         $localConfigFilename = dirname($typoscriptFile) . '/tslint.yml';
         $localConfigData = [];
         if (file_exists($localConfigFilename)) {
-            $localConfigData = Yaml::parse($localConfigFilename);
+            $localConfigData = Yaml::parse(file_get_contents($localConfigFilename));
         }
 
         $globalConfigData = Yaml::parse(file_get_contents(__DIR__ . '/Fixtures/tslint.dist.yml'));
