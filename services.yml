@@ -2,28 +2,28 @@ services:
   tokenize_command:
     class: Helmich\TypoScriptLint\Command\TokenizeCommand
     calls:
-      - [injectTokenizer, [@tokenizer]]
-      - [injectTokenPrinter, [@token_printer_structured]]
+      - [injectTokenizer, ['@tokenizer']]
+      - [injectTokenPrinter, ['@token_printer_structured']]
   lint_command:
     class: Helmich\TypoScriptLint\Command\LintCommand
     calls:
-      - [injectLinter, [@linter]]
-      - [injectLinterConfigurationLocator, [@linter_configuration_locator]]
-      - [injectReportPrinterLocator, [@printer_locator]]
-      - [injectFinder, [@finder]]
-      - [injectEventDispatcher, [@dispatcher]]
+      - [injectLinter, ['@linter']]
+      - [injectLinterConfigurationLocator, ['@linter_configuration_locator']]
+      - [injectReportPrinterLocator, ['@printer_locator']]
+      - [injectFinder, ['@finder']]
+      - [injectEventDispatcher, ['@dispatcher']]
   parse_command:
     class: Helmich\TypoScriptLint\Command\ParseCommand
     calls:
-      - [injectParser, [@parser]]
+      - [injectParser, ['@parser']]
   linter:
     class: Helmich\TypoScriptLint\Linter\Linter
-    arguments: [@tokenizer, @parser, @sniff_locator]
+    arguments: ['@tokenizer', '@parser', '@sniff_locator']
   linter_configuration:
     class: Helmich\TypoScriptLint\Linter\LinterConfiguration
   linter_configuration_locator:
     class: Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
-    arguments: [@config_loader, @config_processor]
+    arguments: ['@config_loader', '@config_processor']
   printer_locator:
     class: Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator
   sniff_locator:
@@ -36,14 +36,14 @@ services:
       - ['%dir.cwd%', '%dir.tslint_root%']
   config_yaml_loader:
     class: Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
-    arguments: [@config_locator, @yaml_parser, @filesystem]
+    arguments: ['@config_locator', '@yaml_parser', '@filesystem']
   config_loader_resolver:
     class: Symfony\Component\Config\Loader\LoaderResolver
     arguments:
-      - [@config_yaml_loader]
+      - ['@config_yaml_loader']
   config_loader:
     class: Symfony\Component\Config\Loader\DelegatingLoader
-    arguments: [@config_loader_resolver]
+    arguments: ['@config_loader_resolver']
   config_processor:
     class: Symfony\Component\Config\Definition\Processor
   yaml_parser:
@@ -54,7 +54,7 @@ services:
     class: Helmich\TypoScriptLint\Util\Filesystem
   finder:
     class: Helmich\TypoScriptLint\Util\Finder
-    arguments: [@symfony_finder, @filesystem]
+    arguments: ['@symfony_finder', '@filesystem']
   symfony_finder:
     class: Symfony\Component\Finder\Finder
   dispatcher:
