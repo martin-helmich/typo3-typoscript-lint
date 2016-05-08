@@ -28,7 +28,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8.0",
-        "codeclimate/php-test-reporter": "dev-master"
+        "codeclimate/php-test-reporter": "dev-master",
+        "symfony/phpunit-bridge": "^3.0"
     },
     "bin": [
         "typoscript-lint"
