@@ -23,7 +23,7 @@ class OperatorWhitespaceSniffTest extends \PHPUnit_Framework_TestCase
         yield [
             [
                 new Token(TokenInterface::TYPE_OBJECT_IDENTIFIER, "foo", 1),
-                new Token(TokenInterface::TYPE_OPERATOR_DELETE, "<", 1),
+                new Token(TokenInterface::TYPE_OPERATOR_COPY, "<", 1),
                 new Token(TokenInterface::TYPE_WHITESPACE, " ", 1),
                 new Token(TokenInterface::TYPE_RIGHTVALUE, "bar", 1)
             ],

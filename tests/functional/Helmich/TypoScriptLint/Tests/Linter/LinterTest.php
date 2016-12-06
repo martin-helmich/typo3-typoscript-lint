@@ -66,19 +66,24 @@ class LinterTest extends \PHPUnit_Framework_TestCase
             new NullOutput()
         );
 
+        $printActualWarnings = function() use ($report) {
+            $actualWarnings = $report->getFiles()[0]->getWarnings();
+            $content = "";
+            foreach ($actualWarnings as $warning) {
+                $content .= $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
+                    $warning->getSeverity() . ";" . $warning->getSource() . "\n";
+            }
+            return $content;
+        };
+
+        if (count($expectedWarnings) === 0 && count($report->getFiles()) > 0) {
+            $this->fail($printActualWarnings());
+        }
+
         $this->assertCount(count($expectedWarnings) > 0 ? 1 : 0, $report->getFiles());
         if (count($expectedWarnings) > 0) {
             $actualWarnings = $report->getFiles()[0]->getWarnings();
-            try {
-                $this->assertEquals($expectedWarnings, $actualWarnings);
-            } catch (\PHPUnit_Framework_AssertionFailedError $error) {
-                foreach ($actualWarnings as $warning) {
-                    echo $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
-                        $warning->getSeverity() . ";" . $warning->getSource() . "\n";
-                }
-
-                throw $error;
-            }
+            $this->assertEquals($expectedWarnings, $actualWarnings, $printActualWarnings());
         }
     }
 
