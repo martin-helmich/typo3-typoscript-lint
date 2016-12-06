@@ -1,0 +1,1 @@
+3;;Whitespace after unary operator.;warning;Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff
