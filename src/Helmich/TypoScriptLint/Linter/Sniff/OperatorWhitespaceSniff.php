@@ -33,48 +33,52 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
         foreach ($tokensByLine->getLines() as $line => $tokensInLine) {
             $count = count($tokensInLine);
             for ($i = 0; $i < $count; $i++) {
-                if ($tokensInLine[$i]->getType() === TokenInterface::TYPE_OBJECT_IDENTIFIER && isset($tokensInLine[$i + 1])) {
-                    if (!self::isWhitespace($tokensInLine[$i + 1])) {
+                if (!($tokensInLine[$i]->getType() === TokenInterface::TYPE_OBJECT_IDENTIFIER && isset($tokensInLine[$i + 1]))) {
+                    continue;
+                }
+
+                if (!self::isWhitespace($tokensInLine[$i + 1])) {
+                    $file->addWarning(new Warning(
+                        $tokensInLine[$i]->getLine(),
+                        null,
+                        'No whitespace after object accessor.',
+                        Warning::SEVERITY_WARNING,
+                        __CLASS__
+                    ));
+                } elseif (!self::isWhitespaceOfLength($tokensInLine[$i + 1], 1)) {
+                    $file->addWarning(new Warning(
+                        $tokensInLine[$i]->getLine(),
+                        null,
+                        'Accessor should be followed by single space.',
+                        Warning::SEVERITY_WARNING,
+                        __CLASS__
+                    ));
+                }
+
+                // Scan forward until we find the actual operator
+                for ($j = 0; $j < $count && !self::isOperator($tokensInLine[$j]); $j ++);
+
+                if (isset($tokensInLine[$j + 1])) {
+                    if (!self::isWhitespace($tokensInLine[$j + 1])) {
                         $file->addWarning(new Warning(
-                            $tokensInLine[$i]->getLine(),
+                            $tokensInLine[$j]->getLine(),
                             null,
-                            'No whitespace after object accessor.',
+                            'No whitespace after operator.',
                             Warning::SEVERITY_WARNING,
                             __CLASS__
                         ));
-                    } elseif (!self::isWhitespaceOfLength($tokensInLine[$i + 1], 1)) {
+                    } elseif (!self::isWhitespaceOfLength($tokensInLine[$j + 1], 1)) {
                         $file->addWarning(new Warning(
-                            $tokensInLine[$i]->getLine(),
+                            $tokensInLine[$j]->getLine(),
                             null,
-                            'Accessor should be followed by single space.',
+                            'Operator should be followed by single space.',
                             Warning::SEVERITY_WARNING,
                             __CLASS__
                         ));
-                    }
-
-                    // Scan forward until we find the actual operator
-                    for ($j = 0; $j < $count && !self::isOperator($tokensInLine[$j]); $j ++);
-
-                    if (isset($tokensInLine[$j + 1])) {
-                        if (!self::isWhitespace($tokensInLine[$j + 1])) {
-                            $file->addWarning(new Warning(
-                                $tokensInLine[$j]->getLine(),
-                                null,
-                                'No whitespace after operator.',
-                                Warning::SEVERITY_WARNING,
-                                __CLASS__
-                            ));
-                        } elseif (!self::isWhitespaceOfLength($tokensInLine[$j + 1], 1)) {
-                            $file->addWarning(new Warning(
-                                $tokensInLine[$j]->getLine(),
-                                null,
-                                'Operator should be followed by single space.',
-                                Warning::SEVERITY_WARNING,
-                                __CLASS__
-                            ));
-                        }
                     }
                 }
+
+                break;
             }
         }
     }
