@@ -77,6 +77,8 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                         ));
                     }
                 }
+
+                break;
             }
         }
     }
