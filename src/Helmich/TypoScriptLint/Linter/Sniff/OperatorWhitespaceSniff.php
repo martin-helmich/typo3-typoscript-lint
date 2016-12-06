@@ -58,25 +58,23 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                 // Scan forward until we find the actual operator
                 for ($j = 0; $j < $count && !self::isOperator($tokensInLine[$j]); $j ++);
 
-                if (isset($tokensInLine[$j + 1])) {
-                    if (self::isBinaryOperator($tokensInLine[$j])) {
-                        if (!self::isWhitespace($tokensInLine[$j + 1])) {
-                            $file->addWarning(new Warning(
-                                $tokensInLine[$j]->getLine(),
-                                null,
-                                'No whitespace after operator.',
-                                Warning::SEVERITY_WARNING,
-                                __CLASS__
-                            ));
-                        } elseif (!self::isWhitespaceOfLength($tokensInLine[$j + 1], 1)) {
-                            $file->addWarning(new Warning(
-                                $tokensInLine[$j]->getLine(),
-                                null,
-                                'Operator should be followed by single space.',
-                                Warning::SEVERITY_WARNING,
-                                __CLASS__
-                            ));
-                        }
+                if (isset($tokensInLine[$j + 1]) && self::isBinaryOperator($tokensInLine[$j])) {
+                    if (!self::isWhitespace($tokensInLine[$j + 1])) {
+                        $file->addWarning(new Warning(
+                            $tokensInLine[$j]->getLine(),
+                            null,
+                            'No whitespace after operator.',
+                            Warning::SEVERITY_WARNING,
+                            __CLASS__
+                        ));
+                    } elseif (!self::isWhitespaceOfLength($tokensInLine[$j + 1], 1)) {
+                        $file->addWarning(new Warning(
+                            $tokensInLine[$j]->getLine(),
+                            null,
+                            'Operator should be followed by single space.',
+                            Warning::SEVERITY_WARNING,
+                            __CLASS__
+                        ));
                     }
                 }
 
