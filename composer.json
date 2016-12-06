@@ -41,5 +41,14 @@
         "psr-0": {
             "Helmich\\TypoScriptLint": "src/"
         }
+    },
+    "autoload-dev": {
+        "files": [
+            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+        ],
+        "psr-4": {
+            "Helmich\\TypoScriptLint\\Tests\\Functional\\": "tests/functional",
+            "Helmich\\TypoScriptLint\\Tests\\Unit\\": "tests/unit"
+        }
     }
 }
