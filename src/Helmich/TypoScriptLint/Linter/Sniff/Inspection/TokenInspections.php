@@ -19,10 +19,31 @@ trait TokenInspections
      */
     private static function isOperator(TokenInterface $token)
     {
+        return static::isUnaryOperator($token) || static::isBinaryOperator($token);
+    }
+
+    /**
+     * Tests whether a token is a unary operator
+     *
+     * @param TokenInterface $token
+     * @return bool
+     */
+    private static function isUnaryOperator(TokenInterface $token)
+    {
+        return $token->getType() === TokenInterface::TYPE_OPERATOR_DELETE;
+    }
+
+    /**
+     * Tests whether a token is a binary operator
+     *
+     * @param TokenInterface $token
+     * @return bool
+     */
+    private static function isBinaryOperator(TokenInterface $token)
+    {
         return in_array($token->getType(), [
             TokenInterface::TYPE_OPERATOR_ASSIGNMENT,
             TokenInterface::TYPE_OPERATOR_COPY,
-            TokenInterface::TYPE_OPERATOR_DELETE,
             TokenInterface::TYPE_OPERATOR_MODIFY,
             TokenInterface::TYPE_OPERATOR_REFERENCE,
         ]);
