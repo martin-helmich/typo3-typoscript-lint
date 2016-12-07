@@ -58,7 +58,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                 // Scan forward until we find the actual operator
                 for ($j = 0; $j < $count && !self::isOperator($tokensInLine[$j]); $j ++);
 
-                if (isset($tokensInLine[$j + 1]) && self::isBinaryOperator($tokensInLine[$j])) {
+                if (isset($tokensInLine[$j + 1]) && isset($tokensInLine[$j + 2]) && self::isBinaryOperator($tokensInLine[$j])) {
                     if (!self::isWhitespace($tokensInLine[$j + 1])) {
                         $file->addWarning(new Warning(
                             $tokensInLine[$j]->getLine(),
