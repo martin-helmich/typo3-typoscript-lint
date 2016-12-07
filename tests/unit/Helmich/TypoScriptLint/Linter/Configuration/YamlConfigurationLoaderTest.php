@@ -1,8 +1,13 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\Configuration;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Configuration;
+use Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader;
+use Helmich\TypoScriptLint\Util\Filesystem;
+use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Yaml\Parser;
 
 /**
- * @covers  Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
+ * @covers \Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
  */
 class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,15 +18,14 @@ class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
         $yamlParser,
         $filesystem;
 
-    /** @var \Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader */
+    /** @var YamlConfigurationLoader */
     private $loader;
 
     public function setUp()
     {
-        $this->fileLocator = $this->getMockBuilder('Symfony\Component\Config\FileLocatorInterface')->getMock();
-        $this->yamlParser  = $this->getMockBuilder('Symfony\Component\Yaml\Parser')->disableOriginalConstructor(
-        )->getMock();
-        $this->filesystem  = $this->getMockBuilder('Helmich\TypoScriptLint\Util\Filesystem')->getMock();
+        $this->fileLocator = $this->getMockBuilder(FileLocatorInterface::class)->getMock();
+        $this->yamlParser  = $this->getMockBuilder(Parser::class)->disableOriginalConstructor()->getMock();
+        $this->filesystem  = $this->getMockBuilder(Filesystem::class)->getMock();
 
         /** @noinspection PhpParamsInspection */
         $this->loader = new YamlConfigurationLoader($this->fileLocator, $this->yamlParser, $this->filesystem);
@@ -29,9 +33,7 @@ class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadLocatesReadsAndParsesFile()
     {
-        $file = $this->getMockBuilder('Symfony\\Component\\Finder\\SplFileInfo')->setConstructorArgs(
-            ['php://memory', '', '']
-        )->getMock();
+        $file = $this->getMockBuilder(SplFileInfo::class)->setConstructorArgs(['php://memory', '', ''])->getMock();
         $file->expects($this->once())->method('getContents')->willReturn('foo: bar');
 
         $this->fileLocator->expects($this->once())->method('locate')->with('foobar.yml')->willReturn('dir/foobar.yml');

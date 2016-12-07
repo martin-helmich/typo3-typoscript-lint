@@ -43,17 +43,17 @@ class LinterConfiguration implements ConfigurationInterface
         $root = $treeBuilder->root('tslint');
         $root
             ->children()
-            ->arrayNode('sniffs')
-            ->isRequired()
-            ->useAttributeAsKey('class')
-            ->prototype('array')
-            ->children()
-            ->scalarNode('class')->end()
-            ->variableNode('parameters')->end()
-            ->booleanNode('disabled')->defaultValue(false)->end()
-            ->end()
-            ->end()
-            ->end()
+                ->arrayNode('sniffs')
+                ->isRequired()
+                ->useAttributeAsKey('class')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('class')->end()
+                            ->variableNode('parameters')->end()
+                            ->booleanNode('disabled')->defaultValue(false)->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

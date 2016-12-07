@@ -1,8 +1,11 @@
 <?php
-namespace Helmich\TypoScriptLint\Util;
+namespace Helmich\TypoScriptLint\Tests\Unit\Util;
+use Helmich\TypoScriptLint\Util\Filesystem;
+use Helmich\TypoScriptLint\Util\Finder;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
- * @covers Helmich\TypoScriptLint\Util\Finder
+ * @covers \Helmich\TypoScriptLint\Util\Finder
  */
 class FinderTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,10 +15,8 @@ class FinderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilenameListIsGenerated()
     {
-        $sfFinder   = $this->getMockBuilder('\Symfony\Component\Finder\Finder')->disableOriginalConstructor()->getMock(
-        );
-        $filesystem = $this->getMockBuilder('\Helmich\TypoScriptLint\Util\Filesystem')->disableOriginalConstructor(
-        )->getMock();
+        $sfFinder   = $this->getMockBuilder(SymfonyFinder::class)->disableOriginalConstructor()->getMock();
+        $filesystem = $this->getMockBuilder(Filesystem::class)->disableOriginalConstructor()->getMock();
 
         $fib = $this->getMockBuilder('SplFileInfo')->disableOriginalConstructor();
         $fi1 = $fib->getMock();

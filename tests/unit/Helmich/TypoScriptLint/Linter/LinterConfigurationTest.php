@@ -1,11 +1,12 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter;
 
+use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 
 /**
- * @package Helmich\TypoScriptLint\Linter
- * @covers  Helmich\TypoScriptLint\Linter\LinterConfiguration
+ * @package \Helmich\TypoScriptLint\Linter
+ * @covers  \Helmich\TypoScriptLint\Linter\LinterConfiguration
  */
 class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
 {

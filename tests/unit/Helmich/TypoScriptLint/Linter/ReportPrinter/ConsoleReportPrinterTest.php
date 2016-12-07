@@ -1,16 +1,17 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
- * @covers Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter
- * @uses   Helmich\TypoScriptLint\Linter\Report\File
- * @uses   Helmich\TypoScriptLint\Linter\Report\Report
- * @uses   Helmich\TypoScriptLint\Linter\Report\Warning
+ * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\File
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Report
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Warning
  */
 class ConsoleReportPrinterTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +28,7 @@ SUMMARY
 3 warnings in total.
 ';
 
-    /** @var \Symfony\Component\Console\Output\BufferedOutput */
+    /** @var BufferedOutput */
     private $output;
 
     /** @var ConsoleReportPrinter */

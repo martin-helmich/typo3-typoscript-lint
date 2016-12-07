@@ -1,11 +1,16 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\Configuration;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Configuration;
+
+use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
+use Helmich\TypoScriptLint\Linter\LinterConfiguration;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
  * Class ConfigurationLocatorTest
  *
- * @package Helmich\TypoScriptLint\Linter\Configuration
- * @covers  Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
+ * @package \Helmich\TypoScriptLint\Linter\Configuration
+ * @covers  \Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
  */
 class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,13 +18,13 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $loader, $processor;
 
-    /** @var \Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator */
+    /** @var ConfigurationLocator */
     private $locator;
 
     public function setUp()
     {
-        $this->loader    = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
-        $this->processor = $this->getMockBuilder('Symfony\Component\Config\Definition\Processor')->getMock();
+        $this->loader    = $this->getMockBuilder(LoaderInterface::class)->getMock();
+        $this->processor = $this->getMockBuilder(Processor::class)->getMock();
 
         /** @noinspection PhpParamsInspection */
         $this->locator = new ConfigurationLocator(
@@ -34,9 +39,7 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         $localConfig  = ['bar' => 'baz'];
         $mergedConfig = ['foo' => 'bar', 'bar' => 'baz'];
 
-        $configuration = $this->getMockBuilder(
-            'Helmich\TypoScriptLint\Linter\LinterConfiguration'
-        )->disableOriginalConstructor()->getMock();
+        $configuration = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
         $configuration->expects($this->once())->method('setConfiguration')->with($mergedConfig);
 
         $this->loader->expects($this->at(0))->method('load')->with('tslint.dist.yml')->willReturn($distConfig);
@@ -45,10 +48,7 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         $this->processor
             ->expects($this->once())
             ->method('processConfiguration')
-            ->with(
-                $this->isInstanceOf('Helmich\TypoScriptLint\Linter\LinterConfiguration'),
-                [$distConfig, $localConfig]
-            )
+            ->with($this->isInstanceOf(LinterConfiguration::class), [$distConfig, $localConfig])
             ->willReturn($mergedConfig);
 
         /** @noinspection PhpParamsInspection */
@@ -61,9 +61,7 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         $distConfig   = ['foo' => 'bar'];
         $mergedConfig = $distConfig;
 
-        $configuration = $this->getMockBuilder(
-            'Helmich\TypoScriptLint\Linter\LinterConfiguration'
-        )->disableOriginalConstructor()->getMock();
+        $configuration = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
         $configuration->expects($this->once())->method('setConfiguration')->with($mergedConfig);
 
         $this->loader->expects($this->once())->method('load')->with('tslint.dist.yml')->willReturn($distConfig);
@@ -71,7 +69,7 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         $this->processor
             ->expects($this->once())
             ->method('processConfiguration')
-            ->with($this->isInstanceOf('Helmich\TypoScriptLint\Linter\LinterConfiguration'), [$distConfig, []])
+            ->with($this->isInstanceOf(LinterConfiguration::class), [$distConfig, []])
             ->willReturn($mergedConfig);
 
         /** @noinspection PhpParamsInspection */

@@ -1,12 +1,13 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\Report;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 
+use Helmich\TypoScriptLint\Linter\Report\Warning;
 use Helmich\TypoScriptParser\Parser\ParseError;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
 
 /**
- * @covers Helmich\TypoScriptLint\Linter\Report\Warning
- * @uses   Helmich\TypoScriptParser\Parser\ParseError
+ * @covers \Helmich\TypoScriptLint\Linter\Report\Warning
+ * @uses   \Helmich\TypoScriptParser\Parser\ParseError
  */
 class WarningTest extends \PHPUnit_Framework_TestCase
 {
