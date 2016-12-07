@@ -1,12 +1,15 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\ReportPrinter;
 
+use Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator;
 use Symfony\Component\Console\Output\NullOutput;
 
 /**
- * @covers Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator
- * @uses   Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter
- * @uses   Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter
+ * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator
+ * @uses   \Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter
+ * @uses   \Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter
  */
 class PrinterLocatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,18 +24,12 @@ class PrinterLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckstylePrinterIsCreated()
     {
-        $this->assertInstanceOf(
-            'Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter',
-            $this->locator->createPrinter('xml', new NullOutput())
-        );
+        $this->assertInstanceOf(CheckstyleReportPrinter::class, $this->locator->createPrinter('xml', new NullOutput()));
     }
 
     public function testConsolePrinterIsCreated()
     {
-        $this->assertInstanceOf(
-            'Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter',
-            $this->locator->createPrinter('text', new NullOutput())
-        );
+        $this->assertInstanceOf(ConsoleReportPrinter::class, $this->locator->createPrinter('text', new NullOutput()));
     }
 
     /**

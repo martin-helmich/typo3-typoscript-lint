@@ -1,14 +1,15 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\Sniff;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
+use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 
 /**
- * @covers Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff
- * @uses   Helmich\TypoScriptLint\Linter\Report\File
- * @uses   Helmich\TypoScriptLint\Linter\Report\Warning
+ * @covers \Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\File
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Warning
  */
 class DeadCodeSniffTest extends \PHPUnit_Framework_TestCase
 {

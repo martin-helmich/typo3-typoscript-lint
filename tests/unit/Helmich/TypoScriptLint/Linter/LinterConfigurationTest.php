@@ -1,6 +1,7 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter;
 
+use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 use Symfony\Component\Config\Definition\Processor;
 

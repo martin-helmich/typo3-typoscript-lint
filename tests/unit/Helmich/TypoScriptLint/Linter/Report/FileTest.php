@@ -1,11 +1,14 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\Report;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
+
+use Helmich\TypoScriptLint\Linter\Report\File;
+use Helmich\TypoScriptLint\Linter\Report\Warning;
 
 /**
  * Class FileTest
  *
  * @package Helmich\TypoScriptLint\Linter\Report
- * @covers  Helmich\TypoScriptLint\Linter\Report\File
+ * @covers  \Helmich\TypoScriptLint\Linter\Report\File
  */
 class FileTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,8 +28,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
     public function testWarningsCanBeAdded()
     {
-        $warning = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\Report\Warning')->disableOriginalConstructor(
-        )->getMock();
+        $warning = $this->getMockBuilder(Warning::class)->disableOriginalConstructor()->getMock();
         $this->file->addWarning($warning);
 
         $this->assertCount(1, $this->file->getWarnings());
@@ -38,9 +40,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
      */
     public function testWarningsAreSortedByLineNumber()
     {
-        $warningBuilder = $this->getMockBuilder(
-            'Helmich\TypoScriptLint\Linter\Report\Warning'
-        )->disableOriginalConstructor();
+        $warningBuilder = $this->getMockBuilder(Warning::class)->disableOriginalConstructor();
 
         $warning1 = $warningBuilder->getMock();
         $warning1->expects($this->any())->method('getLine')->willReturn(10);
