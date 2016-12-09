@@ -14,6 +14,22 @@ class LinterConfiguration implements ConfigurationInterface
         $this->configuration = $configuration;
     }
 
+    /**
+     * Get the list of paths to lint
+     *
+     * @return string[]
+     */
+    public function getPaths()
+    {
+        $paths = [];
+
+        if (!empty($this->configuration['paths'])) {
+            $paths = $this->configuration['paths'];
+        }
+
+        return $paths;
+    }
+
     public function getSniffConfigurations()
     {
         $sniffs = [];
@@ -43,17 +59,19 @@ class LinterConfiguration implements ConfigurationInterface
         $root = $treeBuilder->root('tslint');
         $root
             ->children()
-            ->arrayNode('sniffs')
-            ->isRequired()
-            ->useAttributeAsKey('class')
-            ->prototype('array')
-            ->children()
-            ->scalarNode('class')->end()
-            ->variableNode('parameters')->end()
-            ->booleanNode('disabled')->defaultValue(false)->end()
-            ->end()
-            ->end()
-            ->end()
+                ->arrayNode('paths')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('sniffs')
+                    ->isRequired()
+                    ->useAttributeAsKey('class')
+                    ->prototype('array')
+                    ->children()
+                        ->scalarNode('class')->end()
+                        ->variableNode('parameters')->end()
+                        ->booleanNode('disabled')->defaultValue(false)->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
