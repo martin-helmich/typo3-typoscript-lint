@@ -10,6 +10,38 @@ use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
 {
 
+    public function testFileExtensionsAreEmptyByDefault()
+    {
+        $config = new LinterConfiguration();
+
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration($config, [[
+            'sniffs' => []
+        ]]);
+
+        $config->setConfiguration($processedConfig);
+
+        assertThat($config->getFilePatterns(), equalTo([]));
+    }
+
+    public function testFileExtensionsFromInputfileAreCorrectlyMapped()
+    {
+        $config = new LinterConfiguration();
+
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration($config, [[
+            'filePatterns' => [
+                '*.ts',
+                '*.typoscript'
+            ],
+            'sniffs' => []
+        ]]);
+
+        $config->setConfiguration($processedConfig);
+
+        assertThat($config->getFilePatterns(), equalTo(['*.ts', '*.typoscript']));
+    }
+
     public function testGetSniffConfigurationsReturnsFQCNs()
     {
         $configArray = [
