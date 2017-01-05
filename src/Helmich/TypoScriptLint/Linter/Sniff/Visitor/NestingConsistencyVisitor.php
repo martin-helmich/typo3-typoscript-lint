@@ -105,7 +105,7 @@ class NestingConsistencyVisitor implements SniffVisitor
      */
     private function getParentObjectPathsForObjectPath($objectPath)
     {
-        $components = explode('.', $objectPath);
+        $components = preg_split('/(?<!\\\)\./', $objectPath);
         $paths      = [];
         for ($i = 1; $i < count($components); $i++) {
             $possibleObjectPath = implode('.', array_slice($components, 0, $i));
