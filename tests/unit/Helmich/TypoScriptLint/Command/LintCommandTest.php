@@ -88,9 +88,9 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $config  = $this->getMockBuilder(
-            'Helmich\TypoScriptLint\Linter\LinterConfiguration'
-        )->disableOriginalConstructor()->getMock();
+        $config  = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock();
+        $config->expects(any())->method('getFilePatterns')->willReturn([]);
+
         $printer = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\ReportPrinter\Printer')->getMock();
 
         $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
