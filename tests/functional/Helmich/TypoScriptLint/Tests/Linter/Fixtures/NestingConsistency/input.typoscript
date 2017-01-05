@@ -5,3 +5,7 @@ foo {
 foo {
     baz = test2
 }
+
+foo\.bar = test1
+
+foo\.baz = test2
