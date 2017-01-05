@@ -64,7 +64,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testCommandThrowsExceptionWhenBadOutputFileIsGiven()
     {
-        $in = $this->getMock(InputInterface::class);
+        $in = $this->createMock(InputInterface::class);
         $in->expects($this->any())->method('getOption')->willReturnMap(
             [
                 ['output', null],
@@ -74,14 +74,14 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         );
         $in->expects($this->once())->method('getArgument')->with('filename')->willReturn(['foo.ts']);
 
-        $out = $this->getMock(OutputInterface::class);
+        $out = $this->createMock(OutputInterface::class);
 
         $this->runCommand($in, $out);
     }
 
     public function testCommandCallsLinterWithCorrectDependencies()
     {
-        $in = $this->getMock(InputInterface::class);
+        $in = $this->createMock(InputInterface::class);
         $in->expects($this->any())->method('getArgument')->with('filename')->willReturn(['foo.ts']);
         $in->expects($this->any())->method('getOption')->willReturnMap(
             [
@@ -97,7 +97,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $printer = $this->getMockBuilder(Printer::class)->getMock();
 
-        $out = $this->getMock(OutputInterface::class);
+        $out = $this->createMock(OutputInterface::class);
 
         $this->linterConfigurationLocator
             ->expects($this->once())
