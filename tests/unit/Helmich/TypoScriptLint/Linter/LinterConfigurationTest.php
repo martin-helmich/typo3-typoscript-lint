@@ -1,14 +1,71 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter;
 
+use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
+use Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff;
+use Symfony\Component\Config\Definition\Processor;
 
 /**
- * @package Helmich\TypoScriptLint\Linter
- * @covers  Helmich\TypoScriptLint\Linter\LinterConfiguration
+ * @package \Helmich\TypoScriptLint\Linter
+ * @covers  \Helmich\TypoScriptLint\Linter\LinterConfiguration
  */
 class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
 {
+    public function testSniffConfigurationIsMappedToCorrectClasses()
+    {
+        $this->assertThatInputFileIsMappedToCorrectSniffDatastructure(
+            ["sniffs" => [[
+                'class' => 'Indentation',
+                'parameters' => ['foo' => 'bar']
+            ]]],
+            [[
+                'class' => IndentationSniff::class,
+                'parameters' => ['foo' => 'bar'],
+                'disabled' => false
+            ]]
+        );
+    }
+
+    public function testExplicitlyEnabledSniffsAreIncluded()
+    {
+        $this->assertThatInputFileIsMappedToCorrectSniffDatastructure(
+            ["sniffs" => [[
+                'class' => 'Indentation',
+                'parameters' => ['foo' => 'bar'],
+                'disabled' => false
+            ]]],
+            [[
+                'class' => IndentationSniff::class,
+                'parameters' => ['foo' => 'bar'],
+                'disabled' => false
+            ]]
+        );
+    }
+
+    public function testDisabledSniffsAreNotIncluded()
+    {
+        $this->assertThatInputFileIsMappedToCorrectSniffDatastructure(
+            ["sniffs" => [[
+                'class' => 'Indentation',
+                'parameters' => ['foo' => 'bar'],
+                'disabled' => true
+            ]]],
+            []
+        );
+    }
+
+    private function assertThatInputFileIsMappedToCorrectSniffDatastructure($configInput, $expectedOutput)
+    {
+        $config = new LinterConfiguration();
+
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration($config, [$configInput]);
+
+        $config->setConfiguration($processedConfig);
+
+        assertThat($config->getSniffConfigurations(), equalTo($expectedOutput));
+    }
 
     public function testGetSniffConfigurationsReturnsFQCNs()
     {

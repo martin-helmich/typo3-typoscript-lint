@@ -1,5 +1,5 @@
 <?php
-namespace Helmich\TypoScriptLint\Tests\Linter\Sniff;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;

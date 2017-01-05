@@ -1,15 +1,17 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @covers Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter
- * @uses   Helmich\TypoScriptLint\Linter\Report\File
- * @uses   Helmich\TypoScriptLint\Linter\Report\Report
- * @uses   Helmich\TypoScriptLint\Linter\Report\Warning
+ * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\File
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Report
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Warning
  */
 class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,7 +36,7 @@ class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->output  = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')->getMock();
+        $this->output  = $this->getMockBuilder(OutputInterface::class)->getMock();
         $this->printer = new CheckstyleReportPrinter($this->output);
 
         define('APP_NAME', 'typoscript-lint');
