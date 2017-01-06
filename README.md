@@ -153,8 +153,8 @@ The paths to lint can be set via `tslint.yml`:
 
 ```yaml
 paths:
-    - directory/with/typoscript
-    - ...
+  - directory/with/typoscript
+  - ...
 ```
 
 Since a local configuration file will be merged with the distributed
