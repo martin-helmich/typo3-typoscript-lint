@@ -141,7 +141,9 @@ class LintCommand extends Command
         $printer       = $this->printerLocator->createPrinter($input->getOption('format'), $reportOutput);
         $report        = new Report();
 
-        foreach ($this->finder->getFilenames($paths) as $filename) {
+        $patterns = $configuration->getFilePatterns();
+
+        foreach ($this->finder->getFilenames($paths, $patterns) as $filename) {
             $output->writeln("Linting input file <comment>{$filename}</comment>.");
             $this->linter->lintFile($filename, $report, $configuration, $output);
         }

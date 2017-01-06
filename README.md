@@ -147,26 +147,43 @@ By default, it will print a report on the console. To generate a checkstyle-form
 `typoscript-lint` looks for a file `tslint.yml` in the current working directory.
 If such a file is found, it will be merged with the `tslint.dist.yml` from the
 installation root directory. Have a look at [said file](tslint.dist.yml) for an
-idea of what you can configure (granted, not much yet).
+idea of what you can configure (granted, not much yet):
 
-The paths to lint can be set via `tslint.yml`:
+* The paths to lint can be set under the `paths` key:
 
-```yaml
-paths:
-  - directory/with/typoscript
-  - ...
-```
+  ```yaml
+  paths:
+    - directory/with/typoscript
+    - ...
+  ```
 
-Since a local configuration file will be merged with the distributed
-configuration file, you *cannot* disable sniffs by simply removing them from the local configuration file (see this [bug report][issue-deadcode]
-for more information). To disable a sniff, use the `disabled` configuration
-property. For example, to disable the `DeadCode` sniff:
+* Configure individual sniffs under the `sniff` key in the configuration file. This key
+  consists of a list of objects, each with a `class` key and an optional `parameters`
+  key.
 
-```yaml
-sniffs:
-  - class: DeadCode
-    disabled: true
-```
+  Since a local configuration file will be merged with the distributed
+  configuration file, you *cannot* disable sniffs by simply removing them from the
+  local configuration file (see this [bug report][issue-deadcode]
+  for more information). To disable a sniff, use the `disabled` configuration
+  property. For example, to disable the `DeadCode` sniff:
+
+  ```yaml
+  sniffs:
+    - class: DeadCode
+      disabled: true
+  ```
+
+* Configure file extensions that should be treated as TypoScript files in the
+  `filePatterns` key. This key may contain a list of glob patterns that inspected files
+  need to match. This is especially relevant when you're running `typoscript-lint`
+  on entire directory trees:
+  
+  ```yaml
+  filePatterns:
+    - "*.ts"
+    - "setup.txt"
+    - # ...
+  ```
 
 ### Future features
 

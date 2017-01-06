@@ -30,6 +30,16 @@ class LinterConfiguration implements ConfigurationInterface
         return $paths;
     }
 
+    /**
+     * Returns the list of supported filename patterns.
+     *
+     * @return string[]
+     */
+    public function getFilePatterns()
+    {
+        return $this->configuration['filePatterns'] ?: [];
+    }
+
     public function getSniffConfigurations()
     {
         $sniffs = [];
@@ -60,6 +70,9 @@ class LinterConfiguration implements ConfigurationInterface
         $root
             ->children()
                 ->arrayNode('paths')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('filePatterns')
                     ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('sniffs')
