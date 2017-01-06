@@ -69,7 +69,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
                 ['config', 'config.yml']
             ]
         );
-        $in->expects($this->once())->method('getArgument')->with('filename')->willReturn(['foo.ts']);
+        $in->expects($this->once())->method('getArgument')->with('paths')->willReturn(['foo.ts']);
 
         $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
 
@@ -79,7 +79,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
     public function testCommandCallsLinterWithCorrectDependencies()
     {
         $in = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $in->expects($this->any())->method('getArgument')->with('filename')->willReturn(['foo.ts']);
+        $in->expects($this->any())->method('getArgument')->with('paths')->willReturn(['foo.ts']);
         $in->expects($this->any())->method('getOption')->willReturnMap(
             [
                 ['output', '-'],

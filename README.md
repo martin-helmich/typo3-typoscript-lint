@@ -149,9 +149,16 @@ If such a file is found, it will be merged with the `tslint.dist.yml` from the
 installation root directory. Have a look at [said file](tslint.dist.yml) for an
 idea of what you can configure (granted, not much yet).
 
+The paths to lint can be set via `tslint.yml`:
+
+```yaml
+paths:
+    - directory/with/typoscript
+    - ...
+```
+
 Since a local configuration file will be merged with the distributed
-configuration file, you *cannot* disable sniffs by simply removing them from the
-local configuration file (see this [bug report][issue-deadcode]
+configuration file, you *cannot* disable sniffs by simply removing them from the local configuration file (see this [bug report][issue-deadcode]
 for more information). To disable a sniff, use the `disabled` configuration
 property. For example, to disable the `DeadCode` sniff:
 

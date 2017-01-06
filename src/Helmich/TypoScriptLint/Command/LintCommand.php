@@ -111,7 +111,7 @@ class LintCommand extends Command
                 InputOption::VALUE_NONE,
                 'Set this flag to exit with a non-zero exit code when there are warnings.'
             )
-            ->addArgument('filename', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'File or directory names');
+            ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names');
     }
 
     /**
@@ -125,7 +125,8 @@ class LintCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filenames        = $input->getArgument('filename');
+        $configuration    = $this->linterConfigurationLocator->loadConfiguration($input->getOption('config'));
+        $paths            = $input->getArgument('paths') ?: $configuration->getPaths();
         $outputTarget     = $input->getOption('output');
         $exitWithExitCode = $input->getOption('exit-code');
 
@@ -137,11 +138,10 @@ class LintCommand extends Command
             ? $output
             : new StreamOutput(fopen($input->getOption('output'), 'w'));
 
-        $configuration = $this->linterConfigurationLocator->loadConfiguration($input->getOption('config'));
         $printer       = $this->printerLocator->createPrinter($input->getOption('format'), $reportOutput);
         $report        = new Report();
 
-        foreach ($this->finder->getFilenames($filenames) as $filename) {
+        foreach ($this->finder->getFilenames($paths) as $filename) {
             $output->writeln("Linting input file <comment>{$filename}</comment>.");
             $this->linter->lintFile($filename, $report, $configuration, $output);
         }
