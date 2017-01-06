@@ -102,16 +102,16 @@ class LintCommand extends Command
         $this
             ->setName('lint')
             ->setDescription('Check coding style for TypoScript file.')
-            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use.', 'tslint.yml')
-            ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format.', 'text')
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout).', '-')
+            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use', 'tslint.yml')
+            ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'text')
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
             ->addOption(
                 'exit-code',
                 'e',
                 InputOption::VALUE_NONE,
-                'Set this flag to exit with a non-zero exit code when there are warnings.'
+                'Set this flag to exit with a non-zero exit code when there are warnings'
             )
-            ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names');
+            ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }
 
     /**
