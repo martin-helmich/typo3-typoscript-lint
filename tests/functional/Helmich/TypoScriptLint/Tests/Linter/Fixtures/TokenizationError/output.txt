@@ -1,0 +1,1 @@
+1;;Tokenization error: Cannot tokenize line "YAY!!!";error;Helmich\TypoScriptParser\Tokenizer\TokenizerException
