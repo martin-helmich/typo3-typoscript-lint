@@ -5,6 +5,7 @@ namespace Helmich\TypoScriptLint\Logging;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\Printer;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CompactConsoleLogger implements LinterLoggerInterface
@@ -24,9 +25,13 @@ class CompactConsoleLogger implements LinterLoggerInterface
     /** @var string */
     private $progressFormatString;
 
-    public function __construct(OutputInterface $output)
+    /** @var Printer */
+    private $printer;
+
+    public function __construct(Printer $printer, OutputInterface $output)
     {
         $this->output = $output;
+        $this->printer = $printer;
     }
 
     public function notifyFiles(array $files)
@@ -39,17 +44,14 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
     public function notifyFileStart($filename)
     {
-        // TODO: Implement notifyFileStart() method.
     }
 
     public function notifyFileSniffStart($filename, $sniffClass)
     {
-        // TODO: Implement notifyFileSniffStart() method.
     }
 
     public function nofifyFileSniffComplete($filename, $sniffClass, File $report)
     {
-        // TODO: Implement nofifyFileSniffComplete() method.
     }
 
     public function notifyFileComplete($filename, File $report)
@@ -86,7 +88,7 @@ class CompactConsoleLogger implements LinterLoggerInterface
         if ($this->warningCount > 0) {
             $this->output->writeln("Completed with <comment>{$this->warningCount} warnings</comment>");
 
-            (new ConsoleReportPrinter($this->output))->writeReport($report);
+            $this->printer->writeReport($report);
         } else {
             $this->output->writeln("Complete <info>without warnings</info>");
         }
