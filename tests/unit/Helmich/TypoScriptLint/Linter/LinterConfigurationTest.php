@@ -11,6 +11,20 @@ use Symfony\Component\Config\Definition\Processor;
  */
 class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
 {
+    public function testPathsAreCorrectlyMapped()
+    {
+        $config = new LinterConfiguration();
+
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration($config, [[
+            'paths' => ['./foo', './bar', './baz'],
+            'sniffs' => []
+        ]]);
+
+        $config->setConfiguration($processedConfig);
+
+        assertThat($config->getPaths(), equalTo(['./foo', './bar', './baz']));
+    }
 
     public function testFileExtensionsAreEmptyByDefault()
     {
