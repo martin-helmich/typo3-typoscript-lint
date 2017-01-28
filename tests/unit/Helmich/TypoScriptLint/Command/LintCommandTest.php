@@ -1,7 +1,7 @@
 <?php
 namespace Helmich\TypoScriptLint\Command;
 
-use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
+use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -31,14 +31,17 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->linter                     = $this->getMockBuilder(
-            '\Helmich\TypoScriptLint\Linter\LinterInterface'
-        )->getMock();
+        $this->linter                     = $this
+            ->getMockBuilder('\Helmich\TypoScriptLint\Linter\LinterInterface')
+            ->getMock();
+        $this->linter->expects(any())->method('lintFile')->willReturn(new File('foo.ts'));
+
         $this->linterConfigurationLocator = $this
             ->getMockBuilder('\Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->finder                     = $this->getMockBuilder('Helmich\\TypoScriptLint\\Util\\Finder')
+        $this->finder                     = $this
+            ->getMockBuilder('Helmich\\TypoScriptLint\\Util\\Finder')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -93,16 +96,19 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $config  = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock();
+        $config = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock();
         $config->expects(any())->method('getFilePatterns')->willReturn([]);
 
         $logger = new NullLogger();
 
         $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
 
-        $this->linterConfigurationLocator->expects($this->once())->method('loadConfiguration')->with(
-            'config.yml'
-        )->willReturn($config);
+        $this->linterConfigurationLocator
+            ->expects(once())
+            ->method('loadConfiguration')
+            ->with('config.yml')
+            ->willReturn($config);
+
         $this->loggerBuilder->createLogger('txt', Argument::exact($out), Argument::exact($out))->shouldBeCalled()->willReturn($logger);
         $this->finder->expects($this->once())->method('getFilenames')->willReturnArgument(0);
 
