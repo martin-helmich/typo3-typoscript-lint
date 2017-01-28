@@ -12,13 +12,13 @@ namespace Helmich\TypoScriptLint\Linter\Report;
 class Report
 {
 
-    /** @var \Helmich\TypoScriptLint\Linter\Report\File[] */
+    /** @var File[] */
     private $files = [];
 
     /**
      * Adds a sub-report for a specific file.
      *
-     * @param \Helmich\TypoScriptLint\Linter\Report\File $file The file sub-report.
+     * @param File $file The file sub-report.
      * @return void
      */
     public function addFile(File $file)
@@ -29,7 +29,7 @@ class Report
     /**
      * Returns all file reports.
      *
-     * @return \Helmich\TypoScriptLint\Linter\Report\File[] All file reports.
+     * @return File[] All file reports.
      */
     public function getFiles()
     {

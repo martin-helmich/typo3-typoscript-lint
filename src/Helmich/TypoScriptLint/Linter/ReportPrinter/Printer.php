@@ -15,7 +15,7 @@ interface Printer
     /**
      * Writes a report.
      *
-     * @param \Helmich\TypoScriptLint\Linter\Report\Report $report
+     * @param Report $report
      * @return void
      */
     public function writeReport(Report $report);

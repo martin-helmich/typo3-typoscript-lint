@@ -19,13 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckstyleReportPrinter implements Printer
 {
 
-    /** @var \Symfony\Component\Console\Output\OutputInterface */
+    /** @var OutputInterface */
     private $output;
 
     /**
      * Constructs a new checkstyle report printer.
      *
-     * @param \Symfony\Component\Console\Output\OutputInterface $output Output stream to write on. Might be STDOUT or a file.
+     * @param OutputInterface $output Output stream to write on. Might be STDOUT or a file.
      */
     public function __construct(OutputInterface $output)
     {
@@ -35,7 +35,7 @@ class CheckstyleReportPrinter implements Printer
     /**
      * Writes a report in checkstyle XML format.
      *
-     * @param \Helmich\TypoScriptLint\Linter\Report\Report $report The report to print.
+     * @param Report $report The report to print.
      * @return void
      */
     public function writeReport(Report $report)

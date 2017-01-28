@@ -20,9 +20,9 @@ class DeadCodeSniff implements TokenStreamSniffInterface
     }
 
     /**
-     * @param \Helmich\TypoScriptParser\Tokenizer\TokenInterface[] $tokens
-     * @param \Helmich\TypoScriptLint\Linter\Report\File           $file
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration   $configuration
+     * @param TokenInterface[]    $tokens
+     * @param File                $file
+     * @param LinterConfiguration $configuration
      * @return mixed
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration)

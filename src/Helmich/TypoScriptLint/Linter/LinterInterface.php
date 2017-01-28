@@ -8,10 +8,10 @@ interface LinterInterface
 {
 
     /**
-     * @param                                                    $filename
-     * @param \Helmich\TypoScriptLint\Linter\Report\Report       $report
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration $configuration
-     * @param \Symfony\Component\Console\Output\OutputInterface  $output
+     * @param string              $filename
+     * @param Report              $report
+     * @param LinterConfiguration $configuration
+     * @param OutputInterface     $output
      * @return
      */
     public function lintFile($filename, Report $report, LinterConfiguration $configuration, OutputInterface $output);

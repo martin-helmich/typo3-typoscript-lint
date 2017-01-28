@@ -12,7 +12,7 @@ class ParseCommand extends Command
 {
 
     /**
-     * @var \Helmich\TypoScriptParser\Parser\ParserInterface
+     * @var ParserInterface
      */
     private $parser;
 

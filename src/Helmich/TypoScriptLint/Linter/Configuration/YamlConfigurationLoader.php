@@ -17,18 +17,18 @@ use Symfony\Component\Yaml\Parser as YamlParser;
 class YamlConfigurationLoader extends FileLoader
 {
 
-    /** @var \Symfony\Component\Yaml\Parser */
+    /** @var YamlParser */
     private $yamlParser;
 
-    /** @var \Helmich\TypoScriptLint\Util\Filesystem */
+    /** @var Filesystem */
     private $filesystem;
 
     /**
      * Constructs a new YAML-based configuration loader.
      *
-     * @param \Symfony\Component\Config\FileLocatorInterface $locator    The file locator.
-     * @param \Symfony\Component\Yaml\Parser                 $yamlParser The YAML parser.
-     * @param \Helmich\TypoScriptLint\Util\Filesystem        $filesystem A filesystem interface.
+     * @param FileLocatorInterface $locator    The file locator.
+     * @param YamlParser           $yamlParser The YAML parser.
+     * @param Filesystem           $filesystem A filesystem interface.
      */
     public function __construct(FileLocatorInterface $locator, YamlParser $yamlParser, Filesystem $filesystem)
     {

@@ -5,8 +5,10 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
 use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
+use Helmich\TypoScriptParser\Parser\AST\Statement;
 use Helmich\TypoScriptParser\Parser\ParseError;
 use Helmich\TypoScriptParser\Parser\ParserInterface;
+use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,13 +16,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Linter implements LinterInterface
 {
 
-    /** @var \Helmich\TypoScriptParser\Tokenizer\TokenizerInterface */
+    /** @var TokenizerInterface */
     private $tokenizer;
 
-    /** @var \Helmich\TypoScriptParser\Parser\ParserInterface */
+    /** @var ParserInterface */
     private $parser;
 
-    /** @var \Helmich\TypoScriptLint\Linter\Sniff\SniffLocator */
+    /** @var SniffLocator */
     private $sniffLocator;
 
     public function __construct(TokenizerInterface $tokenizer, ParserInterface $parser, SniffLocator $sniffLocator)
@@ -31,10 +33,10 @@ class Linter implements LinterInterface
     }
 
     /**
-     * @param string                                             $filename
-     * @param \Helmich\TypoScriptLint\Linter\Report\Report       $report
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration $configuration
-     * @param \Symfony\Component\Console\Output\OutputInterface  $output
+     * @param string              $filename
+     * @param Report              $report
+     * @param LinterConfiguration $configuration
+     * @param OutputInterface     $output
      */
     public function lintFile($filename, Report $report, LinterConfiguration $configuration, OutputInterface $output)
     {
@@ -58,10 +60,10 @@ class Linter implements LinterInterface
     }
 
     /**
-     * @param \Helmich\TypoScriptParser\Tokenizer\TokenInterface[] $tokens
-     * @param \Helmich\TypoScriptLint\Linter\Report\File           $file
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration   $configuration
-     * @param \Symfony\Component\Console\Output\OutputInterface    $output
+     * @param TokenInterface[]    $tokens
+     * @param File                $file
+     * @param LinterConfiguration $configuration
+     * @param OutputInterface     $output
      */
     private function lintTokenStream(
         array $tokens,
@@ -78,10 +80,10 @@ class Linter implements LinterInterface
     }
 
     /**
-     * @param \Helmich\TypoScriptParser\Parser\AST\Statement[]   $statements
-     * @param \Helmich\TypoScriptLint\Linter\Report\File         $file
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration $configuration
-     * @param \Symfony\Component\Console\Output\OutputInterface  $output
+     * @param Statement[]         $statements
+     * @param File                $file
+     * @param LinterConfiguration $configuration
+     * @param OutputInterface     $output
      */
     private function lintSyntaxTree(
         array $statements,

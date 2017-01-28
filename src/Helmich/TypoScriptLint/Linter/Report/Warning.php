@@ -37,8 +37,8 @@ class Warning
     /**
      * Creates a new warning from a parse error.
      *
-     * @param \Helmich\TypoScriptParser\Parser\ParseError $parseError The parse error to convert into a warning.
-     * @return \Helmich\TypoScriptLint\Linter\Report\Warning The converted warning.
+     * @param ParseError $parseError The parse error to convert into a warning.
+     * @return Warning The converted warning.
      */
     public static function createFromParseError(ParseError $parseError)
     {
@@ -54,8 +54,8 @@ class Warning
     /**
      * Creates a new warning from a tokenizer error.
      *
-     * @param \Helmich\TypoScriptParser\Tokenizer\TokenizerException $tokenizerException The tokenizer error to convert into a warning.
-     * @return \Helmich\TypoScriptLint\Linter\Report\Warning The converted warning.
+     * @param TokenizerException $tokenizerException The tokenizer error to convert into a warning.
+     * @return Warning The converted warning.
      */
     public static function createFromTokenizerError(TokenizerException $tokenizerException)
     {

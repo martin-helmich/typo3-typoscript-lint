@@ -10,11 +10,11 @@ use Helmich\TypoScriptParser\Parser\AST\Statement;
 class NestingConsistencyVisitor implements SniffVisitor
 {
 
-    /** @var \Helmich\TypoScriptLint\Linter\Report\Warning[] */
+    /** @var Warning[] */
     private $warnings = [];
 
     /**
-     * @return \Helmich\TypoScriptLint\Linter\Report\Warning[]
+     * @return Warning[]
      */
     public function getWarnings()
     {
@@ -45,7 +45,7 @@ class NestingConsistencyVisitor implements SniffVisitor
     }
 
     /**
-     * @param \Helmich\TypoScriptParser\Parser\AST\Statement[] $statements
+     * @param Statement[] $statements
      */
     private function walkStatementList(array $statements)
     {

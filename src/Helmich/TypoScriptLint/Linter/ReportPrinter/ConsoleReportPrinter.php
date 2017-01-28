@@ -18,13 +18,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsoleReportPrinter implements Printer
 {
 
-    /** @var \Symfony\Component\Console\Output\OutputInterface */
+    /** @var OutputInterface */
     private $output;
 
     /**
      * Constructs a new console report printer.
      *
-     * @param \Symfony\Component\Console\Output\OutputInterface $output The output stream to write on.
+     * @param OutputInterface $output The output stream to write on.
      */
     public function __construct(OutputInterface $output)
     {
@@ -34,7 +34,7 @@ class ConsoleReportPrinter implements Printer
     /**
      * Writes a report in human-readable table form.
      *
-     * @param \Helmich\TypoScriptLint\Linter\Report\Report $report The report to print.
+     * @param Report $report The report to print.
      * @return void
      */
     public function writeReport(Report $report)

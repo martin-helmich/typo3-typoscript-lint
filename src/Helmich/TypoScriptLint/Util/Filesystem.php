@@ -9,7 +9,7 @@ class Filesystem extends SymfonyFilesystem
 
     /**
      * @param $filename
-     * @return \Symfony\Component\Finder\SplFileInfo
+     * @return SplFileInfo
      */
     public function openFile($filename)
     {

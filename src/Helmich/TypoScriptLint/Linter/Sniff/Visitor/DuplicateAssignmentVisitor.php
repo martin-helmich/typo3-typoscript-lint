@@ -9,16 +9,16 @@ use Helmich\TypoScriptParser\Parser\AST\Statement;
 class DuplicateAssignmentVisitor implements SniffVisitor
 {
 
-    /** @var \Helmich\TypoScriptParser\Parser\AST\Operator\Assignment[] */
+    /** @var Assignment[] */
     private $assignments = [];
 
-    /** @var \Helmich\TypoScriptLint\Linter\Report\Warning[] */
+    /** @var Warning[] */
     private $warnings = [];
 
     private $inCondition = false;
 
     /**
-     * @return \Helmich\TypoScriptLint\Linter\Report\Warning[]
+     * @return Warning[]
      */
     public function getWarnings()
     {
@@ -37,7 +37,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
 
         if ($statement instanceof Assignment && false === $this->inCondition) {
             if (isset($this->assignments[$statement->object->absoluteName])) {
-                /** @var \Helmich\TypoScriptParser\Parser\AST\Statement $lastAssignment */
+                /** @var Statement $lastAssignment */
                 $lastAssignment = $this->assignments[$statement->object->absoluteName];
                 $this->warnings[] = new Warning(
                     $lastAssignment->sourceLine,
