@@ -9,7 +9,7 @@ use Helmich\TypoScriptParser\Tokenizer\Token;
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff
  * @uses   \Helmich\TypoScriptLint\Linter\Report\File
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Warning
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  */
 class DeadCodeSniffTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +35,7 @@ class DeadCodeSniffTest extends \PHPUnit_Framework_TestCase
 
         $this->sniff->sniff($tokens, $file, new LinterConfiguration());
 
-        $warnings = $file->getWarnings();
+        $warnings = $file->getIssues();
 
         $this->assertCount(1, $warnings);
         $this->assertEquals('Found commented code (foo = test2).', $warnings[0]->getMessage());

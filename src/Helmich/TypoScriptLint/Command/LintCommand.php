@@ -4,6 +4,7 @@ namespace Helmich\TypoScriptLint\Command;
 use Helmich\TypoScriptLint\Exception\BadOutputFileException;
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterInterface;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
 use Helmich\TypoScriptLint\Util\Finder;
@@ -105,7 +106,8 @@ class LintCommand extends Command
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use', 'tslint.yml')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
-            ->addOption('exit-code', 'e', InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
+            ->addOption('exit-code', 'e', InputOption::VALUE_NONE, '(DEPRECATED) Set this flag to exit with a non-zero exit code when there are warnings')
+            ->addOption('fail-on-warnings', null, InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }
 
@@ -123,7 +125,7 @@ class LintCommand extends Command
         $configuration    = $this->linterConfigurationLocator->loadConfiguration($input->getOption('config'));
         $paths            = $input->getArgument('paths') ?: $configuration->getPaths();
         $outputTarget     = $input->getOption('output');
-        $exitWithExitCode = $input->getOption('exit-code');
+        $exitWithExitCode = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
 
         if (false == $outputTarget) {
             throw new BadOutputFileException('Bad output file.');
@@ -149,14 +151,18 @@ class LintCommand extends Command
 
         $logger->notifyRunComplete($report);
 
-        if ($exitWithExitCode) {
-            $exitCode = ($report->countWarnings() > 0) ? 2 : 0;
-            $this->eventDispatcher->addListener(
-                ConsoleEvents::TERMINATE,
-                function (ConsoleTerminateEvent $event) use ($exitCode) {
-                    $event->setExitCode($exitCode);
-                }
-            );
+        $exitCode = 0;
+        if ($report->countIssuesBySeverity(Issue::SEVERITY_ERROR) > 0) {
+            $exitCode = 2;
+        } else if ($exitWithExitCode && $report->countIssues() > 0) {
+            $exitCode = 2;
         }
+
+        $this->eventDispatcher->addListener(
+            ConsoleEvents::TERMINATE,
+            function (ConsoleTerminateEvent $event) use ($exitCode) {
+                $event->setExitCode($exitCode);
+            }
+        );
     }
 }

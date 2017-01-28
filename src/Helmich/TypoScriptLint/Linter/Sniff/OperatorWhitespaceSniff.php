@@ -3,7 +3,7 @@ namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\Inspection\TokenInspections;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
@@ -38,19 +38,19 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                 }
 
                 if (!self::isWhitespace($tokensInLine[$i + 1])) {
-                    $file->addWarning(new Warning(
+                    $file->addIssue(new Issue(
                         $tokensInLine[$i]->getLine(),
                         null,
                         'No whitespace after object accessor.',
-                        Warning::SEVERITY_WARNING,
+                        Issue::SEVERITY_WARNING,
                         __CLASS__
                     ));
                 } elseif (!self::isWhitespaceOfLength($tokensInLine[$i + 1], 1)) {
-                    $file->addWarning(new Warning(
+                    $file->addIssue(new Issue(
                         $tokensInLine[$i]->getLine(),
                         null,
                         'Accessor should be followed by single space.',
-                        Warning::SEVERITY_WARNING,
+                        Issue::SEVERITY_WARNING,
                         __CLASS__
                     ));
                 }
@@ -60,19 +60,19 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
 
                 if (isset($tokensInLine[$j + 1]) && isset($tokensInLine[$j + 2]) && self::isBinaryOperator($tokensInLine[$j])) {
                     if (!self::isWhitespace($tokensInLine[$j + 1])) {
-                        $file->addWarning(new Warning(
+                        $file->addIssue(new Issue(
                             $tokensInLine[$j]->getLine(),
                             null,
                             'No whitespace after operator.',
-                            Warning::SEVERITY_WARNING,
+                            Issue::SEVERITY_WARNING,
                             __CLASS__
                         ));
                     } elseif (!self::isWhitespaceOfLength($tokensInLine[$j + 1], 1)) {
-                        $file->addWarning(new Warning(
+                        $file->addIssue(new Issue(
                             $tokensInLine[$j]->getLine(),
                             null,
                             'Operator should be followed by single space.',
-                            Warning::SEVERITY_WARNING,
+                            Issue::SEVERITY_WARNING,
                             __CLASS__
                         ));
                     }

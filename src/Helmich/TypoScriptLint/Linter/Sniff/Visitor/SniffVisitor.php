@@ -1,13 +1,13 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptParser\Parser\Traverser\Visitor;
 
 interface SniffVisitor extends Visitor
 {
     /**
-     * @return Warning[]
+     * @return Issue[]
      */
-    public function getWarnings();
+    public function getIssues();
 }

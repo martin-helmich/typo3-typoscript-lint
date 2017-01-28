@@ -12,7 +12,7 @@ use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\NestingConsistencyVisitor
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Warning
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  *
  * @medium
  */
@@ -44,7 +44,7 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->applyVisitorOnStatements($statements);
 
-        $warnings = $this->visitor->getWarnings();
+        $warnings = $this->visitor->getIssues();
 
         $this->assertCount(1, $warnings);
         $this->assertEquals(
@@ -62,7 +62,7 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->applyVisitorOnStatements($statements);
 
-        $warnings = $this->visitor->getWarnings();
+        $warnings = $this->visitor->getIssues();
 
         $this->assertCount(2, $warnings);
         $this->assertEquals(
@@ -88,7 +88,7 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->applyVisitorOnStatements($statements);
 
-        $warnings = $this->visitor->getWarnings();
+        $warnings = $this->visitor->getIssues();
 
         $this->assertCount(1, $warnings);
         $this->assertEquals(
@@ -111,7 +111,7 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->applyVisitorOnStatements($statements);
 
-        $warnings = $this->visitor->getWarnings();
+        $warnings = $this->visitor->getIssues();
 
         $this->assertCount(0, $warnings);
     }

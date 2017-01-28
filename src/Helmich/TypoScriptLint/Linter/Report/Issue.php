@@ -12,7 +12,7 @@ use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
  * @package    Helmich\TypoScriptLint
  * @subpackage Linter\Report
  */
-class Warning
+class Issue
 {
 
     const SEVERITY_INFO = "info";
@@ -38,7 +38,7 @@ class Warning
      * Creates a new warning from a parse error.
      *
      * @param ParseError $parseError The parse error to convert into a warning.
-     * @return Warning The converted warning.
+     * @return Issue The converted warning.
      */
     public static function createFromParseError(ParseError $parseError)
     {
@@ -55,7 +55,7 @@ class Warning
      * Creates a new warning from a tokenizer error.
      *
      * @param TokenizerException $tokenizerException The tokenizer error to convert into a warning.
-     * @return Warning The converted warning.
+     * @return Issue The converted warning.
      */
     public static function createFromTokenizerError(TokenizerException $tokenizerException)
     {
@@ -74,7 +74,7 @@ class Warning
      * @param int    $line     The original source line the warning belongs to.
      * @param int    $column   The source column.
      * @param string $message  The warning message.
-     * @param string $severity The warning severity (see Warning::SEVERITY_* constants).
+     * @param string $severity The warning severity (see Issue::SEVERITY_* constants).
      * @param string $source   An arbitrary identifier for the generator of this warning.
      */
     public function __construct($line, $column, $message, $severity, $source)
@@ -119,7 +119,7 @@ class Warning
     /**
      * Gets the warning severity.
      *
-     * @return string The warning severity (should be one of the Warning::SEVERITY_* constants).
+     * @return string The warning severity (should be one of the Issue::SEVERITY_* constants).
      */
     public function getSeverity()
     {

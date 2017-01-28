@@ -3,7 +3,7 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter
  * @uses   \Helmich\TypoScriptLint\Linter\Report\File
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Report
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Warning
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  */
 class ConsoleReportPrinterTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ CHECKSTYLE REPORT
  412 Message #3
 
 SUMMARY
-3 warnings in total.
+3 issues in total. (1 errors, 1 warnings, 1 infos)
 ';
 
     /** @var BufferedOutput */
@@ -46,11 +46,11 @@ SUMMARY
     public function testPlaintextReportIsCorrectlyGenerated()
     {
         $file1 = new File('foobar.tys');
-        $file1->addWarning(new Warning(123, 12, 'Message #1', Warning::SEVERITY_INFO, 'foobar'));
-        $file1->addWarning(new Warning(124, null, 'Message #2', Warning::SEVERITY_WARNING, 'foobar'));
+        $file1->addIssue(new Issue(123, 12, 'Message #1', Issue::SEVERITY_INFO, 'foobar'));
+        $file1->addIssue(new Issue(124, null, 'Message #2', Issue::SEVERITY_WARNING, 'foobar'));
 
         $file2 = new File('bar.txt');
-        $file2->addWarning(new Warning(412, 141, 'Message #3', Warning::SEVERITY_ERROR, 'barbaz'));
+        $file2->addIssue(new Issue(412, 141, 'Message #3', Issue::SEVERITY_ERROR, 'barbaz'));
 
         $report = new Report();
         $report->addFile($file1);

@@ -3,7 +3,7 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
@@ -28,7 +28,7 @@ class OperatorWhitespaceSniffTest extends \PHPUnit_Framework_TestCase
                 new Token(TokenInterface::TYPE_RIGHTVALUE, "bar", 1)
             ],
             [
-                new Warning(1, null, 'No whitespace after object accessor.', 'warning', OperatorWhitespaceSniff::class)
+                new Issue(1, null, 'No whitespace after object accessor.', 'warning', OperatorWhitespaceSniff::class)
             ]
         ];
     }
@@ -46,6 +46,6 @@ class OperatorWhitespaceSniffTest extends \PHPUnit_Framework_TestCase
 
         $this->sniff->sniff($tokens, $file, $conf);
 
-        assertThat($file->getWarnings(), equalTo($warnings));
+        assertThat($file->getIssues(), equalTo($warnings));
     }
 }

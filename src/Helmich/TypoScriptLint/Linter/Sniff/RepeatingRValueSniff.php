@@ -3,7 +3,7 @@ namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
 class RepeatingRValueSniff implements TokenStreamSniffInterface
@@ -44,14 +44,13 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
             $this->knownRightValues[$token->getValue()]++;
 
             if ($this->knownRightValues[$token->getValue()] > 1) {
-                $warning = new Warning(
+                $file->addIssue(new Issue(
                     $token->getLine(),
                     null,
                     'Duplicated value "' . $token->getValue() . '". Consider extracting it into a constant.',
-                    Warning::SEVERITY_WARNING,
+                    Issue::SEVERITY_WARNING,
                     __CLASS__
-                );
-                $file->addWarning($warning);
+                ));
             }
         }
     }

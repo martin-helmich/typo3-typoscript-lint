@@ -49,15 +49,15 @@ class CheckstyleReportPrinter implements Printer
             $xmlFile = $xml->createElement('file');
             $xmlFile->setAttribute('name', $file->getFilename());
 
-            foreach ($file->getWarnings() as $warning) {
+            foreach ($file->getIssues() as $issue) {
                 $xmlWarning = $xml->createElement('error');
-                $xmlWarning->setAttribute('line', $warning->getLine());
-                $xmlWarning->setAttribute('severity', $warning->getSeverity());
-                $xmlWarning->setAttribute('message', $warning->getMessage());
-                $xmlWarning->setAttribute('source', $warning->getSource());
+                $xmlWarning->setAttribute('line', $issue->getLine());
+                $xmlWarning->setAttribute('severity', $issue->getSeverity());
+                $xmlWarning->setAttribute('message', $issue->getMessage());
+                $xmlWarning->setAttribute('source', $issue->getSource());
 
-                if ($warning->getColumn() !== null) {
-                    $xmlWarning->setAttribute('column', $warning->getColumn());
+                if ($issue->getColumn() !== null) {
+                    $xmlWarning->setAttribute('column', $issue->getColumn());
                 }
 
                 $xmlFile->appendChild($xmlWarning);
