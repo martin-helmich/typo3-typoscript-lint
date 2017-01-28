@@ -6,8 +6,11 @@ use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\LinterInterface;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\Printer;
-use Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator;
 use Helmich\TypoScriptLint\Util\Finder;
+use Helmich\TypoScriptLint\Linter\Report\File;
+use Helmich\TypoScriptLint\Logging\NullLogger;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -27,26 +30,32 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
     private
         $linter,
         $linterConfigurationLocator,
-        $printerLocator,
         $finder;
+
+    /** @var ObjectProphecy */
+    private $loggerBuilder;
 
     public function setUp()
     {
         $this->linter                     = $this->getMockBuilder(LinterInterface::class)->getMock();
+        $this->linter->expects(any())->method('lintFile')->willReturn(new File('foo.ts'));
+
         $this->linterConfigurationLocator = $this
             ->getMockBuilder(ConfigurationLocator::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->printerLocator             = $this->getMockBuilder(PrinterLocator::class)->getMock();
-        $this->finder                     = $this->getMockBuilder(Finder::class)
+        $this->finder                     = $this
+            ->getMockBuilder(Finder::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->loggerBuilder = $this->prophesize('Helmich\\TypoScriptLint\\Logging\\LinterLoggerBuilder');
 
         $this->command = new LintCommand();
 
         $this->command->injectLinter($this->linter);
         $this->command->injectLinterConfigurationLocator($this->linterConfigurationLocator);
-        $this->command->injectReportPrinterLocator($this->printerLocator);
+        $this->command->injectLoggerBuilder($this->loggerBuilder->reveal());
         $this->command->injectFinder($this->finder);
     }
 
@@ -91,29 +100,21 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $config  = $this
-            ->getMockBuilder(LinterConfiguration::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $config = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
         $config->expects(any())->method('getFilePatterns')->willReturn([]);
 
-        $printer = $this->getMockBuilder(Printer::class)->getMock();
+        $logger = new NullLogger();
 
         $out = $this->getMock(OutputInterface::class);
 
         $this->linterConfigurationLocator
-            ->expects($this->once())
+            ->expects(once())
             ->method('loadConfiguration')
-            ->with('config.yml')->willReturn($config);
-        $this->printerLocator
-            ->expects($this->once())
-            ->method('createPrinter')
-            ->with('txt', $this->identicalTo($out))
-            ->willReturn($printer);
-        $this->finder
-            ->expects($this->once())
-            ->method('getFilenames')
-            ->willReturnArgument(0);
+            ->with('config.yml')
+            ->willReturn($config);
+
+        $this->loggerBuilder->createLogger('txt', Argument::exact($out), Argument::exact($out))->shouldBeCalled()->willReturn($logger);
+        $this->finder->expects($this->once())->method('getFilenames')->willReturnArgument(0);
 
         $this->runCommand($in, $out);
     }

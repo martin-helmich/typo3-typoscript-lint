@@ -5,7 +5,7 @@ use Helmich\TypoScriptLint\Exception\BadOutputFileException;
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterInterface;
 use Helmich\TypoScriptLint\Linter\Report\Report;
-use Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator;
+use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
 use Helmich\TypoScriptLint\Util\Finder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\ConsoleEvents;
@@ -34,8 +34,8 @@ class LintCommand extends Command
     /** @var ConfigurationLocator */
     private $linterConfigurationLocator;
 
-    /** @var PrinterLocator */
-    private $printerLocator;
+    /** @var LinterLoggerBuilder */
+    private $loggerBuilder;
 
     /** @var Finder */
     private $finder;
@@ -66,14 +66,14 @@ class LintCommand extends Command
     }
 
     /**
-     * Injects a locator for report printers.
+     * Injects a logger builder
      *
-     * @param PrinterLocator $printerLocator A report printer locator.
+     * @param LinterLoggerBuilder $loggerBuilder A logger builder
      * @return void
      */
-    public function injectReportPrinterLocator(PrinterLocator $printerLocator)
+    public function injectLoggerBuilder(LinterLoggerBuilder $loggerBuilder)
     {
-        $this->printerLocator = $printerLocator;
+        $this->loggerBuilder = $loggerBuilder;
     }
 
     /**
@@ -103,7 +103,7 @@ class LintCommand extends Command
             ->setName('lint')
             ->setDescription('Check coding style for TypoScript file.')
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use', 'tslint.yml')
-            ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'text')
+            ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
             ->addOption('exit-code', 'e', InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
@@ -133,17 +133,21 @@ class LintCommand extends Command
             ? $output
             : new StreamOutput(fopen($input->getOption('output'), 'w'));
 
-        $printer       = $this->printerLocator->createPrinter($input->getOption('format'), $reportOutput);
-        $report        = new Report();
+        $logger = $this->loggerBuilder->createLogger($input->getOption('format'), $reportOutput, $output);
 
+        $report        = new Report();
         $patterns = $configuration->getFilePatterns();
 
-        foreach ($this->finder->getFilenames($paths, $patterns) as $filename) {
-            $output->writeln("Linting input file <comment>{$filename}</comment>.");
-            $this->linter->lintFile($filename, $report, $configuration, $output);
+        $files = $this->finder->getFilenames($paths, $patterns);
+        $logger->notifyFiles($files);
+
+        foreach ($files as $filename) {
+            $logger->notifyFileStart($filename);
+            $fileReport = $this->linter->lintFile($filename, $report, $configuration, $logger);
+            $logger->notifyFileComplete($filename, $fileReport);
         }
 
-        $printer->writeReport($report);
+        $logger->notifyRunComplete($report);
 
         if ($exitWithExitCode) {
             $exitCode = ($report->countWarnings() > 0) ? 2 : 0;

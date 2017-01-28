@@ -12,6 +12,7 @@ use Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff;
 use Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff;
 use Helmich\TypoScriptLint\Linter\Sniff\RepeatingRValueSniff;
 use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
+use Helmich\TypoScriptLint\Logging\NullLogger;
 use Helmich\TypoScriptParser\Parser\Parser;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
 use Prophecy\Argument;
@@ -63,7 +64,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
             $typoscriptFile,
             $report,
             $config,
-            new NullOutput()
+            new NullLogger()
         );
 
         $printActualWarnings = function() use ($report) {

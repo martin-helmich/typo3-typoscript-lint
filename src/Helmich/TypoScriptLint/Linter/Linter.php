@@ -5,13 +5,13 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Warning;
 use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
+use Helmich\TypoScriptLint\Logging\LinterLoggerInterface;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
 use Helmich\TypoScriptParser\Parser\ParseError;
 use Helmich\TypoScriptParser\Parser\ParserInterface;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class Linter implements LinterInterface
 {
@@ -33,12 +33,13 @@ class Linter implements LinterInterface
     }
 
     /**
-     * @param string              $filename
-     * @param Report              $report
-     * @param LinterConfiguration $configuration
-     * @param OutputInterface     $output
+     * @param string                $filename
+     * @param Report                $report
+     * @param LinterConfiguration   $configuration
+     * @param LinterLoggerInterface $logger
+     * @return File
      */
-    public function lintFile($filename, Report $report, LinterConfiguration $configuration, OutputInterface $output)
+    public function lintFile($filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger)
     {
         $file = new File($filename);
 
@@ -46,8 +47,8 @@ class Linter implements LinterInterface
             $tokens     = $this->tokenizer->tokenizeStream($filename);
             $statements = $this->parser->parseTokens($tokens);
 
-            $this->lintTokenStream($tokens, $file, $configuration, $output);
-            $this->lintSyntaxTree($statements, $file, $configuration, $output);
+            $file = $this->lintTokenStream($tokens, $file, $configuration, $logger);
+            $file = $this->lintSyntaxTree($statements, $file, $configuration, $logger);
         } catch (TokenizerException $tokenizerException) {
             $file->addWarning(Warning::createFromTokenizerError($tokenizerException));
         } catch (ParseError $parseError) {
@@ -57,45 +58,63 @@ class Linter implements LinterInterface
         if (count($file->getWarnings()) > 0) {
             $report->addFile($file);
         }
+
+        return $file;
     }
 
     /**
-     * @param TokenInterface[]    $tokens
-     * @param File                $file
-     * @param LinterConfiguration $configuration
-     * @param OutputInterface     $output
+     * @param TokenInterface[]      $tokens
+     * @param File                  $file
+     * @param LinterConfiguration   $configuration
+     * @param LinterLoggerInterface $logger
+     * @return File
      */
     private function lintTokenStream(
         array $tokens,
         File $file,
         LinterConfiguration $configuration,
-        OutputInterface $output
+        LinterLoggerInterface $logger
     ) {
         $sniffs = $this->sniffLocator->getTokenStreamSniffs($configuration);
 
         foreach ($sniffs as $sniff) {
-            $output->writeln('=> <info>Executing sniff <comment>' . get_class($sniff) . '</comment>.</info>');
-            $sniff->sniff($tokens, $file, $configuration);
+            $sniffReport = $file->cloneEmpty();
+
+            $logger->notifyFileSniffStart($file->getFilename(), get_class($sniff));
+            $sniff->sniff($tokens, $sniffReport, $configuration);
+
+            $file = $file->merge($sniffReport);
+            $logger->nofifyFileSniffComplete($file->getFilename(), get_class($sniff), $sniffReport);
         }
+
+        return $file;
     }
 
     /**
-     * @param Statement[]         $statements
-     * @param File                $file
-     * @param LinterConfiguration $configuration
-     * @param OutputInterface     $output
+     * @param Statement[]           $statements
+     * @param File                  $file
+     * @param LinterConfiguration   $configuration
+     * @param LinterLoggerInterface $logger
+     * @return File
      */
     private function lintSyntaxTree(
         array $statements,
         File $file,
         LinterConfiguration $configuration,
-        OutputInterface $output
+        LinterLoggerInterface $logger
     ) {
         $sniffs = $this->sniffLocator->getSyntaxTreeSniffs($configuration);
 
         foreach ($sniffs as $sniff) {
-            $output->writeln('=> <info>Executing sniff <comment>' . get_class($sniff) . '</comment>.</info>');
-            $sniff->sniff($statements, $file, $configuration);
+            $sniffReport = $file->cloneEmpty();
+
+            $logger->notifyFileSniffStart($file->getFilename(), get_class($sniff));
+            $sniff->sniff($statements, $sniffReport, $configuration);
+
+            $file = $file->merge($sniffReport);
+            $logger->nofifyFileSniffComplete($file->getFilename(), get_class($sniff), $sniffReport);
         }
+
+        return $file;
     }
 }

@@ -65,4 +65,27 @@ class File
         );
         return $this->warnings;
     }
+
+    /**
+     * Creates a new empty report for the same file
+     *
+     * @return File The new report
+     */
+    public function cloneEmpty()
+    {
+        return new static($this->filename);
+    }
+
+    /**
+     * Merges this file report with another file report
+     *
+     * @param File $other The file report to merge this report with
+     * @return File The merged report
+     */
+    public function merge(File $other)
+    {
+        $new = new static($this->filename);
+        $new->warnings = array_merge($this->warnings, $other->warnings);
+        return $new;
+    }
 }
