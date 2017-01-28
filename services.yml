@@ -9,7 +9,7 @@ services:
     calls:
       - [injectLinter, ['@linter']]
       - [injectLinterConfigurationLocator, ['@linter_configuration_locator']]
-      - [injectReportPrinterLocator, ['@printer_locator']]
+      - [injectLoggerBuilder, ['@logger_builder']]
       - [injectFinder, ['@finder']]
       - [injectEventDispatcher, ['@dispatcher']]
   parse_command:
@@ -24,8 +24,8 @@ services:
   linter_configuration_locator:
     class: Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
     arguments: ['@config_loader', '@config_processor']
-  printer_locator:
-    class: Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator
+  logger_builder:
+    class: Helmich\TypoScriptLint\Logging\LinterLoggerBuilder
   sniff_locator:
     class: Helmich\TypoScriptLint\Linter\Sniff\SniffLocator
 

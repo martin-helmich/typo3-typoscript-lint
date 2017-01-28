@@ -1,18 +1,19 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter;
 
+use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
-use Symfony\Component\Console\Output\OutputInterface;
+use Helmich\TypoScriptLint\Logging\LinterLoggerInterface;
 
 interface LinterInterface
 {
 
     /**
-     * @param                                                    $filename
-     * @param \Helmich\TypoScriptLint\Linter\Report\Report       $report
-     * @param \Helmich\TypoScriptLint\Linter\LinterConfiguration $configuration
-     * @param \Symfony\Component\Console\Output\OutputInterface  $output
-     * @return
+     * @param string                $filename
+     * @param Report                $report
+     * @param LinterConfiguration   $configuration
+     * @param LinterLoggerInterface $logger
+     * @return File
      */
-    public function lintFile($filename, Report $report, LinterConfiguration $configuration, OutputInterface $output);
+    public function lintFile($filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger);
 }
