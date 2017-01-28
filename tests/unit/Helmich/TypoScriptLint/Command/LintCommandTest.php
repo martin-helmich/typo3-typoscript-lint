@@ -13,6 +13,7 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Class LintCommandTest
@@ -33,7 +34,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         $finder;
 
     /** @var ObjectProphecy */
-    private $loggerBuilder;
+    private $loggerBuilder, $eventDispatcher;
 
     public function setUp()
     {
@@ -50,6 +51,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->loggerBuilder = $this->prophesize('Helmich\\TypoScriptLint\\Logging\\LinterLoggerBuilder');
+        $this->eventDispatcher = $this->prophesize(EventDispatcher::class);
 
         $this->command = new LintCommand();
 
@@ -57,6 +59,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         $this->command->injectLinterConfigurationLocator($this->linterConfigurationLocator);
         $this->command->injectLoggerBuilder($this->loggerBuilder->reveal());
         $this->command->injectFinder($this->finder);
+        $this->command->injectEventDispatcher($this->eventDispatcher->reveal());
     }
 
     private function runCommand(InputInterface $in, OutputInterface $out)

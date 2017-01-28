@@ -4,6 +4,7 @@ namespace Helmich\TypoScriptLint\Command;
 use Helmich\TypoScriptLint\Exception\BadOutputFileException;
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterInterface;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
 use Helmich\TypoScriptLint\Util\Finder;
@@ -149,14 +150,18 @@ class LintCommand extends Command
 
         $logger->notifyRunComplete($report);
 
-        if ($exitWithExitCode) {
-            $exitCode = ($report->countIssues() > 0) ? 2 : 0;
-            $this->eventDispatcher->addListener(
-                ConsoleEvents::TERMINATE,
-                function (ConsoleTerminateEvent $event) use ($exitCode) {
-                    $event->setExitCode($exitCode);
-                }
-            );
+        $exitCode = 0;
+        if ($report->countIssuesBySeverity(Issue::SEVERITY_ERROR) > 0) {
+            $exitCode = 2;
+        } else if ($exitWithExitCode && $report->countIssues() > 0) {
+            $exitCode = 2;
         }
+
+        $this->eventDispatcher->addListener(
+            ConsoleEvents::TERMINATE,
+            function (ConsoleTerminateEvent $event) use ($exitCode) {
+                $event->setExitCode($exitCode);
+            }
+        );
     }
 }
