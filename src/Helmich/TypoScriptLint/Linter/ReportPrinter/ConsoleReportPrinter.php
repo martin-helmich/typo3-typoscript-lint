@@ -2,7 +2,7 @@
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\Report;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -45,24 +45,24 @@ class ConsoleReportPrinter implements Printer
         $this->output->writeln('<comment>CHECKSTYLE REPORT</comment>');
 
         $styleMap = [
-            Warning::SEVERITY_ERROR => 'error',
-            Warning::SEVERITY_WARNING => 'comment',
-            Warning::SEVERITY_INFO => 'info',
+            Issue::SEVERITY_ERROR   => 'error',
+            Issue::SEVERITY_WARNING => 'comment',
+            Issue::SEVERITY_INFO    => 'info',
         ];
 
         foreach ($report->getFiles() as $file) {
             $this->output->writeln("=> <comment>{$file->getFilename()}</comment>.");
-            foreach ($file->getWarnings() as $warning) {
+            foreach ($file->getIssues() as $issue) {
                 $count++;
 
-                $style = $styleMap[$warning->getSeverity()];
+                $style = $styleMap[$issue->getSeverity()];
 
                 $this->output->writeln(
                     sprintf(
                         '<comment>%4d <%s>%s</%s></comment>',
-                        $warning->getLine(),
+                        $issue->getLine(),
                         $style,
-                        $warning->getMessage(),
+                        $issue->getMessage(),
                         $style
                     )
                 );
@@ -71,6 +71,6 @@ class ConsoleReportPrinter implements Printer
 
         $this->output->writeln("");
         $this->output->writeln('<comment>SUMMARY</comment>');
-        $this->output->writeln("<info><comment>$count</comment> warnings in total.</info>");
+        $this->output->writeln("<info><comment>$count</comment> issues in total.</info>");
     }
 }

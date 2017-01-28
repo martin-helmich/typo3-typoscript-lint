@@ -1,7 +1,7 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
@@ -12,17 +12,17 @@ class DuplicateAssignmentVisitor implements SniffVisitor
     /** @var Assignment[] */
     private $assignments = [];
 
-    /** @var Warning[] */
-    private $warnings = [];
+    /** @var Issue[] */
+    private $issues = [];
 
     private $inCondition = false;
 
     /**
-     * @return Warning[]
+     * @return Issue[]
      */
-    public function getWarnings()
+    public function getIssues()
     {
-        return $this->warnings;
+        return $this->issues;
     }
 
     public function enterTree(array $statements)
@@ -39,7 +39,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
             if (isset($this->assignments[$statement->object->absoluteName])) {
                 /** @var Statement $lastAssignment */
                 $lastAssignment = $this->assignments[$statement->object->absoluteName];
-                $this->warnings[] = new Warning(
+                $this->issues[] = new Issue(
                     $lastAssignment->sourceLine,
                     null,
                     sprintf(
@@ -47,7 +47,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
                         $statement->object->absoluteName,
                         $statement->sourceLine
                     ),
-                    Warning::SEVERITY_WARNING,
+                    Issue::SEVERITY_WARNING,
                     'Helmich\TypoScriptLint\Linter\Sniff\DuplicateAssignmentSniff'
                 );
             }

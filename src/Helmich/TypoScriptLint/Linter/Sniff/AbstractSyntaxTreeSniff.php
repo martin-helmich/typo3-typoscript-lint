@@ -37,8 +37,8 @@ abstract class AbstractSyntaxTreeSniff implements SyntaxTreeSniffInterface
         $traverser->addVisitor($visitor);
         $traverser->walk();
 
-        foreach ($visitor->getWarnings() as $warning) {
-            $file->addWarning($warning);
+        foreach ($visitor->getIssues() as $issue) {
+            $file->addIssue($issue);
         }
     }
 

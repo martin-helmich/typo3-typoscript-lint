@@ -150,7 +150,7 @@ class LintCommand extends Command
         $logger->notifyRunComplete($report);
 
         if ($exitWithExitCode) {
-            $exitCode = ($report->countWarnings() > 0) ? 2 : 0;
+            $exitCode = ($report->countIssues() > 0) ? 2 : 0;
             $this->eventDispatcher->addListener(
                 ConsoleEvents::TERMINATE,
                 function (ConsoleTerminateEvent $event) use ($exitCode) {

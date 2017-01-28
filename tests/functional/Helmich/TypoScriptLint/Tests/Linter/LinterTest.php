@@ -4,7 +4,7 @@ namespace Helmich\TypoScriptLint\Tests\Functional\Linter;
 use Helmich\TypoScriptLint\Linter\Linter;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\Report;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 use Helmich\TypoScriptLint\Linter\Sniff\DuplicateAssignmentSniff;
 use Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff;
@@ -68,7 +68,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
         );
 
         $printActualWarnings = function() use ($report) {
-            $actualWarnings = $report->getFiles()[0]->getWarnings();
+            $actualWarnings = $report->getFiles()[0]->getIssues();
             $content = "";
             foreach ($actualWarnings as $warning) {
                 $content .= $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
@@ -83,7 +83,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(count($expectedWarnings) > 0 ? 1 : 0, $report->getFiles());
         if (count($expectedWarnings) > 0) {
-            $actualWarnings = $report->getFiles()[0]->getWarnings();
+            $actualWarnings = $report->getFiles()[0]->getIssues();
             $this->assertEquals($expectedWarnings, $actualWarnings, $printActualWarnings());
         }
     }
@@ -99,7 +99,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
             $reports = array_map(
                 function ($line) use ($file) {
                     $values = str_getcsv($line, ';');
-                    return new Warning(
+                    return new Issue(
                         $values[0],
                         $values[1],
                         $values[2],

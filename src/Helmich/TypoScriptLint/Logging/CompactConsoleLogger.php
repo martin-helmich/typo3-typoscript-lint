@@ -26,7 +26,7 @@ class CompactConsoleLogger implements LinterLoggerInterface
     private $fileCount;
 
     /** @var int */
-    private $warningCount = 0;
+    private $issueCount = 0;
 
     /** @var int */
     private $fileCompletedCount = 0;
@@ -68,14 +68,14 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
     public function notifyFileComplete($filename, File $report)
     {
-        if (count($report->getWarnings()) > 0) {
+        if (count($report->getIssues()) > 0) {
             $this->output->write("<comment>W</comment>");
         } else {
             $this->output->write("<info>.</info>");
         }
 
         $this->fileCompletedCount += 1;
-        $this->warningCount += count($report->getWarnings());
+        $this->issueCount += count($report->getIssues());
 
         if ($this->fileCompletedCount % self::OUTPUT_WIDTH === 0) {
             $this->printProgress();
@@ -97,8 +97,8 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
         $this->output->write("\n");
 
-        if ($this->warningCount > 0) {
-            $this->output->writeln("Completed with <comment>{$this->warningCount} warnings</comment>");
+        if ($this->issueCount > 0) {
+            $this->output->writeln("Completed with <comment>{$this->issueCount} issues</comment>");
 
             $this->printer->writeReport($report);
         } else {

@@ -2,7 +2,7 @@
 namespace Helmich\TypoScriptLint\Linter\Report;
 
 /**
- * Checkstyle report containing warnings for a single TypoScript file.
+ * Checkstyle report containing issues for a single TypoScript file.
  *
  * @author     Martin Helmich <typo3@martin-helmich.de>
  * @license    MIT
@@ -15,8 +15,8 @@ class File
     /** @var string */
     private $filename;
 
-    /** @var Warning[] */
-    private $warnings = [];
+    /** @var Issue[] */
+    private $issues = [];
 
     /**
      * Constructs a new file report.
@@ -39,31 +39,44 @@ class File
     }
 
     /**
-     * Adds a new warning for this file.
+     * Adds a new issue for this file.
      *
-     * @param Warning $warning The new warning.
+     * @param Issue $issue The new issue
      * @return void
      */
-    public function addWarning(Warning $warning)
+    public function addIssue(Issue $issue)
     {
-        $this->warnings[] = $warning;
+        $this->issues[] = $issue;
     }
 
     /**
-     * Gets all warnings for this file. The warnings will be sorted by line
+     * Gets all issues for this file. The issues will be sorted by line
      * numbers, not by order of addition to this report.
      *
-     * @return Warning[] The warnings for this file.
+     * @return Issue[] The issues for this file.
      */
-    public function getWarnings()
+    public function getIssues()
     {
         usort(
-            $this->warnings,
-            function (Warning $a, Warning $b) {
+            $this->issues,
+            function (Issue $a, Issue $b) {
                 return $a->getLine() - $b->getLine();
             }
         );
-        return $this->warnings;
+        return $this->issues;
+    }
+
+    /**
+     * Gets all issues for this file that have a certain severity.
+     *
+     * @param string $severity The severity. Should be one of the Issue class' SEVERITY_* constants
+     * @return Issue[] All issues with the given severity
+     */
+    public function getIssuesBySeverity($severity)
+    {
+        return array_filter($this->getIssues(), function(Issue $i) use ($severity) {
+            return $i->getSeverity() === $severity;
+        });
     }
 
     /**
@@ -85,7 +98,7 @@ class File
     public function merge(File $other)
     {
         $new = new static($this->filename);
-        $new->warnings = array_merge($this->warnings, $other->warnings);
+        $new->issues = array_merge($this->issues, $other->issues);
         return $new;
     }
 }

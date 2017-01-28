@@ -3,7 +3,7 @@ namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\Inspection\TokenInspections;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
 use Helmich\TypoScriptParser\Tokenizer\Token;
@@ -75,12 +75,12 @@ class IndentationSniff implements TokenStreamSniffInterface
             }
 
             if ($indentationLevel === 0 && self::isWhitespace($tokensInLine[0]) && strlen($tokensInLine[0]->getValue())) {
-                $file->addWarning($this->createWarning($line, $indentationLevel, $tokensInLine[0]->getValue()));
+                $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue()));
             } elseif ($indentationLevel > 0) {
                 if (!self::isWhitespace($tokensInLine[0])) {
-                    $file->addWarning($this->createWarning($line, $indentationLevel, ''));
+                    $file->addIssue($this->createIssue($line, $indentationLevel, ''));
                 } elseif ($tokensInLine[0]->getValue() !== $expectedIndentation) {
-                    $file->addWarning($this->createWarning($line, $indentationLevel, $tokensInLine[0]->getValue()));
+                    $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue()));
                 }
             }
 
@@ -160,13 +160,13 @@ class IndentationSniff implements TokenStreamSniffInterface
         return $indentationLevel;
     }
 
-    private function createWarning($line, $expectedLevel, $actual)
+    private function createIssue($line, $expectedLevel, $actual)
     {
         $indentCharacterCount       = ($expectedLevel * $this->indentPerLevel);
         $indentCharacterDescription = ($this->useSpaces ? 'space' : 'tab') . (($indentCharacterCount == 1) ? '' : 's');
 
         $expectedMessage = "Expected indent of {$indentCharacterCount} {$indentCharacterDescription}.";
 
-        return new Warning($line, strlen($actual), $expectedMessage, Warning::SEVERITY_WARNING, __CLASS__);
+        return new Issue($line, strlen($actual), $expectedMessage, Issue::SEVERITY_WARNING, __CLASS__);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\NestedAssignment;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
@@ -10,15 +10,15 @@ use Helmich\TypoScriptParser\Parser\AST\Statement;
 class NestingConsistencyVisitor implements SniffVisitor
 {
 
-    /** @var Warning[] */
-    private $warnings = [];
+    /** @var Issue[] */
+    private $issues = [];
 
     /**
-     * @return Warning[]
+     * @return Issue[]
      */
-    public function getWarnings()
+    public function getIssues()
     {
-        return $this->warnings;
+        return $this->issues;
     }
 
     public function enterTree(array $statements)
@@ -60,7 +60,7 @@ class NestingConsistencyVisitor implements SniffVisitor
                     $statement->object->relativeName
                 ) as $possibleObjectPath) {
                     if (isset($knownNestedObjectPaths[$possibleObjectPath])) {
-                        $this->warnings[] = new Warning(
+                        $this->issues[] = new Issue(
                             $statement->sourceLine,
                             null,
                             sprintf(
@@ -69,7 +69,7 @@ class NestingConsistencyVisitor implements SniffVisitor
                                 $possibleObjectPath,
                                 $knownNestedObjectPaths[$possibleObjectPath]
                             ),
-                            Warning::SEVERITY_WARNING,
+                            Issue::SEVERITY_WARNING,
                             'Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff'
                         );
                     }
@@ -80,7 +80,7 @@ class NestingConsistencyVisitor implements SniffVisitor
                                 $possibleObjectPath . '.'
                             ) === 0
                         ) {
-                            $commonPrefixWarnings[$key] = new Warning(
+                            $commonPrefixWarnings[$key] = new Issue(
                                 $statement->sourceLine,
                                 null,
                                 sprintf(
@@ -88,13 +88,13 @@ class NestingConsistencyVisitor implements SniffVisitor
                                     $key,
                                     $line
                                 ),
-                                Warning::SEVERITY_WARNING,
+                                Issue::SEVERITY_WARNING,
                                 'Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff'
                             );
                         }
                     }
                 }
-                $this->warnings = array_merge($this->warnings, array_values($commonPrefixWarnings));
+                $this->issues = array_merge($this->issues, array_values($commonPrefixWarnings));
             }
         }
     }
@@ -129,14 +129,14 @@ class NestingConsistencyVisitor implements SniffVisitor
                 $knownObjectPaths[$statement->object->relativeName] = $statement->sourceLine;
                 if ($statement instanceof NestedAssignment) {
                     if (isset($knownNestedObjectPaths[$statement->object->relativeName])) {
-                        $this->warnings[] = new Warning(
+                        $this->issues[] = new Issue(
                             $statement->sourceLine,
                             null,
                             sprintf(
                                 'Multiple nested statements for object path "%s". Consider merging them into one statement.',
                                 $statement->object->relativeName
                             ),
-                            Warning::SEVERITY_WARNING,
+                            Issue::SEVERITY_WARNING,
                             'Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff'
                         );
                     } else {

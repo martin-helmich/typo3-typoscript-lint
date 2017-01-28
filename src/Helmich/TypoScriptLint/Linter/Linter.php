@@ -2,8 +2,8 @@
 namespace Helmich\TypoScriptLint\Linter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
 use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
 use Helmich\TypoScriptLint\Logging\LinterLoggerInterface;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
@@ -50,12 +50,12 @@ class Linter implements LinterInterface
             $file = $this->lintTokenStream($tokens, $file, $configuration, $logger);
             $file = $this->lintSyntaxTree($statements, $file, $configuration, $logger);
         } catch (TokenizerException $tokenizerException) {
-            $file->addWarning(Warning::createFromTokenizerError($tokenizerException));
+            $file->addIssue(Issue::createFromTokenizerError($tokenizerException));
         } catch (ParseError $parseError) {
-            $file->addWarning(Warning::createFromParseError($parseError));
+            $file->addIssue(Issue::createFromParseError($parseError));
         }
 
-        if (count($file->getWarnings()) > 0) {
+        if (count($file->getIssues()) > 0) {
             $report->addFile($file);
         }
 

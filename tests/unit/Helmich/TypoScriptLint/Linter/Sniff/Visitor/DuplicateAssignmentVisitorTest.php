@@ -11,7 +11,7 @@ use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Warning
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  *
  * @medium
  */
@@ -35,7 +35,7 @@ class DuplicateAssignmentVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->applyVisitorOnStatements($statements);
 
-        $warnings = $this->visitor->getWarnings();
+        $warnings = $this->visitor->getIssues();
 
         $this->assertCount(1, $warnings);
         $this->assertEquals('Value of object "foo" is overwritten in line 2.', $warnings[0]->getMessage());
@@ -54,7 +54,7 @@ class DuplicateAssignmentVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->applyVisitorOnStatements($statements);
 
-        $warnings = $this->visitor->getWarnings();
+        $warnings = $this->visitor->getIssues();
 
         $this->assertCount(1, $warnings);
         $this->assertEquals('Value of object "foo.bar" is overwritten in line 3.', $warnings[0]->getMessage());
@@ -74,7 +74,7 @@ class DuplicateAssignmentVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->applyVisitorOnStatements($statements);
 
-        $warnings = $this->visitor->getWarnings();
+        $warnings = $this->visitor->getIssues();
 
         $this->assertCount(0, $warnings);
     }

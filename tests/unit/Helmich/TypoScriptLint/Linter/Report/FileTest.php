@@ -2,7 +2,7 @@
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
-use Helmich\TypoScriptLint\Linter\Report\Warning;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 
 /**
  * Class FileTest
@@ -28,11 +28,11 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
     public function testWarningsCanBeAdded()
     {
-        $warning = $this->getMockBuilder(Warning::class)->disableOriginalConstructor()->getMock();
-        $this->file->addWarning($warning);
+        $warning = $this->getMockBuilder(Issue::class)->disableOriginalConstructor()->getMock();
+        $this->file->addIssue($warning);
 
-        $this->assertCount(1, $this->file->getWarnings());
-        $this->assertSame($warning, $this->file->getWarnings()[0]);
+        $this->assertCount(1, $this->file->getIssues());
+        $this->assertSame($warning, $this->file->getIssues()[0]);
     }
 
     /**
@@ -40,17 +40,17 @@ class FileTest extends \PHPUnit_Framework_TestCase
      */
     public function testWarningsAreSortedByLineNumber()
     {
-        $warningBuilder = $this->getMockBuilder(Warning::class)->disableOriginalConstructor();
+        $warningBuilder = $this->getMockBuilder(Issue::class)->disableOriginalConstructor();
 
         $warning1 = $warningBuilder->getMock();
         $warning1->expects($this->any())->method('getLine')->willReturn(10);
         $warning2 = $warningBuilder->getMock();
         $warning2->expects($this->any())->method('getLine')->willReturn(1);
 
-        $this->file->addWarning($warning1);
-        $this->file->addWarning($warning2);
+        $this->file->addIssue($warning1);
+        $this->file->addIssue($warning2);
 
-        $this->assertSame($warning2, $this->file->getWarnings()[0]);
-        $this->assertSame($warning1, $this->file->getWarnings()[1]);
+        $this->assertSame($warning2, $this->file->getIssues()[0]);
+        $this->assertSame($warning1, $this->file->getIssues()[1]);
     }
 }
