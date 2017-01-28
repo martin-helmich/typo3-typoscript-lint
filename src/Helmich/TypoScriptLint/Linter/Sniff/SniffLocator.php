@@ -1,6 +1,7 @@
 <?php
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
+use Exception;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 
 class SniffLocator
@@ -14,7 +15,7 @@ class SniffLocator
             $this->sniffs = [];
             foreach ($configuration->getSniffConfigurations() as $sniffConfiguration) {
                 if (!class_exists($sniffConfiguration['class'])) {
-                    throw new \Exception(
+                    throw new Exception(
                         'Class "' . $sniffConfiguration['class'] . '" could not be loaded!', 1402948667
                     );
                 }
@@ -27,8 +28,8 @@ class SniffLocator
 
     /**
      * @param LinterConfiguration $configuration
-     * @return \Helmich\TypoScriptLint\Linter\Sniff\TokenStreamSniffInterface[]
-     * @throws \Exception
+     * @return TokenStreamSniffInterface[]
+     * @throws Exception
      */
     public function getTokenStreamSniffs(LinterConfiguration $configuration)
     {
@@ -45,8 +46,8 @@ class SniffLocator
 
     /**
      * @param LinterConfiguration $configuration
-     * @return \Helmich\TypoScriptLint\Linter\Sniff\SyntaxTreeSniffInterface[]
-     * @throws \Exception
+     * @return SyntaxTreeSniffInterface[]
+     * @throws Exception
      */
     public function getSyntaxTreeSniffs(LinterConfiguration $configuration)
     {

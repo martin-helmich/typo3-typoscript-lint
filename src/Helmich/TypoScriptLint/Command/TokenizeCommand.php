@@ -22,17 +22,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TokenizeCommand extends Command
 {
 
-    /** @var \Helmich\TypoScriptParser\Tokenizer\TokenizerInterface */
+    /** @var TokenizerInterface */
     private $tokenizer;
 
-    /** @var \Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface */
+    /** @var TokenPrinterInterface */
     private $tokenPrinter;
 
     /**
      * Injects a tokenizer.
      *
      * @internal
-     * @param \Helmich\TypoScriptParser\Tokenizer\TokenizerInterface $tokenizer The tokenizer.
+     * @param TokenizerInterface $tokenizer The tokenizer.
      * @return void
      */
     public function injectTokenizer(TokenizerInterface $tokenizer)
@@ -44,7 +44,7 @@ class TokenizeCommand extends Command
      * Injects a token printer.
      *
      * @internal
-     * @param \Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface $tokenPrinter The token printer.
+     * @param TokenPrinterInterface $tokenPrinter The token printer.
      * @return void
      */
     public function injectTokenPrinter(TokenPrinterInterface $tokenPrinter)
@@ -68,8 +68,8 @@ class TokenizeCommand extends Command
     /**
      * Executes this command.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input  Input options.
-     * @param \Symfony\Component\Console\Output\OutputInterface $output Output stream.
+     * @param InputInterface  $input  Input options.
+     * @param OutputInterface $output Output stream.
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)

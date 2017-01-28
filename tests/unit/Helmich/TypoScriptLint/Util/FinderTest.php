@@ -1,8 +1,10 @@
 <?php
-namespace Helmich\TypoScriptLint\Util;
+namespace Helmich\TypoScriptLint\Tests\Unit\Util;
 
-use org\bovigo\vfs\vfsStream;
+use Helmich\TypoScriptLint\Util\Filesystem;
+use Helmich\TypoScriptLint\Util\Finder;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * @covers \Helmich\TypoScriptLint\Util\Finder

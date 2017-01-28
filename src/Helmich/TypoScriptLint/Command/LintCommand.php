@@ -28,25 +28,25 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class LintCommand extends Command
 {
 
-    /** @var \Helmich\TypoScriptLint\Linter\LinterInterface */
+    /** @var LinterInterface */
     private $linter;
 
-    /** @var \Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator */
+    /** @var ConfigurationLocator */
     private $linterConfigurationLocator;
 
     /** @var LinterLoggerBuilder */
     private $loggerBuilder;
 
-    /** @var \Helmich\TypoScriptLint\Util\Finder */
+    /** @var Finder */
     private $finder;
 
-    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+    /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
     /**
      * Injects a linter.
      *
-     * @param \Helmich\TypoScriptLint\Linter\LinterInterface $linter The linter to use.
+     * @param LinterInterface $linter The linter to use.
      * @return void
      */
     public function injectLinter(LinterInterface $linter)
@@ -57,7 +57,7 @@ class LintCommand extends Command
     /**
      * Injects a locator for the linter configuration.
      *
-     * @param \Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator $configurationLocator The configuration locator.
+     * @param ConfigurationLocator $configurationLocator The configuration locator.
      * @return void
      */
     public function injectLinterConfigurationLocator(ConfigurationLocator $configurationLocator)
@@ -79,7 +79,7 @@ class LintCommand extends Command
     /**
      * Injects a finder for finding files.
      *
-     * @param \Helmich\TypoScriptLint\Util\Finder $finder The finder.
+     * @param Finder $finder The finder.
      * @return void
      */
     public function injectFinder(Finder $finder)
@@ -105,23 +105,18 @@ class LintCommand extends Command
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use', 'tslint.yml')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
-            ->addOption(
-                'exit-code',
-                'e',
-                InputOption::VALUE_NONE,
-                'Set this flag to exit with a non-zero exit code when there are warnings'
-            )
+            ->addOption('exit-code', 'e', InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }
 
     /**
      * Executes this command.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input  Input options.
-     * @param \Symfony\Component\Console\Output\OutputInterface $output Output stream.
+     * @param InputInterface  $input  Input options.
+     * @param OutputInterface $output Output stream.
      * @return void
      *
-     * @throws \Helmich\TypoScriptLint\Exception\BadOutputFileException
+     * @throws BadOutputFileException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -1,6 +1,7 @@
 <?php
-namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff\Visitor;
 
+use Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor;
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\NestedAssignment;
 use Helmich\TypoScriptParser\Parser\AST\ObjectPath;
@@ -9,8 +10,8 @@ use Helmich\TypoScriptParser\Parser\AST\Scalar;
 use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
 
 /**
- * @covers Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor
- * @uses   Helmich\TypoScriptLint\Linter\Report\Warning
+ * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor
+ * @uses   \Helmich\TypoScriptLint\Linter\Report\Warning
  *
  * @medium
  */

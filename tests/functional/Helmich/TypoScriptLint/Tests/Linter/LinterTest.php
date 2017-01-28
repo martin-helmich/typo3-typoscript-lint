@@ -1,5 +1,5 @@
 <?php
-namespace Helmich\TypoScriptLint\Tests\Linter;
+namespace Helmich\TypoScriptLint\Tests\Functional\Linter;
 
 use Helmich\TypoScriptLint\Linter\Linter;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;

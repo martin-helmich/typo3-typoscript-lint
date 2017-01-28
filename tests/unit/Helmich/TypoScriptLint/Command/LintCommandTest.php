@@ -1,6 +1,12 @@
 <?php
-namespace Helmich\TypoScriptLint\Command;
+namespace Helmich\TypoScriptLint\Tests\Unit\Command;
 
+use Helmich\TypoScriptLint\Command\LintCommand;
+use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
+use Helmich\TypoScriptLint\Linter\LinterConfiguration;
+use Helmich\TypoScriptLint\Linter\LinterInterface;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\Printer;
+use Helmich\TypoScriptLint\Util\Finder;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Prophecy\Argument;
@@ -17,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class LintCommandTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var \Helmich\TypoScriptLint\Command\LintCommand */
+    /** @var LintCommand */
     private $command;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -31,17 +37,15 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->linter                     = $this
-            ->getMockBuilder('\Helmich\TypoScriptLint\Linter\LinterInterface')
-            ->getMock();
+        $this->linter                     = $this->getMockBuilder(LinterInterface::class)->getMock();
         $this->linter->expects(any())->method('lintFile')->willReturn(new File('foo.ts'));
 
         $this->linterConfigurationLocator = $this
-            ->getMockBuilder('\Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator')
+            ->getMockBuilder(ConfigurationLocator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->finder                     = $this
-            ->getMockBuilder('Helmich\\TypoScriptLint\\Util\\Finder')
+            ->getMockBuilder(Finder::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -69,7 +73,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testCommandThrowsExceptionWhenBadOutputFileIsGiven()
     {
-        $in = $this->getMock('Symfony\Component\Console\Input\InputInterface');
+        $in = $this->getMock(InputInterface::class);
         $in->expects($this->any())->method('getOption')->willReturnMap(
             [
                 ['output', null],
@@ -79,14 +83,14 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         );
         $in->expects($this->once())->method('getArgument')->with('paths')->willReturn(['foo.ts']);
 
-        $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $out = $this->getMock(OutputInterface::class);
 
         $this->runCommand($in, $out);
     }
 
     public function testCommandCallsLinterWithCorrectDependencies()
     {
-        $in = $this->getMock('Symfony\Component\Console\Input\InputInterface');
+        $in = $this->getMock(InputInterface::class);
         $in->expects($this->any())->method('getArgument')->with('paths')->willReturn(['foo.ts']);
         $in->expects($this->any())->method('getOption')->willReturnMap(
             [
@@ -96,12 +100,12 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $config = $this->getMockBuilder('Helmich\TypoScriptLint\Linter\LinterConfiguration')->disableOriginalConstructor()->getMock();
+        $config = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
         $config->expects(any())->method('getFilePatterns')->willReturn([]);
 
         $logger = new NullLogger();
 
-        $out = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $out = $this->getMock(OutputInterface::class);
 
         $this->linterConfigurationLocator
             ->expects(once())

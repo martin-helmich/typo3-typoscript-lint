@@ -3,6 +3,7 @@ namespace Helmich\TypoScriptLint\Util;
 
 use SplFileInfo;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
+use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 
 /**
  * Helper class that selects files to analyze from a list of file and directory names.
@@ -66,7 +67,7 @@ class Finder
             } else {
                 $this->finder->files()->in($fileOrDirectoryName);
 
-                /** @var \Symfony\Component\Finder\SplFileInfo $subFileInfo */
+                /** @var SymfonySplFileInfo $subFileInfo */
                 foreach ($this->finder as $subFileInfo) {
                     $filenames[] = $subFileInfo->getPathname();
                 }

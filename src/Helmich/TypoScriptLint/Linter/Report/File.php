@@ -15,7 +15,7 @@ class File
     /** @var string */
     private $filename;
 
-    /** @var \Helmich\TypoScriptLint\Linter\Report\Warning[] */
+    /** @var Warning[] */
     private $warnings = [];
 
     /**
@@ -41,7 +41,7 @@ class File
     /**
      * Adds a new warning for this file.
      *
-     * @param \Helmich\TypoScriptLint\Linter\Report\Warning $warning The new warning.
+     * @param Warning $warning The new warning.
      * @return void
      */
     public function addWarning(Warning $warning)
@@ -53,7 +53,7 @@ class File
      * Gets all warnings for this file. The warnings will be sorted by line
      * numbers, not by order of addition to this report.
      *
-     * @return \Helmich\TypoScriptLint\Linter\Report\Warning[] The warnings for this file.
+     * @return Warning[] The warnings for this file.
      */
     public function getWarnings()
     {

@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Container;
 class Application extends SymfonyApplication
 {
 
-    /** @var \Symfony\Component\DependencyInjection\Container */
+    /** @var Container */
     private $container;
 
     public function __construct(Container $container)
