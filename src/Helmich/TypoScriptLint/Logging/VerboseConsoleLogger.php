@@ -7,6 +7,21 @@ use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\Printer;
 use Symfony\Component\Console\Output\OutputInterface;
 
+
+/**
+ * Verbose console logger
+ *
+ * This logger replaces the original, hard-coded default behaviour.
+ *
+ * Each and every one sniff is printed for each file. This behaviour was
+ * mothballed since it was WAY to verbose for large projects and will likely
+ * be entirely removed in later releases.
+ *
+ * @author     Martin Helmich <typo3@martin-helmich.de>
+ * @license    MIT
+ * @package    Helmich\TypoScriptLint
+ * @subpackage Logging
+ */
 class VerboseConsoleLogger implements LinterLoggerInterface
 {
     /** @var OutputInterface */
@@ -23,7 +38,6 @@ class VerboseConsoleLogger implements LinterLoggerInterface
 
     public function notifyFiles(array $files)
     {
-        // TODO: Implement notifyFileCount() method.
     }
 
     public function notifyFileStart($filename)
@@ -38,12 +52,10 @@ class VerboseConsoleLogger implements LinterLoggerInterface
 
     public function nofifyFileSniffComplete($filename, $sniffClass, File $report)
     {
-        // TODO: Implement nofifyFileSniffComplete() method.
     }
 
     public function notifyFileComplete($filename, File $report)
     {
-        // TODO: Implement notifyFileComplete() method.
     }
 
     public function notifyRunComplete(Report $report)

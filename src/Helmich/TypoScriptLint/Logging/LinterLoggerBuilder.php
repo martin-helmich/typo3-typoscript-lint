@@ -7,11 +7,20 @@ use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+
+/**
+ * Helper class responsible for building a logger based on given input parameters
+ *
+ * @author     Martin Helmich <typo3@martin-helmich.de>
+ * @license    MIT
+ * @package    Helmich\TypoScriptLint
+ * @subpackage Logging
+ */
 class LinterLoggerBuilder
 {
 
     /**
-     * Finds a suitable printer for printing lint results.
+     * Builds a suitable logger for logging lint progress and results.
      *
      * @param string          $outputFormat  The desired output format, as specified by the user, e.g. via command-line parameter
      * @param OutputInterface $reportOutput  Output stream for the result report (usually STDOUT or a file)

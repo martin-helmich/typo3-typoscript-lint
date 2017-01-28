@@ -4,10 +4,20 @@ namespace Helmich\TypoScriptLint\Logging;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
-use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\Printer;
 use Symfony\Component\Console\Output\OutputInterface;
 
+
+/**
+ * Compact console logger
+ *
+ * This logger prints a compact progress report to the console, similar to PHPUnit.
+ *
+ * @author     Martin Helmich <typo3@martin-helmich.de>
+ * @license    MIT
+ * @package    Helmich\TypoScriptLint
+ * @subpackage Logging
+ */
 class CompactConsoleLogger implements LinterLoggerInterface
 {
     const OUTPUT_WIDTH = 50;
@@ -15,8 +25,10 @@ class CompactConsoleLogger implements LinterLoggerInterface
     /** @var int */
     private $fileCount;
 
+    /** @var int */
     private $warningCount = 0;
 
+    /** @var int */
     private $fileCompletedCount = 0;
 
     /** @var OutputInterface */
