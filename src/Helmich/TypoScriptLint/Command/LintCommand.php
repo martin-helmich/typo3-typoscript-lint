@@ -104,7 +104,7 @@ class LintCommand extends Command
             ->setName('lint')
             ->setDescription('Check coding style for TypoScript file.')
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use', 'tslint.yml')
-            ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'text')
+            ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
             ->addOption(
                 'exit-code',
