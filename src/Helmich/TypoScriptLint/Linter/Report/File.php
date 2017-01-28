@@ -74,9 +74,9 @@ class File
      */
     public function getIssuesBySeverity($severity)
     {
-        return array_filter($this->getIssues(), function(Issue $i) use ($severity) {
+        return array_values(array_filter($this->getIssues(), function(Issue $i) use ($severity) {
             return $i->getSeverity() === $severity;
-        });
+        }));
     }
 
     /**
