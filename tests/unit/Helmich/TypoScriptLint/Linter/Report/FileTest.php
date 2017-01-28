@@ -53,4 +53,18 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($warning2, $this->file->getIssues()[0]);
         $this->assertSame($warning1, $this->file->getIssues()[1]);
     }
+
+    public function testIssuesCanBeFilteredBySeverity()
+    {
+        $notice = new Issue(1, 1, "some notice", Issue::SEVERITY_INFO, __CLASS__);
+        $warning = new Issue(1, 1, "some warning", Issue::SEVERITY_WARNING, __CLASS__);
+
+        $this->file->addIssue($notice);
+        $this->file->addIssue($warning);
+
+        $warnings = $this->file->getIssuesBySeverity(Issue::SEVERITY_WARNING);
+
+        assertThat(count($warnings), equalTo(1));
+        assertThat($warnings[0], identicalTo($warning));
+    }
 }
