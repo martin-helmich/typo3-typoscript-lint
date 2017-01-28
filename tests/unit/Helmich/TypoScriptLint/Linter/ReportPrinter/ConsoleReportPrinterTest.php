@@ -25,7 +25,7 @@ CHECKSTYLE REPORT
  412 Message #3
 
 SUMMARY
-3 issues in total.
+3 issues in total. (1 errors, 1 warnings, 1 infos)
 ';
 
     /** @var BufferedOutput */

@@ -69,8 +69,21 @@ class ConsoleReportPrinter implements Printer
             }
         }
 
+        $summary = [];
+
+        foreach ($styleMap as $severity => $style) {
+            $severityCount = $report->countIssuesBySeverity($severity);
+            if ($severityCount > 0) {
+                $summary[] = "<comment>$severityCount</comment> {$severity}s";
+            }
+        }
+
         $this->output->writeln("");
         $this->output->writeln('<comment>SUMMARY</comment>');
-        $this->output->writeln("<info><comment>$count</comment> issues in total.</info>");
+        $this->output->write("<info><comment>$count</comment> issues in total.</info>");
+
+        if ($count > 0) {
+            $this->output->writeln(" (" . implode(', ', $summary) . ")");
+        }
     }
 }

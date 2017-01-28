@@ -3,6 +3,7 @@ namespace Helmich\TypoScriptLint\Logging;
 
 
 use Helmich\TypoScriptLint\Linter\Report\File;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\Printer;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -68,8 +69,12 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
     public function notifyFileComplete($filename, File $report)
     {
-        if (count($report->getIssues()) > 0) {
+        if (count($report->getIssuesBySeverity(Issue::SEVERITY_ERROR)) > 0) {
+            $this->output->write("<error>E</error>");
+        } elseif (count($report->getIssuesBySeverity(Issue::SEVERITY_WARNING)) > 0) {
             $this->output->write("<comment>W</comment>");
+        } elseif (count($report->getIssuesBySeverity(Issue::SEVERITY_INFO)) > 0) {
+            $this->output->write("<comment>I</comment>");
         } else {
             $this->output->write("<info>.</info>");
         }
