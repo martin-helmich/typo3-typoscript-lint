@@ -5,7 +5,6 @@ use Helmich\TypoScriptLint\Exception\BadOutputFileException;
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterInterface;
 use Helmich\TypoScriptLint\Linter\Report\Report;
-use Helmich\TypoScriptLint\Linter\ReportPrinter\PrinterLocator;
 use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
 use Helmich\TypoScriptLint\Util\Finder;
 use Symfony\Component\Console\Command\Command;
