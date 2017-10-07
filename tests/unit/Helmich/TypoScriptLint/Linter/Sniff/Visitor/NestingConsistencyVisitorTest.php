@@ -66,13 +66,30 @@ class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $warnings);
         $this->assertEquals(
-            'Common path prefix with assignment to "foo.baz" in line 2. Consider merging them into a nested assignment.',
+            'Common path prefix "foo" with assignment to "foo.baz" in line 2. Consider merging them into a nested assignment.',
             $warnings[0]->getMessage()
         );
         $this->assertEquals(
-            'Common path prefix with assignment to "foo.bar" in line 1. Consider merging them into a nested assignment.',
+            'Common path prefix "foo" with assignment to "foo.bar" in line 1. Consider merging them into a nested assignment.',
             $warnings[1]->getMessage()
         );
+    }
+
+    public function testThresholdForCommonPrefixWarningIsConfigurable()
+    {
+        $statements = [
+            new Assignment(new ObjectPath('foo.bar', 'foo.bar'), new Scalar('test1'), 1),
+            new Assignment(new ObjectPath('foo.baz', 'foo.baz'), new Scalar('test2'), 2),
+        ];
+
+        $visitor = new NestingConsistencyVisitor(2);
+        $traverser = new Traverser($statements);
+        $traverser->addVisitor($visitor);
+        $traverser->walk();
+
+        $warnings = $this->visitor->getIssues();
+
+        assertThat(count($warnings), equalTo(0));
     }
 
     public function testWarningIsGeneratedForAssignmentWhenNestedAssignmentWithCommonPrefixExists()
