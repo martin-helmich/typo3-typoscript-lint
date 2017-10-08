@@ -39,8 +39,8 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": {
-            "Helmich\\TypoScriptLint": "src/"
+        "psr-4": {
+            "Helmich\\TypoScriptLint\\": "src/"
         }
     },
     "autoload-dev": {
