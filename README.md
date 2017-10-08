@@ -132,6 +132,13 @@ Consider another example:
 
 In this case, both statements could be nested in each other.
 
+#### Empty blocks
+
+Raises warnings about empty assignment blocks:
+
+    foo {
+    }
+
 ### Calling tslint
 
 Call tslint as follows:
