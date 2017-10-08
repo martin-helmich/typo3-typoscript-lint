@@ -9,3 +9,4 @@ sniffs:
   - class: RepeatingRValue
   - class: DuplicateAssignment
   - class: NestingConsistency
+  - class: EmptySection

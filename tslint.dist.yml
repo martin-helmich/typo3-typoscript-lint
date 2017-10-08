@@ -8,4 +8,5 @@ sniffs:
   - class: OperatorWhitespace
   - class: RepeatingRValue
   - class: DuplicateAssignment
+  - class: EmptySections
   - class: NestingConsistency
