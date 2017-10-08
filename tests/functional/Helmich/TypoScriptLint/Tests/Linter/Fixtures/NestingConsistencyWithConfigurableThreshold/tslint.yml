@@ -1,0 +1,4 @@
+sniffs:
+  - class: NestingConsistency
+    parameters:
+      commonPathPrefixThreshold: 2

@@ -2,6 +2,7 @@
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Report\Issue;
+use Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff;
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\NestedAssignment;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
@@ -12,6 +13,14 @@ class NestingConsistencyVisitor implements SniffVisitor
 
     /** @var Issue[] */
     private $issues = [];
+
+    /** @var integer */
+    private $commonPathPrefixThreshold;
+
+    public function __construct($commonPathPrefixThreshold = 1)
+    {
+        $this->commonPathPrefixThreshold = $commonPathPrefixThreshold;
+    }
 
     /**
      * @return Issue[]
@@ -56,9 +65,7 @@ class NestingConsistencyVisitor implements SniffVisitor
         foreach ($statements as $statement) {
             if ($statement instanceof Assignment || $statement instanceof NestedAssignment) {
                 $commonPrefixWarnings = [];
-                foreach ($this->getParentObjectPathsForObjectPath(
-                    $statement->object->relativeName
-                ) as $possibleObjectPath) {
+                foreach ($this->getParentObjectPathsForObjectPath($statement->object->relativeName) as $possibleObjectPath) {
                     if (isset($knownNestedObjectPaths[$possibleObjectPath])) {
                         $this->issues[] = new Issue(
                             $statement->sourceLine,
@@ -70,28 +77,45 @@ class NestingConsistencyVisitor implements SniffVisitor
                                 $knownNestedObjectPaths[$possibleObjectPath]
                             ),
                             Issue::SEVERITY_WARNING,
-                            'Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff'
+                            NestingConsistencySniff::class
                         );
                     }
 
+                    $assignmentsWithCommonPrefix = [];
+
                     foreach ($knownObjectPaths as $key => $line) {
-                        if ($key !== $statement->object->relativeName && strpos(
-                                $key,
-                                $possibleObjectPath . '.'
-                            ) === 0
-                        ) {
-                            $commonPrefixWarnings[$key] = new Issue(
-                                $statement->sourceLine,
-                                null,
-                                sprintf(
-                                    'Common path prefix with assignment to "%s" in line %d. Consider merging them into a nested assignment.',
-                                    $key,
-                                    $line
-                                ),
-                                Issue::SEVERITY_WARNING,
-                                'Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff'
-                            );
+                        if ($key !== $statement->object->relativeName && strpos($key, $possibleObjectPath . '.') === 0) {
+                            if (!isset($assignmentsWithCommonPrefix[$key])) {
+                                $assignmentsWithCommonPrefix[$key] = [];
+                            }
+                            $assignmentsWithCommonPrefix[$possibleObjectPath][] = [$key, $line];
                         }
+                    }
+
+                    //var_dump($assignmentsWithCommonPrefix, $this->commonPathPrefixThreshold);
+
+                    foreach ($assignmentsWithCommonPrefix as $commonPrefix => $lines) {
+                        if (count($lines) < $this->commonPathPrefixThreshold) {
+                            continue;
+                        }
+
+                        $descr = [];
+                        foreach($lines as $l) {
+                            $descr[] = sprintf('"%s" in line %d', $l[0], $l[1]);
+                        }
+
+                        $commonPrefixWarnings[$commonPrefix] = new Issue(
+                            $statement->sourceLine,
+                            null,
+                            sprintf(
+                                'Common path prefix "%s" with %s to %s. Consider merging them into a nested assignment.',
+                                $commonPrefix,
+                                count($lines) === 1 ? 'assignment' : 'assignments',
+                                implode(", ", $descr)
+                            ),
+                            Issue::SEVERITY_WARNING,
+                            NestingConsistencySniff::class
+                        );
                     }
                 }
                 $this->issues = array_merge($this->issues, array_values($commonPrefixWarnings));
@@ -137,7 +161,7 @@ class NestingConsistencyVisitor implements SniffVisitor
                                 $statement->object->relativeName
                             ),
                             Issue::SEVERITY_WARNING,
-                            'Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff'
+                            NestingConsistencySniff::class
                         );
                     } else {
                         $knownNestedObjectPaths[$statement->object->relativeName] = $statement->sourceLine;

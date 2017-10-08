@@ -9,3 +9,5 @@ sniffs:
   - class: RepeatingRValue
   - class: DuplicateAssignment
   - class: NestingConsistency
+    parameters:
+      commonPathPrefixThreshold: 1
