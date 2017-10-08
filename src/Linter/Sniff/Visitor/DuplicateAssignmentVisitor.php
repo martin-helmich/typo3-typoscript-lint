@@ -2,6 +2,7 @@
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Report\Issue;
+use Helmich\TypoScriptLint\Linter\Sniff\DuplicateAssignmentSniff;
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
@@ -48,7 +49,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
                         $statement->sourceLine
                     ),
                     Issue::SEVERITY_WARNING,
-                    'Helmich\TypoScriptLint\Linter\Sniff\DuplicateAssignmentSniff'
+                    DuplicateAssignmentSniff::class
                 );
             }
 
