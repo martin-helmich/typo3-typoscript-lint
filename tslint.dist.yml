@@ -8,7 +8,7 @@ sniffs:
   - class: OperatorWhitespace
   - class: RepeatingRValue
   - class: DuplicateAssignment
-  - class: EmptySections
+  - class: EmptySection
   - class: NestingConsistency
     parameters:
       commonPathPrefixThreshold: 1
