@@ -28,7 +28,7 @@
         "helmich/typo3-typoscript-parser": "~1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.8.0",
+        "phpunit/phpunit": "~5.7",
         "codeclimate/php-test-reporter": "dev-master",
         "symfony/phpunit-bridge": "^3.0",
         "mikey179/vfsStream": "^1.6"
