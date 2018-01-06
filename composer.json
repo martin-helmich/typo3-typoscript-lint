@@ -23,7 +23,8 @@
         "symfony/config": "~2.7|~3.0",
         "symfony/yaml": "~2.7|~3.0",
         "symfony/finder": "~2.7|~3.0",
-        "symfony/event-dispatcher": "~2.7",
+        "symfony/filesystem": "~2.7|~3.0",
+        "symfony/event-dispatcher": "~2.7|~3.0",
         "helmich/typo3-typoscript-parser": "~1.0"
     },
     "require-dev": {
