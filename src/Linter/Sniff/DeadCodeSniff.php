@@ -4,6 +4,7 @@ namespace Helmich\TypoScriptLint\Linter\Sniff;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
+use Helmich\TypoScriptParser\Parser\Parser;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
 
@@ -23,7 +24,7 @@ class DeadCodeSniff implements TokenStreamSniffInterface
      * @param TokenInterface[]    $tokens
      * @param File                $file
      * @param LinterConfiguration $configuration
-     * @return mixed
+     * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration)
     {
@@ -38,13 +39,20 @@ class DeadCodeSniff implements TokenStreamSniffInterface
             if (preg_match(static::ANNOTATION_COMMENT, $commentContent)) {
                 continue;
             } else if (preg_match(Tokenizer::TOKEN_OPERATOR_LINE, $commentContent, $matches)) {
-                $file->addIssue(new Issue(
-                    $token->getLine(),
-                    0,
-                    'Found commented code (' . $matches[0] . ').',
-                    Issue::SEVERITY_INFO,
-                    __CLASS__
-                ));
+                try {
+                    $parser = new Parser(new Tokenizer());
+                    $parser->parseString($commentContent);
+
+                    $file->addIssue(new Issue(
+                        $token->getLine(),
+                        0,
+                        'Found commented code (' . $matches[0] . ').',
+                        Issue::SEVERITY_INFO,
+                        __CLASS__
+                    ));
+                } catch (\Exception $e) {
+                    // pass
+                }
             }
         }
     }
