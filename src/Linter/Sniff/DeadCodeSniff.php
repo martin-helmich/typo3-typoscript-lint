@@ -24,7 +24,7 @@ class DeadCodeSniff implements TokenStreamSniffInterface
      * @param TokenInterface[]    $tokens
      * @param File                $file
      * @param LinterConfiguration $configuration
-     * @return mixed
+     * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration)
     {
@@ -50,7 +50,7 @@ class DeadCodeSniff implements TokenStreamSniffInterface
                         Issue::SEVERITY_INFO,
                         __CLASS__
                     ));
-                } catch (\Throwable $e) {
+                } catch (\Exception $e) {
                     // pass
                 }
             }
