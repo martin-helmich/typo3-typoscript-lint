@@ -37,4 +37,37 @@ class Application extends SymfonyApplication
 
         return $inputDefinition;
     }
+
+    /**
+     * Gets the currently installed version number.
+     *
+     * In contrast to the overridden parent method, this variant is Composer-aware and
+     * will its own version from the first-best composer.lock file that it can find.
+     *
+     * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/35
+     * @return string
+     */
+    public function getVersion()
+    {
+        $current = dirname(__FILE__);
+        while($current !== '/') {
+            if (file_exists($current . '/composer.lock')) {
+                $contents = file_get_contents($current . '/composer.lock');
+                $data = json_decode($contents);
+                $packages = array_filter($data->packages, function($package) {
+                    return $package->name === "helmich/typo3-typoscript-lint";
+                });
+
+                if (count($packages) > 0) {
+                    return $packages[0]->version;
+                }
+            }
+
+            $current = dirname($current);
+        }
+
+        return parent::getVersion();
+    }
+
+
 }
