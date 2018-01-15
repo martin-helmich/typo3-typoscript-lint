@@ -61,7 +61,10 @@ class Finder
         $filenames = [];
 
         foreach ($fileOrDirectoryNames as $fileOrDirectoryName) {
-            $fileOrDirectoryName = realpath($fileOrDirectoryName);
+            if ($fileOrDirectoryName{0} !== '/' && substr($fileOrDirectoryName, 0, 6) !== 'vfs://') {
+                $fileOrDirectoryName = realpath($fileOrDirectoryName);
+            }
+
             $fileInfo = $this->filesystem->openFile($fileOrDirectoryName);
             if ($fileInfo->isFile()) {
                 $filenames[] = $fileOrDirectoryName;
