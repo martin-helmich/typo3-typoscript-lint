@@ -6,6 +6,7 @@ services:
       - [injectTokenPrinter, ['@token_printer_structured']]
   lint_command:
     class: Helmich\TypoScriptLint\Command\LintCommand
+    public: true
     calls:
       - [injectLinter, ['@linter']]
       - [injectLinterConfigurationLocator, ['@linter_configuration_locator']]
