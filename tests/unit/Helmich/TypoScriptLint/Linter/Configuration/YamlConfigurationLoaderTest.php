@@ -2,6 +2,7 @@
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Configuration;
 use Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader;
 use Helmich\TypoScriptLint\Util\Filesystem;
+use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Parser;
@@ -41,6 +42,16 @@ class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
         $this->yamlParser->expects($this->once())->method('parse')->with('foo: bar')->willReturn(['foo' => 'bar']);
 
         $this->assertEquals(['foo' => 'bar'], $this->loader->load('foobar.yml'));
+    }
+
+    public function testLoadReturnsEmptyWhenFileIsNotFound()
+    {
+        if (!class_exists(FileLocatorFileNotFoundException::class)) {
+            $this->markTestSkipped('requires Symfony 3.0 or newer');
+        }
+
+        $this->fileLocator->expects($this->once())->method('locate')->with('foobar.yml')->willThrowException(new FileLocatorFileNotFoundException());
+        $this->assertEquals([], $this->loader->load('foobar.yml'));
     }
 
     public function testSupportReturnsTrueForYamlFilenames()

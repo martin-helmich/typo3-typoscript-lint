@@ -2,6 +2,7 @@
 namespace Helmich\TypoScriptLint\Linter\Configuration;
 
 use Helmich\TypoScriptLint\Util\Filesystem;
+use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Yaml\Parser as YamlParser;
@@ -47,11 +48,15 @@ class YamlConfigurationLoader extends FileLoader
      */
     public function load($resource, $type = null)
     {
-        $path         = $this->locator->locate($resource);
-        $file         = $this->filesystem->openFile($path);
-        $configValues = $this->yamlParser->parse($file->getContents());
+        try {
+            $path = $this->locator->locate($resource);
+            $file = $this->filesystem->openFile($path);
+            $configValues = $this->yamlParser->parse($file->getContents());
 
-        return $configValues;
+            return $configValues;
+        } catch (FileLocatorFileNotFoundException $error) {
+            return [];
+        }
     }
 
     /**
