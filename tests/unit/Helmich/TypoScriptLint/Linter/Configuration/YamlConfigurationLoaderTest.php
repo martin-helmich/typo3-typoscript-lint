@@ -46,8 +46,11 @@ class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadReturnsEmptyWhenFileIsNotFound()
     {
-        $this->fileLocator->expects($this->once())->method('locate')->with('foobar.yml')->willThrowException(new FileLocatorFileNotFoundException());
+        if (!class_exists(FileLocatorFileNotFoundException::class)) {
+            $this->markTestSkipped('requires Symfony 3.0 or newer');
+        }
 
+        $this->fileLocator->expects($this->once())->method('locate')->with('foobar.yml')->willThrowException(new FileLocatorFileNotFoundException());
         $this->assertEquals([], $this->loader->load('foobar.yml'));
     }
 
