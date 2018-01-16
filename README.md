@@ -26,6 +26,33 @@ and I noticed that no comparable tools exist for TypoScript. So I thought,
 "What the heck, let's go" and at some point realized that my little programming
 excercise might actually be useful to someone. So, that's that. Enjoy.
 
+Getting started
+---------------
+
+### Setup
+
+Install typo3-typoscript-lint with Composer:
+
+    composer require --dev helmich/typo3-typoscript-lint
+
+Of course, this works best if your TYPO3 project is also Composer-based. If it isn't, you can also install the Linter [globally using the `composer global`](https://getcomposer.org/doc/03-cli.md#global) command:
+
+    composer global require helmich/typo3-typoscript-lint
+
+### Usage
+
+Call typo3-typoscript-lint as follows:
+
+    vendor/bin/typoscript-lint lint path/to/your.ts
+
+By default, it will print a report on the console. To generate a checkstyle-format XML file, call as follows:
+
+    vendor/bin/typoscript-lint -f xml -o checkstyle.xml path/to/your.ts
+
+### Example
+
+[![asciicast](https://asciinema.org/a/rRUcSTGC5RUQpDizjHS6kPmy8.png)](https://asciinema.org/a/rRUcSTGC5RUQpDizjHS6kPmy8)
+
 Code validation
 ---------------
 
@@ -138,16 +165,6 @@ Raises warnings about empty assignment blocks:
 
     foo {
     }
-
-### Calling tslint
-
-Call tslint as follows:
-
-    bin/typoscript-lint lint path/to/your.ts
-
-By default, it will print a report on the console. To generate a checkstyle-format XML file, call as follows:
-
-    bin/typoscript-lint -f xml -o checkstyle.xml path/to/your.ts
 
 ### Configuration
 
