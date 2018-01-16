@@ -51,7 +51,7 @@ By default, it will print a report on the console. To generate a checkstyle-form
 
 ### Example
 
-[![asciicast](https://asciinema.org/a/rRUcSTGC5RUQpDizjHS6kPmy8.png)](https://asciinema.org/a/rRUcSTGC5RUQpDizjHS6kPmy8)
+[![asciicast](https://asciinema.org/a/1jOJv3Z6onWSdIkTAxAWsGgoy.png)](https://asciinema.org/a/1jOJv3Z6onWSdIkTAxAWsGgoy)
 
 Code validation
 ---------------
