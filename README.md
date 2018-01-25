@@ -43,7 +43,7 @@ Of course, this works best if your TYPO3 project is also Composer-based. If it i
 
 Call typo3-typoscript-lint as follows:
 
-    vendor/bin/typoscript-lint lint path/to/your.ts
+    vendor/bin/typoscript-lint path/to/your.ts
 
 By default, it will print a report on the console. To generate a checkstyle-format XML file, call as follows:
 
