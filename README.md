@@ -8,6 +8,27 @@ Author
 
 Martin Helmich (typo3 at martin-helmich dot de)
 
+Contents
+--------
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Synopsis](#synopsis)
+- [Why?!](#why)
+- [Getting started](#getting-started)
+  - [Setup](#setup)
+  - [Usage](#usage)
+  - [Example](#example)
+- [Code validation](#code-validation)
+  - [Features](#features)
+  - [Configuration](#configuration)
+- [Articles](#articles)
+- [Future features](#future-features)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 Synopsis
 --------
 
@@ -209,7 +230,14 @@ idea of what you can configure (granted, not much yet):
     - # ...
   ```
 
-### Future features
+Articles
+--------
+
+- [Code Quality in TYPO3 Projects](https://www.martin-helmich.de/en/blog/codequality-typo3.html)
+- [Continuous Integration in TYPO3 Projects (_German_)](https://t3n.de/magazin/continuous-integration-typo3-236672/)
+
+Future features
+---------------
 
 - Sniffs for more code smells (ideas are welcome)
 - Full test coverage (no, I did not do TDD. Shame on me.)
