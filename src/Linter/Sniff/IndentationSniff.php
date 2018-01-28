@@ -25,6 +25,13 @@ class IndentationSniff implements TokenStreamSniffInterface
     private $indentConditions = false;
 
     /**
+     * Track whether we are inside a condition.
+     *
+     * @var bool
+     */
+    private $insideCondition = false;
+
+    /**
      * @param array $parameters
      */
     public function __construct(array $parameters)
@@ -69,8 +76,8 @@ class IndentationSniff implements TokenStreamSniffInterface
                 }
             }
 
-            // Skip empty lines.
-            if ($this->isEmptyLine($tokensInLine)) {
+            // Skip empty lines and conditions inside conditions.
+            if ($this->isEmptyLine($tokensInLine) || $this->insideCondition && $tokensInLine[0] !== TokenInterface::TYPE_CONDITION && !self::isWhitespace($tokensInLine[0])) {
                 continue;
             }
 
@@ -125,6 +132,9 @@ class IndentationSniff implements TokenStreamSniffInterface
 
         foreach ($tokensInLine as $token) {
             if (in_array($token->getType(), $raisingIndentation)) {
+                if ($token->getType() === TokenInterface::TYPE_CONDITION_END) {
+                    $this->insideCondition = false;
+                }
                 return $indentationLevel - 1;
             }
         }
@@ -147,12 +157,15 @@ class IndentationSniff implements TokenStreamSniffInterface
             TokenInterface::TYPE_BRACE_OPEN,
         ];
 
-        if ($this->indentConditions) {
+        if ($this->indentConditions && $this->insideCondition === false) {
             $raisingIndentation[] = TokenInterface::TYPE_CONDITION;
         }
 
         foreach ($tokensInLine as $token) {
             if (in_array($token->getType(), $raisingIndentation)) {
+                if ($token->getType() === TokenInterface::TYPE_CONDITION) {
+                    $this->insideCondition = true;
+                }
                 return $indentationLevel + 1;
             }
         }
