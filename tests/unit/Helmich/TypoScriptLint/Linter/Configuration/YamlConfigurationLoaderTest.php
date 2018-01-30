@@ -54,9 +54,14 @@ class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $this->loader->load('foobar.yml'));
     }
 
-    public function testSupportReturnsTrueForYamlFilenames()
+    public function testSupportReturnsTrueForYamlFilenamesWithYmlExtension()
     {
         $this->assertTrue($this->loader->supports('foobar.yml'));
+    }
+
+    public function testSupportReturnsTrueForYamlFilenamesWithYamlExtension()
+    {
+        $this->assertTrue($this->loader->supports('foobar.yaml'));
     }
 
     public function testSupportReturnsFalseForNoneYamlFilenames()
