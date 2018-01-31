@@ -235,6 +235,8 @@ Articles
 
 - [Code Quality in TYPO3 Projects](https://www.martin-helmich.de/en/blog/codequality-typo3.html)
 - [Continuous Integration in TYPO3 Projects (_German_)](https://t3n.de/magazin/continuous-integration-typo3-236672/)
+- [Integrate TYPO3 Linting with Gitlab CI](https://daniel-siepmann.de/Posts/2018/2018-01-30-gitlab-ci-linting.html) _by Daniel Siepmann_
+- [Integrate Typoscript linter into VIM](https://daniel-siepmann.de/Posts/2018/2018-01-28-typoscript-linter-inside-vim.html) _by Daniel Siepmann_
 
 Future features
 ---------------
