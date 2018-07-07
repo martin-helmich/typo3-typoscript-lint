@@ -54,9 +54,9 @@ class Application extends SymfonyApplication
             if (file_exists($current . '/composer.lock')) {
                 $contents = file_get_contents($current . '/composer.lock');
                 $data = json_decode($contents);
-                $packages = array_filter($data->packages, function($package) {
+                $packages = array_values(array_filter($data->packages, function($package) {
                     return $package->name === "helmich/typo3-typoscript-lint";
-                });
+                }));
 
                 if (count($packages) > 0) {
                     return $packages[0]->version;
