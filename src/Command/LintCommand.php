@@ -1,4 +1,5 @@
 <?php
+
 namespace Helmich\TypoScriptLint\Command;
 
 use Helmich\TypoScriptLint\Exception\BadOutputFileException;
@@ -103,12 +104,21 @@ class LintCommand extends Command
         $this
             ->setName('lint')
             ->setDescription('Check coding style for TypoScript file.')
-            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use', 'tslint.yml')
+            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use', 'typoscript-lint.yml')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
             ->addOption('exit-code', 'e', InputOption::VALUE_NONE, '(DEPRECATED) Set this flag to exit with a non-zero exit code when there are warnings')
             ->addOption('fail-on-warnings', null, InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
+    }
+
+    private function getPossibleConfigFiles($param)
+    {
+        if ($param === 'typoscript-lint.yml') {
+            return ["tslint.yml", "typoscript-lint.yml"];
+        }
+
+        return [$param];
     }
 
     /**
@@ -122,7 +132,8 @@ class LintCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $configuration    = $this->linterConfigurationLocator->loadConfiguration($input->getOption('config'));
+        $configFiles      = $this->getPossibleConfigFiles($input->getOption('config'));
+        $configuration    = $this->linterConfigurationLocator->loadConfiguration($configFiles);
         $paths            = $input->getArgument('paths') ?: $configuration->getPaths();
         $outputTarget     = $input->getOption('output');
         $exitWithExitCode = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
@@ -137,7 +148,7 @@ class LintCommand extends Command
 
         $logger = $this->loggerBuilder->createLogger($input->getOption('format'), $reportOutput, $output);
 
-        $report        = new Report();
+        $report   = new Report();
         $patterns = $configuration->getFilePatterns();
 
         $files = $this->finder->getFilenames($paths, $patterns);

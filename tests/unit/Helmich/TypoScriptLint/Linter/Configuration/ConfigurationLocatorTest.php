@@ -42,7 +42,7 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         $configuration = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
         $configuration->expects($this->once())->method('setConfiguration')->with($mergedConfig);
 
-        $this->loader->expects($this->at(0))->method('load')->with('tslint.dist.yml')->willReturn($distConfig);
+        $this->loader->expects($this->at(0))->method('load')->with('typoscript-lint.dist.yml')->willReturn($distConfig);
         $this->loader->expects($this->at(1))->method('load')->with('test.yml')->willReturn($localConfig);
 
         $this->processor
@@ -52,7 +52,7 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
             ->willReturn($mergedConfig);
 
         /** @noinspection PhpParamsInspection */
-        $loadedConfiguration = $this->locator->loadConfiguration('test.yml', $configuration);
+        $loadedConfiguration = $this->locator->loadConfiguration(['test.yml'], $configuration);
         $this->assertSame($loadedConfiguration, $configuration);
     }
 
@@ -64,16 +64,16 @@ class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
         $configuration = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
         $configuration->expects($this->once())->method('setConfiguration')->with($mergedConfig);
 
-        $this->loader->expects($this->once())->method('load')->with('tslint.dist.yml')->willReturn($distConfig);
+        $this->loader->expects($this->once())->method('load')->with('typoscript-lint.dist.yml')->willReturn($distConfig);
 
         $this->processor
             ->expects($this->once())
             ->method('processConfiguration')
-            ->with($this->isInstanceOf(LinterConfiguration::class), [$distConfig, []])
+            ->with($this->isInstanceOf(LinterConfiguration::class), [$distConfig])
             ->willReturn($mergedConfig);
 
         /** @noinspection PhpParamsInspection */
-        $loadedConfiguration = $this->locator->loadConfiguration(null, $configuration);
+        $loadedConfiguration = $this->locator->loadConfiguration([], $configuration);
         $this->assertSame($loadedConfiguration, $configuration);
     }
 }

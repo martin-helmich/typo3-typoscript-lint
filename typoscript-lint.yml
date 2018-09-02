@@ -4,3 +4,6 @@ sniffs:
       useSpaces: false
       indentPerLevel: 1
       indentConditions: false
+paths:
+  - test/1
+  - test/2

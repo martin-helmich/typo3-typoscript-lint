@@ -113,7 +113,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         $this->linterConfigurationLocator
             ->expects(once())
             ->method('loadConfiguration')
-            ->with('config.yml')
+            ->with(['config.yml'])
             ->willReturn($config);
 
         $this->loggerBuilder->createLogger('txt', Argument::exact($out), Argument::exact($out))->shouldBeCalled()->willReturn($logger);

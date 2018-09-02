@@ -191,7 +191,7 @@ Raises warnings about empty assignment blocks:
 
 `typoscript-lint` looks for a file `tslint.yml` in the current working directory.
 If such a file is found, it will be merged with the `tslint.dist.yml` from the
-installation root directory. Have a look at [said file](tslint.dist.yml) for an
+installation root directory. Have a look at [said file](typoscript-lint.dist.yml) for an
 idea of what you can configure (granted, not much yet):
 
 * The paths to lint can be set under the `paths` key:
