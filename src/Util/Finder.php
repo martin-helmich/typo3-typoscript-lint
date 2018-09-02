@@ -43,8 +43,11 @@ class Finder
      */
     public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [])
     {
+        $finder = clone $this->finder;
+        $finder->files();
+
         if (count($filePatterns) > 0) {
-            $this->finder->filter(function(SplFileInfo $fileInfo) use ($filePatterns) {
+            $finder->filter(function(SplFileInfo $fileInfo) use ($filePatterns) {
                 if ($fileInfo->isDir()) {
                     return true;
                 }
@@ -61,6 +64,8 @@ class Finder
         $filenames = [];
 
         foreach ($fileOrDirectoryNames as $fileOrDirectoryName) {
+            $subFinder = clone $finder;
+
             if ($fileOrDirectoryName{0} !== '/' && substr($fileOrDirectoryName, 0, 6) !== 'vfs://') {
                 $fileOrDirectoryName = realpath($fileOrDirectoryName);
             }
@@ -69,10 +74,10 @@ class Finder
             if ($fileInfo->isFile()) {
                 $filenames[] = $fileOrDirectoryName;
             } else {
-                $this->finder->files()->in($fileOrDirectoryName);
+                $subFinder->in($fileOrDirectoryName);
 
                 /** @var SymfonySplFileInfo $subFileInfo */
-                foreach ($this->finder as $subFileInfo) {
+                foreach ($subFinder as $subFileInfo) {
                     $filenames[] = $subFileInfo->getPathname();
                 }
             }

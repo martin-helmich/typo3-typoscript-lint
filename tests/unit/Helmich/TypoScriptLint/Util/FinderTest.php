@@ -19,6 +19,9 @@ class FinderTest extends \PHPUnit_Framework_TestCase
             'directory' => [
                 'file3.ts' => '',
                 'file4' => ''
+            ],
+            'directory2' => [
+                'file5.typoscript' => '',
             ]
         ]);
     }
@@ -36,6 +39,21 @@ class FinderTest extends \PHPUnit_Framework_TestCase
             'vfs://root/directory/file4',
             'vfs://root/file1.typoscript',
             'vfs://root/file2.txt'
+        ]));
+    }
+
+    public function testDirectoriesAreNotSearchedTwice()
+    {
+        $sfFinder = new SymfonyFinder();
+        $filesystem = new Filesystem();
+
+        $finder = new Finder($sfFinder, $filesystem);
+        $filenames = $finder->getFilenames(['vfs://root/directory', 'vfs://root/directory2']);
+
+        assertThat($filenames, equalTo([
+            'vfs://root/directory/file3.ts',
+            'vfs://root/directory/file4',
+            'vfs://root/directory2/file5.typoscript',
         ]));
     }
 

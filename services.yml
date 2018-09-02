@@ -58,5 +58,6 @@ services:
     arguments: ['@symfony_finder', '@filesystem']
   symfony_finder:
     class: Symfony\Component\Finder\Finder
+    shared: false
   dispatcher:
     synthetic: true
