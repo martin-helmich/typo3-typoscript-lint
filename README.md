@@ -189,10 +189,14 @@ Raises warnings about empty assignment blocks:
 
 ### Configuration
 
-`typoscript-lint` looks for a file `tslint.yml` in the current working directory.
-If such a file is found, it will be merged with the `tslint.dist.yml` from the
-installation root directory. Have a look at [said file](tslint.dist.yml) for an
+`typoscript-lint` looks for a file `typoscript-lint.yml` in the current working directory.
+If such a file is found, it will be merged with the `typoscript-lint.dist.yml` from the
+installation root directory. Have a look at [said file](typoscript-lint.dist.yml) for an
 idea of what you can configure (granted, not much yet):
+
+**Note**: Previous versions of this tool used the filename `tslint.yml` for their
+configuration files. This conflicted with the [same-named tool for linting TypeScript](https://palantir.github.io/tslint/),
+and is thus considered deprecated (although the old file names are still supported). 
 
 * The paths to lint can be set under the `paths` key:
 

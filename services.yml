@@ -34,7 +34,7 @@ services:
   config_locator:
     class: Symfony\Component\Config\FileLocator
     arguments:
-      - ['%dir.cwd%', '%dir.tslint_root%']
+      - ['%dir.cwd%', '%dir.typoscriptlint_root%']
   config_yaml_loader:
     class: Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
     arguments: ['@config_locator', '@yaml_parser', '@filesystem']
