@@ -21,7 +21,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
     /**
      * @return Issue[]
      */
-    public function getIssues()
+    public function getIssues(): array
     {
         return $this->issues;
     }

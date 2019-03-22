@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Functional\Linter;
 
 use Helmich\TypoScriptLint\Linter\Linter;
@@ -9,7 +10,7 @@ use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Helmich\TypoScriptParser\Parser\Parser;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
-use SebastianBergmann\CodeCoverage\TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 
@@ -34,13 +35,13 @@ class LinterTest extends TestCase
 
     /**
      * @dataProvider getFunctionalTestFixtures
-     * @param       $typoscriptFile
-     * @param array $expectedWarnings
+     * @param string $typoscriptFile
+     * @param array  $expectedWarnings
      */
-    public function testLinterCreatesExpectedOutput($typoscriptFile, array $expectedWarnings)
+    public function testLinterCreatesExpectedOutput(string $typoscriptFile, array $expectedWarnings)
     {
         $localConfigFilename = dirname($typoscriptFile) . '/tslint.yml';
-        $localConfigData = [];
+        $localConfigData     = [];
         if (file_exists($localConfigFilename)) {
             $localConfigData = Yaml::parse(file_get_contents($localConfigFilename));
         }
@@ -62,9 +63,9 @@ class LinterTest extends TestCase
             new NullLogger()
         );
 
-        $printActualWarnings = function() use ($report) {
+        $printActualWarnings = function () use ($report) {
             $actualWarnings = $report->getFiles()[0]->getIssues();
-            $content = "";
+            $content        = "";
             foreach ($actualWarnings as $warning) {
                 $content .= $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
                     $warning->getSeverity() . ";" . $warning->getSource() . "\n";
@@ -107,7 +108,7 @@ class LinterTest extends TestCase
 
             yield [
                 $file,
-                $reports
+                $reports,
             ];
         }
     }

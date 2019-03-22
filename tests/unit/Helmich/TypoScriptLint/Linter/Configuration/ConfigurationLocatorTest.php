@@ -3,6 +3,8 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Configuration;
 
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -12,16 +14,16 @@ use Symfony\Component\Config\Loader\LoaderInterface;
  * @package \Helmich\TypoScriptLint\Linter\Configuration
  * @covers  \Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
  */
-class ConfigurationLocatorTest extends \PHPUnit_Framework_TestCase
+class ConfigurationLocatorTest extends TestCase
 {
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     private $loader, $processor;
 
     /** @var ConfigurationLocator */
     private $locator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->loader    = $this->getMockBuilder(LoaderInterface::class)->getMock();
         $this->processor = $this->getMockBuilder(Processor::class)->getMock();

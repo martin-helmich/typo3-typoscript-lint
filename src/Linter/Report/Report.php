@@ -31,7 +31,7 @@ class Report
      *
      * @return File[] All file reports.
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         return $this->files;
     }

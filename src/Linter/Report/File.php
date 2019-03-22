@@ -55,7 +55,7 @@ class File
      *
      * @return Issue[] The issues for this file.
      */
-    public function getIssues()
+    public function getIssues(): array
     {
         usort(
             $this->issues,

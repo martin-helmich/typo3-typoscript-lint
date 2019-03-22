@@ -4,18 +4,19 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Logging;
 use Helmich\TypoScriptLint\Logging\CompactConsoleLogger;
 use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
 use Helmich\TypoScriptLint\Logging\VerboseConsoleLogger;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 
 /**
  * @covers \Helmich\TypoScriptLint\Logging\LinterLoggerBuilder
  */
-class LinterLoggerBuilderTest extends \PHPUnit_Framework_TestCase
+class LinterLoggerBuilderTest extends TestCase
 {
     /** @var LinterLoggerBuilder */
     private $builder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->builder = new LinterLoggerBuilder();
     }
@@ -38,11 +39,9 @@ class LinterLoggerBuilderTest extends \PHPUnit_Framework_TestCase
         assertThat($logger, self::isInstanceOf(CompactConsoleLogger::class));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testUnknownFormatCausesInvalidArgumentException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->builder->createLogger('unknown', new BufferedOutput(), new BufferedOutput());
     }
 }

@@ -51,13 +51,13 @@ class CheckstyleReportPrinter implements Printer
 
             foreach ($file->getIssues() as $issue) {
                 $xmlWarning = $xml->createElement('error');
-                $xmlWarning->setAttribute('line', $issue->getLine());
+                $xmlWarning->setAttribute('line', "" . $issue->getLine());
                 $xmlWarning->setAttribute('severity', $issue->getSeverity());
                 $xmlWarning->setAttribute('message', $issue->getMessage());
                 $xmlWarning->setAttribute('source', $issue->getSource());
 
                 if ($issue->getColumn() !== null) {
-                    $xmlWarning->setAttribute('column', $issue->getColumn());
+                    $xmlWarning->setAttribute('column', "" . $issue->getColumn());
                 }
 
                 $xmlFile->appendChild($xmlWarning);

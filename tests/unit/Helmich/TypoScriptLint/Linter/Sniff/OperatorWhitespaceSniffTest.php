@@ -7,13 +7,14 @@ use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
+use PHPUnit\Framework\TestCase;
 
-class OperatorWhitespaceSniffTest extends \PHPUnit_Framework_TestCase
+class OperatorWhitespaceSniffTest extends TestCase
 {
     /** @var OperatorWhitespaceSniff */
     private $sniff;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sniff = new OperatorWhitespaceSniff([]);
     }

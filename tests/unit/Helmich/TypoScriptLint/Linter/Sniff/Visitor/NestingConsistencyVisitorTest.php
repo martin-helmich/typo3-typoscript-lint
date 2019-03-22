@@ -9,6 +9,7 @@ use Helmich\TypoScriptParser\Parser\AST\ObjectPath;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Scalar;
 use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\NestingConsistencyVisitor
@@ -16,13 +17,13 @@ use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
  *
  * @medium
  */
-class NestingConsistencyVisitorTest extends \PHPUnit_Framework_TestCase
+class NestingConsistencyVisitorTest extends TestCase
 {
 
     /** @var DuplicateAssignmentVisitor */
     private $visitor;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->visitor = new NestingConsistencyVisitor();
     }

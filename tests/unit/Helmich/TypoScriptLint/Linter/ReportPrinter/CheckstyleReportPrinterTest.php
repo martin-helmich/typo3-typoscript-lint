@@ -5,6 +5,8 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -13,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Report
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  */
-class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
+class CheckstyleReportPrinterTest extends TestCase
 {
 
     const EXPECTED_XML_DOCUMENT = '<?xml version="1.0" encoding="UTF-8"?>
@@ -28,13 +30,13 @@ class CheckstyleReportPrinterTest extends \PHPUnit_Framework_TestCase
 </checkstyle>
 ';
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     private $output;
 
     /** @var CheckstyleReportPrinter */
     private $printer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->output  = $this->getMockBuilder(OutputInterface::class)->getMock();
         $this->printer = new CheckstyleReportPrinter($this->output);

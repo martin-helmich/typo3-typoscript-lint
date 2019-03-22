@@ -5,19 +5,20 @@ use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff
  * @uses   \Helmich\TypoScriptLint\Linter\Report\File
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  */
-class DeadCodeSniffTest extends \PHPUnit_Framework_TestCase
+class DeadCodeSniffTest extends TestCase
 {
 
     /** @var  DeadCodeSniff */
     private $sniff;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sniff = new DeadCodeSniff([]);
     }

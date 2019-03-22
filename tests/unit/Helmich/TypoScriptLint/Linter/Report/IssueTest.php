@@ -4,18 +4,19 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptParser\Parser\ParseError;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Report\Issue
  * @uses   \Helmich\TypoScriptParser\Parser\ParseError
  */
-class IssueTest extends \PHPUnit_Framework_TestCase
+class IssueTest extends TestCase
 {
 
     /** @var Issue */
     private $issue;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->issue = new Issue(200, 23, 'Issue message', Issue::SEVERITY_WARNING, __CLASS__);
     }

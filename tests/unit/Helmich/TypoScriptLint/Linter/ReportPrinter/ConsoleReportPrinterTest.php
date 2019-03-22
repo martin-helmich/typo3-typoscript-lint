@@ -5,6 +5,7 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Report
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  */
-class ConsoleReportPrinterTest extends \PHPUnit_Framework_TestCase
+class ConsoleReportPrinterTest extends TestCase
 {
 
     const EXPECTED_XML_DOCUMENT = '
@@ -34,7 +35,7 @@ SUMMARY
     /** @var ConsoleReportPrinter */
     private $printer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->output  = new BufferedOutput();
         $this->printer = new ConsoleReportPrinter($this->output);

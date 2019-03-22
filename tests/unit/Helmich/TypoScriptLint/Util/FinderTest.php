@@ -3,15 +3,16 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Util;
 
 use Helmich\TypoScriptLint\Util\Filesystem;
 use Helmich\TypoScriptLint\Util\Finder;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use org\bovigo\vfs\vfsStream;
 
 /**
  * @covers \Helmich\TypoScriptLint\Util\Finder
  */
-class FinderTest extends \PHPUnit_Framework_TestCase
+class FinderTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         vfsStream::setup('root', null, [
             'file1.typoscript' => '',
