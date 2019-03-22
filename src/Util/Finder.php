@@ -64,17 +64,22 @@ class Finder
         $filenames = [];
 
         foreach ($fileOrDirectoryNames as $fileOrDirectoryName) {
-            $subFinder = clone $finder;
+            $subFinder                   = clone $finder;
+            $resolvedFileOrDirectoryName = $fileOrDirectoryName;
 
             if ($fileOrDirectoryName{0} !== '/' && substr($fileOrDirectoryName, 0, 6) !== 'vfs://') {
-                $fileOrDirectoryName = realpath($fileOrDirectoryName);
+                $resolvedFileOrDirectoryName = realpath($fileOrDirectoryName);
+
+                if ($resolvedFileOrDirectoryName === false) {
+                    throw new \InvalidArgumentException("could not determine real path of '${fileOrDirectoryName}'. Maybe it does not exist?");
+                }
             }
 
-            $fileInfo = $this->filesystem->openFile($fileOrDirectoryName);
+            $fileInfo = $this->filesystem->openFile($resolvedFileOrDirectoryName);
             if ($fileInfo->isFile()) {
-                $filenames[] = $fileOrDirectoryName;
+                $filenames[] = $resolvedFileOrDirectoryName;
             } else {
-                $subFinder->in($fileOrDirectoryName);
+                $subFinder->in($resolvedFileOrDirectoryName);
 
                 /** @var SymfonySplFileInfo $subFileInfo */
                 foreach ($subFinder as $subFileInfo) {
