@@ -64,9 +64,14 @@ class LinterConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('typoscript-lint');
 
-        $root = $treeBuilder->root('tslint');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $root = $treeBuilder->getRootNode();
+        } else {
+            $root = $treeBuilder->root('typoscript-lint');
+        }
+
         $root
             ->children()
                 ->arrayNode('paths')
