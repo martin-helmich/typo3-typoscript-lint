@@ -37,14 +37,17 @@ class Finder
     /**
      * Generates a list of file names from a list of file and directory names.
      *
-     * @param array $fileOrDirectoryNames A list of file and directory names.
-     * @param string[]      $filePatterns Glob patterns that filenames should match
+     * @param array               $fileOrDirectoryNames A list of file and directory names.
+     * @param string[]            $filePatterns         Glob patterns that filenames should match
+     * @param FinderObserver|null $observer
      * @return array A list of file names.
      */
-    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [])
+    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [], FinderObserver $observer = null)
     {
         $finder = clone $this->finder;
         $finder->files();
+
+        $observer = $observer ?: new CallbackFinderObserver(function() {});
 
         if (count($filePatterns) > 0) {
             $finder->filter(function(SplFileInfo $fileInfo) use ($filePatterns) {
@@ -71,8 +74,14 @@ class Finder
                 $resolvedFileOrDirectoryName = realpath($fileOrDirectoryName);
 
                 if ($resolvedFileOrDirectoryName === false) {
-                    throw new \InvalidArgumentException("could not determine real path of '${fileOrDirectoryName}'. Maybe it does not exist?");
+                    $observer->onEntryNotFound($fileOrDirectoryName);
+                    continue;
                 }
+            }
+
+            if (file_exists($resolvedFileOrDirectoryName) === false) {
+                $observer->onEntryNotFound($resolvedFileOrDirectoryName);
+                continue;
             }
 
             $fileInfo = $this->filesystem->openFile($resolvedFileOrDirectoryName);

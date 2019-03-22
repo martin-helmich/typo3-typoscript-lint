@@ -36,6 +36,11 @@ class VerboseConsoleLogger implements LinterLoggerInterface
         $this->printer = $printer;
     }
 
+    public function notifyFileNotFound($file)
+    {
+        $this->output->writeln("<error>WARNING: Input file ${file} does not seem to exist.</error>");
+    }
+
     public function notifyFiles(array $files)
     {
     }

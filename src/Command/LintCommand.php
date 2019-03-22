@@ -8,6 +8,7 @@ use Helmich\TypoScriptLint\Linter\LinterInterface;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
+use Helmich\TypoScriptLint\Util\CallbackFinderObserver;
 use Helmich\TypoScriptLint\Util\Finder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\ConsoleEvents;
@@ -151,7 +152,9 @@ class LintCommand extends Command
         $report   = new Report();
         $patterns = $configuration->getFilePatterns();
 
-        $files = $this->finder->getFilenames($paths, $patterns);
+        $files = $this->finder->getFilenames($paths, $patterns, new CallbackFinderObserver(function ($name) use ($logger) {
+            $logger->notifyFileNotFound($name);
+        }));
         $logger->notifyFiles($files);
 
         foreach ($files as $filename) {
