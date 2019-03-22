@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Command;
 
 use Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface;

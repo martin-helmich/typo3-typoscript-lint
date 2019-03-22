@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Util;
 
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;

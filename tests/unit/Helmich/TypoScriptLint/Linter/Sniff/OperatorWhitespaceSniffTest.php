@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;

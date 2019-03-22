@@ -1,32 +1,25 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Functional\Linter;
 
 use Helmich\TypoScriptLint\Linter\Linter;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
-use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
-use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
-use Helmich\TypoScriptLint\Linter\Sniff\DuplicateAssignmentSniff;
-use Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff;
-use Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff;
-use Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff;
-use Helmich\TypoScriptLint\Linter\Sniff\RepeatingRValueSniff;
+use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Helmich\TypoScriptParser\Parser\Parser;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
-use Prophecy\Argument;
+use SebastianBergmann\CodeCoverage\TestCase;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Yaml\Yaml;
 
-class LinterTest extends \PHPUnit_Framework_TestCase
+class LinterTest extends TestCase
 {
 
     /** @var  Linter */
     private $linter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $tokenizer = new Tokenizer();
         $parser    = new Parser($tokenizer);
@@ -41,6 +34,8 @@ class LinterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getFunctionalTestFixtures
+     * @param       $typoscriptFile
+     * @param array $expectedWarnings
      */
     public function testLinterCreatesExpectedOutput($typoscriptFile, array $expectedWarnings)
     {

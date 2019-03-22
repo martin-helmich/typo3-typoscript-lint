@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\Report;
