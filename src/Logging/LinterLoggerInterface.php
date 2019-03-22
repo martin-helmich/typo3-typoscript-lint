@@ -21,6 +21,14 @@ use Helmich\TypoScriptLint\Linter\Report\Report;
 interface LinterLoggerInterface
 {
     /**
+     * Called when a desired input directory/file does not exist
+     *
+     * @param string $file
+     * @return void
+     */
+    public function notifyFileNotFound($file);
+
+    /**
      * Called before linting any input file
      *
      * @param string[] $files The list of filenames to lint

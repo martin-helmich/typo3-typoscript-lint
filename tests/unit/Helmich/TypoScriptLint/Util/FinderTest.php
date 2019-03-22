@@ -68,4 +68,15 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         assertThat($filenames, self::equalTo(['vfs://root/directory/file3.ts']));
     }
 
+    public function testNonExistingRelativeDirnameWillNotResultInInvalidArgumentException()
+    {
+        $sfFinder = new SymfonyFinder();
+        $filesystem = new Filesystem();
+
+        $finder = new Finder($sfFinder, $filesystem);
+        $filenames = $finder->getFilenames(['./not/existing/dir']);
+
+        assertThat($filenames, equalTo([]));
+    }
+
 }

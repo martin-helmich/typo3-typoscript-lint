@@ -37,14 +37,17 @@ class Finder
     /**
      * Generates a list of file names from a list of file and directory names.
      *
-     * @param array $fileOrDirectoryNames A list of file and directory names.
-     * @param string[]      $filePatterns Glob patterns that filenames should match
+     * @param array               $fileOrDirectoryNames A list of file and directory names.
+     * @param string[]            $filePatterns         Glob patterns that filenames should match
+     * @param FinderObserver|null $observer
      * @return array A list of file names.
      */
-    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [])
+    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [], FinderObserver $observer = null)
     {
         $finder = clone $this->finder;
         $finder->files();
+
+        $observer = $observer ?: new CallbackFinderObserver(function() {});
 
         if (count($filePatterns) > 0) {
             $finder->filter(function(SplFileInfo $fileInfo) use ($filePatterns) {
@@ -64,17 +67,28 @@ class Finder
         $filenames = [];
 
         foreach ($fileOrDirectoryNames as $fileOrDirectoryName) {
-            $subFinder = clone $finder;
+            $subFinder                   = clone $finder;
+            $resolvedFileOrDirectoryName = $fileOrDirectoryName;
 
             if ($fileOrDirectoryName{0} !== '/' && substr($fileOrDirectoryName, 0, 6) !== 'vfs://') {
-                $fileOrDirectoryName = realpath($fileOrDirectoryName);
+                $resolvedFileOrDirectoryName = realpath($fileOrDirectoryName);
+
+                if ($resolvedFileOrDirectoryName === false) {
+                    $observer->onEntryNotFound($fileOrDirectoryName);
+                    continue;
+                }
             }
 
-            $fileInfo = $this->filesystem->openFile($fileOrDirectoryName);
+            if (file_exists($resolvedFileOrDirectoryName) === false) {
+                $observer->onEntryNotFound($resolvedFileOrDirectoryName);
+                continue;
+            }
+
+            $fileInfo = $this->filesystem->openFile($resolvedFileOrDirectoryName);
             if ($fileInfo->isFile()) {
-                $filenames[] = $fileOrDirectoryName;
+                $filenames[] = $resolvedFileOrDirectoryName;
             } else {
-                $subFinder->in($fileOrDirectoryName);
+                $subFinder->in($resolvedFileOrDirectoryName);
 
                 /** @var SymfonySplFileInfo $subFileInfo */
                 foreach ($subFinder as $subFileInfo) {

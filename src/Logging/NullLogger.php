@@ -18,6 +18,9 @@ use Helmich\TypoScriptLint\Linter\Report\Report;
  */
 class NullLogger implements LinterLoggerInterface
 {
+    public function notifyFileNotFound($file)
+    {
+    }
 
     public function notifyFiles(array $files)
     {
