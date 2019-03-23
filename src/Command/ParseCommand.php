@@ -33,6 +33,8 @@ class ParseCommand extends Command
     {
         $filename = $input->getArgument('filename');
 
+        '@phan-var string $filename';
+
         $printer    = new PrettyPrinter();
         $statements = $this->parser->parseStream($filename);
 

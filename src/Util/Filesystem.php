@@ -13,7 +13,8 @@ class Filesystem extends SymfonyFilesystem
      */
     public function openFile(string $filename): SplFileInfo
     {
-        $relative = $this->makePathRelative($filename, getcwd());
+        $start = getcwd() ?: "/";
+        $relative = $this->makePathRelative($filename, $start);
         return new SplFileInfo($filename, dirname($relative), $relative);
     }
 }

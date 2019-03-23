@@ -6,7 +6,6 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\Inspection\TokenInspections;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
-use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
 class IndentationSniff implements TokenStreamSniffInterface
@@ -80,6 +79,8 @@ class IndentationSniff implements TokenStreamSniffInterface
             if ($this->isEmptyLine($tokensInLine) || $this->insideCondition && $tokensInLine[0] !== TokenInterface::TYPE_CONDITION && !self::isWhitespace($tokensInLine[0])) {
                 continue;
             }
+
+            $line = (int)$line;
 
             if ($indentationLevel === 0 && self::isWhitespace($tokensInLine[0]) && strlen($tokensInLine[0]->getValue())) {
                 $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue()));

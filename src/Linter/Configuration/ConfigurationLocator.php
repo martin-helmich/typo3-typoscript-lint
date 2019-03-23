@@ -38,13 +38,13 @@ class ConfigurationLocator
     /**
      * Loads the linter configuration.
      *
-     * @param string[]            $possibleConfigurationFiles A list of possible configuration files to load from. These
-     *                                                        files will be searched in the current working directory
-     *                                                        and in the typoscript-lint root directory. Contents from
-     *                                                        these files will also be merged with the
-     *                                                        typoscript-lint.dist.yml file in the typoscript-lint root
-     *                                                        directory.
-     * @param LinterConfiguration $configuration              The configuration on which to set the loaded configuration values.
+     * @param string[]                 $possibleConfigurationFiles A list of possible configuration files to load from. These
+     *                                                             files will be searched in the current working directory
+     *                                                             and in the typoscript-lint root directory. Contents from
+     *                                                             these files will also be merged with the
+     *                                                             typoscript-lint.dist.yml file in the typoscript-lint root
+     *                                                             directory.
+     * @param LinterConfiguration|null $configuration              The configuration on which to set the loaded configuration values.
      * @return LinterConfiguration The linter configuration from the given configuration file.
      */
     public function loadConfiguration(array $possibleConfigurationFiles = [], LinterConfiguration $configuration = null): LinterConfiguration
@@ -62,7 +62,7 @@ class ConfigurationLocator
             $configs[] = $loadedConfig;
         }
 
-        $configuration = $configuration ?: new LinterConfiguration();
+        $configuration = $configuration ?? new LinterConfiguration();
 
         $processedConfiguration = $this->processor->processConfiguration(
             $configuration,

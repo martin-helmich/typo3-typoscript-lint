@@ -21,6 +21,8 @@ class SniffLocator
                 }
 
                 $parameters = isset($sniffConfiguration['parameters']) ? $sniffConfiguration['parameters'] : [];
+
+                // @phan-suppress-next-line PhanTypeArraySuspicious
                 $this->sniffs[] = new $sniffConfiguration['class']($parameters);
             }
         }

@@ -133,21 +133,38 @@ class LintCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $configFiles      = $this->getPossibleConfigFiles($input->getOption('config'));
-        $configuration    = $this->linterConfigurationLocator->loadConfiguration($configFiles);
-        $paths            = $input->getArgument('paths') ?: $configuration->getPaths();
-        $outputTarget     = $input->getOption('output');
-        $exitWithExitCode = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
+        $configFilesOption = $input->getOption('config');
+        $outputOption = $input->getOption('output');
+        $formatOption = $input->getOption('format');
+
+        '@phan-var string $configFilesOption';
+        '@phan-var string $outputOption';
+        '@phan-var string $formatOption';
+
+        $configFiles       = $this->getPossibleConfigFiles($configFilesOption);
+        $configuration     = $this->linterConfigurationLocator->loadConfiguration($configFiles);
+        $paths             = $input->getArgument('paths') ?: $configuration->getPaths();
+        $outputTarget      = $input->getOption('output');
+        $exitWithExitCode  = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
+
+        '@phan-var string[] $paths';
 
         if (false == $outputTarget) {
             throw new BadOutputFileException('Bad output file.');
         }
 
-        $reportOutput = $input->getOption('output') === '-'
-            ? $output
-            : new StreamOutput(fopen($input->getOption('output'), 'w'));
+        if ($outputOption === '-') {
+            $reportOutput = $output;
+        } else {
+            $fileHandle = fopen($outputOption, 'w');
+            if ($fileHandle === false) {
+                throw new \Exception("could not open file '${outputOption}' for writing");
+            }
 
-        $logger = $this->loggerBuilder->createLogger($input->getOption('format'), $reportOutput, $output);
+            $reportOutput = new StreamOutput($fileHandle);
+        }
+
+        $logger = $this->loggerBuilder->createLogger($formatOption, $reportOutput, $output);
 
         $report   = new Report();
         $patterns = $configuration->getFilePatterns();

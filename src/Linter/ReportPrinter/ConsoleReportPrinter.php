@@ -60,7 +60,7 @@ class ConsoleReportPrinter implements Printer
                 $this->output->writeln(
                     sprintf(
                         '<comment>%4d <%s>%s</%s></comment>',
-                        $issue->getLine(),
+                        $issue->getLine() ?? 0,
                         $style,
                         $issue->getMessage(),
                         $style

@@ -40,6 +40,9 @@ class LinterConfiguration implements ConfigurationInterface
         return $this->configuration['filePatterns'] ?: [];
     }
 
+    /**
+     * @return array
+     */
     public function getSniffConfigurations(): array
     {
         $sniffs = [];

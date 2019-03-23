@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Report\Issue;
@@ -39,7 +40,7 @@ class NestingConsistencyVisitor implements SniffVisitor
     {
         if ($statement instanceof NestedAssignment) {
             $this->walkStatementList($statement->statements);
-        } else if ($statement instanceof ConditionalStatement) {
+        } elseif ($statement instanceof ConditionalStatement) {
             $this->walkStatementList($statement->ifStatements);
             $this->walkStatementList($statement->elseStatements);
         }
@@ -100,7 +101,7 @@ class NestingConsistencyVisitor implements SniffVisitor
                         }
 
                         $descr = [];
-                        foreach($lines as $l) {
+                        foreach ($lines as $l) {
                             $descr[] = sprintf('"%s" in line %d', $l[0], $l[1]);
                         }
 
@@ -125,7 +126,7 @@ class NestingConsistencyVisitor implements SniffVisitor
 
     /**
      * @param string $objectPath
-     * @return array
+     * @return string[]
      */
     private function getParentObjectPathsForObjectPath(string $objectPath): array
     {
@@ -139,12 +140,13 @@ class NestingConsistencyVisitor implements SniffVisitor
     }
 
     /**
-     * @param array $statements
-     * @return array
+     * @param Statement[] $statements
+     * @return string[][]
+     * @phan-return array{0:array<string,string>,1:array<string,string>}
      */
     private function getAssignedObjectPathsFromStatementList(array $statements): array
     {
-        $knownObjectPaths = [];
+        $knownObjectPaths       = [];
         $knownNestedObjectPaths = [];
 
         // Step 1: Discover all nested object assignment statements.
@@ -170,6 +172,6 @@ class NestingConsistencyVisitor implements SniffVisitor
             }
         }
 
-        return array($knownObjectPaths, $knownNestedObjectPaths);
+        return [$knownObjectPaths, $knownNestedObjectPaths];
     }
 }

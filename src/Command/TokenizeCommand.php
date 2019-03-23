@@ -76,6 +76,8 @@ class TokenizeCommand extends Command
     {
         $filename = $input->getArgument('filename');
 
+        '@phan-var string $filename';
+
         $output->writeln("Parsing input file <comment>{$filename}</comment>.");
 
         $tokens = $this->tokenizer->tokenizeStream($filename);
