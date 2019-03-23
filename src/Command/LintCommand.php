@@ -109,6 +109,7 @@ class LintCommand extends Command
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
             ->addOption('exit-code', 'e', InputOption::VALUE_NONE, '(DEPRECATED) Set this flag to exit with a non-zero exit code when there are warnings')
+            // @phan-suppress-next-line PhanTypeMismatchArgument
             ->addOption('fail-on-warnings', null, InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }

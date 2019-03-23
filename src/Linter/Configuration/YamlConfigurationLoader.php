@@ -45,6 +45,7 @@ class YamlConfigurationLoader extends FileLoader
      * @param mixed  $resource The resource
      * @param string $type     The resource type
      * @return array
+     * @suppress PhanUndeclaredClassCatch
      */
     public function load($resource, $type = null): array
     {
