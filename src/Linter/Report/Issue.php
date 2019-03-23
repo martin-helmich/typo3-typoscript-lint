@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Report;
 
 use Helmich\TypoScriptParser\Parser\ParseError;
@@ -19,10 +20,10 @@ class Issue
     const SEVERITY_WARNING = "warning";
     const SEVERITY_ERROR = "error";
 
-    /** @var int */
+    /** @var int|null */
     private $line;
 
-    /** @var int */
+    /** @var int|null */
     private $column;
 
     /** @var string */
@@ -40,11 +41,11 @@ class Issue
      * @param ParseError $parseError The parse error to convert into a warning.
      * @return Issue The converted warning.
      */
-    public static function createFromParseError(ParseError $parseError)
+    public static function createFromParseError(ParseError $parseError): self
     {
         return new self(
             $parseError->getSourceLine(),
-            null,
+            0,
             "Parse error: " . $parseError->getMessage(),
             self::SEVERITY_ERROR,
             get_class($parseError)
@@ -57,11 +58,11 @@ class Issue
      * @param TokenizerException $tokenizerException The tokenizer error to convert into a warning.
      * @return Issue The converted warning.
      */
-    public static function createFromTokenizerError(TokenizerException $tokenizerException)
+    public static function createFromTokenizerError(TokenizerException $tokenizerException): self
     {
         return new self(
             $tokenizerException->getSourceLine(),
-            null,
+            0,
             "Tokenization error: " . $tokenizerException->getMessage(),
             self::SEVERITY_ERROR,
             get_class($tokenizerException)
@@ -71,13 +72,13 @@ class Issue
     /**
      * Constructs a new warning.
      *
-     * @param int    $line     The original source line the warning belongs to.
-     * @param int    $column   The source column.
-     * @param string $message  The warning message.
-     * @param string $severity The warning severity (see Issue::SEVERITY_* constants).
-     * @param string $source   An arbitrary identifier for the generator of this warning.
+     * @param int|null $line     The original source line the warning belongs to.
+     * @param int|null $column   The source column.
+     * @param string   $message  The warning message.
+     * @param string   $severity The warning severity (see Issue::SEVERITY_* constants).
+     * @param string   $source   An arbitrary identifier for the generator of this warning.
      */
-    public function __construct($line, $column, $message, $severity, $source)
+    public function __construct(?int $line, ?int $column, string $message, string $severity, string $source)
     {
         $this->line     = $line;
         $this->column   = $column;
@@ -89,9 +90,9 @@ class Issue
     /**
      * Gets the original source line.
      *
-     * @return int The original source line.
+     * @return int|null The original source line.
      */
-    public function getLine()
+    public function getLine(): ?int
     {
         return $this->line;
     }
@@ -99,9 +100,9 @@ class Issue
     /**
      * Gets the original source column, if applicable (else NULL).
      *
-     * @return int The original source column, or NULL.
+     * @return int|null The original source column, or NULL.
      */
-    public function getColumn()
+    public function getColumn(): ?int
     {
         return $this->column;
     }
@@ -111,7 +112,7 @@ class Issue
      *
      * @return string The warning message.
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -121,7 +122,7 @@ class Issue
      *
      * @return string The warning severity (should be one of the Issue::SEVERITY_* constants).
      */
-    public function getSeverity()
+    public function getSeverity(): string
     {
         return $this->severity;
     }
@@ -131,7 +132,7 @@ class Issue
      *
      * @return string The warning source identifier.
      */
-    public function getSource()
+    public function getSource(): string
     {
         return $this->source;
     }

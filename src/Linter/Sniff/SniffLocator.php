@@ -31,7 +31,7 @@ class SniffLocator
      * @return TokenStreamSniffInterface[]
      * @throws Exception
      */
-    public function getTokenStreamSniffs(LinterConfiguration $configuration)
+    public function getTokenStreamSniffs(LinterConfiguration $configuration): array
     {
         $this->loadSniffs($configuration);
 
@@ -49,7 +49,7 @@ class SniffLocator
      * @return SyntaxTreeSniffInterface[]
      * @throws Exception
      */
-    public function getSyntaxTreeSniffs(LinterConfiguration $configuration)
+    public function getSyntaxTreeSniffs(LinterConfiguration $configuration): array
     {
         $this->loadSniffs($configuration);
 

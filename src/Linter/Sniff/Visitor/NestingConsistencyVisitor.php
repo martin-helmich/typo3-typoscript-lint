@@ -17,7 +17,7 @@ class NestingConsistencyVisitor implements SniffVisitor
     /** @var integer */
     private $commonPathPrefixThreshold;
 
-    public function __construct($commonPathPrefixThreshold = 1)
+    public function __construct(int $commonPathPrefixThreshold = 1)
     {
         $this->commonPathPrefixThreshold = $commonPathPrefixThreshold;
     }
@@ -25,17 +25,17 @@ class NestingConsistencyVisitor implements SniffVisitor
     /**
      * @return Issue[]
      */
-    public function getIssues()
+    public function getIssues(): array
     {
         return $this->issues;
     }
 
-    public function enterTree(array $statements)
+    public function enterTree(array $statements): void
     {
         $this->walkStatementList($statements);
     }
 
-    public function enterNode(Statement $statement)
+    public function enterNode(Statement $statement): void
     {
         if ($statement instanceof NestedAssignment) {
             $this->walkStatementList($statement->statements);
@@ -45,18 +45,18 @@ class NestingConsistencyVisitor implements SniffVisitor
         }
     }
 
-    public function exitNode(Statement $statement)
+    public function exitNode(Statement $statement): void
     {
     }
 
-    public function exitTree(array $statements)
+    public function exitTree(array $statements): void
     {
     }
 
     /**
      * @param Statement[] $statements
      */
-    private function walkStatementList(array $statements)
+    private function walkStatementList(array $statements): void
     {
         list($knownObjectPaths, $knownNestedObjectPaths) = $this->getAssignedObjectPathsFromStatementList($statements);
 
@@ -127,7 +127,7 @@ class NestingConsistencyVisitor implements SniffVisitor
      * @param string $objectPath
      * @return array
      */
-    private function getParentObjectPathsForObjectPath($objectPath)
+    private function getParentObjectPathsForObjectPath(string $objectPath): array
     {
         $components = preg_split('/(?<!\\\)\./', $objectPath);
         $paths      = [];
@@ -142,7 +142,7 @@ class NestingConsistencyVisitor implements SniffVisitor
      * @param array $statements
      * @return array
      */
-    private function getAssignedObjectPathsFromStatementList(array $statements)
+    private function getAssignedObjectPathsFromStatementList(array $statements): array
     {
         $knownObjectPaths = [];
         $knownNestedObjectPaths = [];

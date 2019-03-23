@@ -15,5 +15,5 @@ interface LinterInterface
      * @param LinterLoggerInterface $logger
      * @return File
      */
-    public function lintFile($filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger);
+    public function lintFile(string $filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger): File;
 }

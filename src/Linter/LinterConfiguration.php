@@ -9,7 +9,7 @@ class LinterConfiguration implements ConfigurationInterface
 
     private $configuration;
 
-    public function setConfiguration(array $configuration)
+    public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
@@ -19,7 +19,7 @@ class LinterConfiguration implements ConfigurationInterface
      *
      * @return string[]
      */
-    public function getPaths()
+    public function getPaths(): array
     {
         $paths = [];
 
@@ -35,12 +35,12 @@ class LinterConfiguration implements ConfigurationInterface
      *
      * @return string[]
      */
-    public function getFilePatterns()
+    public function getFilePatterns(): array
     {
         return $this->configuration['filePatterns'] ?: [];
     }
 
-    public function getSniffConfigurations()
+    public function getSniffConfigurations(): array
     {
         $sniffs = [];
         foreach ($this->configuration['sniffs'] as $class => $configuration) {
@@ -62,7 +62,7 @@ class LinterConfiguration implements ConfigurationInterface
      * @return TreeBuilder The tree builder
      * @codeCoverageIgnore FU, I'm not going to test this one!
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('typoscript-lint');
 

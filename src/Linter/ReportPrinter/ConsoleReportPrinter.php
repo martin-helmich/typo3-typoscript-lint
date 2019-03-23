@@ -37,7 +37,7 @@ class ConsoleReportPrinter implements Printer
      * @param Report $report The report to print.
      * @return void
      */
-    public function writeReport(Report $report)
+    public function writeReport(Report $report): void
     {
         $count = 0;
 

@@ -46,7 +46,7 @@ class YamlConfigurationLoader extends FileLoader
      * @param string $type     The resource type
      * @return array
      */
-    public function load($resource, $type = null)
+    public function load($resource, $type = null): array
     {
         try {
             $path = $this->locator->locate($resource);
@@ -67,7 +67,7 @@ class YamlConfigurationLoader extends FileLoader
      *
      * @return bool    true if this class supports the given resource, false otherwise
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, $type = null): bool
     {
         return is_string($resource) &&
             in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml', 'yaml']);

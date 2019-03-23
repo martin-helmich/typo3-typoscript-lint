@@ -48,7 +48,7 @@ SUMMARY
     {
         $file1 = new File('foobar.tys');
         $file1->addIssue(new Issue(123, 12, 'Message #1', Issue::SEVERITY_INFO, 'foobar'));
-        $file1->addIssue(new Issue(124, null, 'Message #2', Issue::SEVERITY_WARNING, 'foobar'));
+        $file1->addIssue(new Issue(124, 0, 'Message #2', Issue::SEVERITY_WARNING, 'foobar'));
 
         $file2 = new File('bar.txt');
         $file2->addIssue(new Issue(412, 141, 'Message #3', Issue::SEVERITY_ERROR, 'barbaz'));

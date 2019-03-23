@@ -29,7 +29,7 @@ class OperatorWhitespaceSniffTest extends TestCase
                 new Token(TokenInterface::TYPE_RIGHTVALUE, "bar", 1)
             ],
             [
-                new Issue(1, null, 'No whitespace after object accessor.', 'warning', OperatorWhitespaceSniff::class)
+                new Issue(1, 0, 'No whitespace after object accessor.', 'warning', OperatorWhitespaceSniff::class)
             ]
         ];
     }

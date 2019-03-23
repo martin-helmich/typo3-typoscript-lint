@@ -53,7 +53,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param LinterConfiguration $configuration
      * @return void
      */
-    public function sniff(array $tokens, File $file, LinterConfiguration $configuration)
+    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
         $indentCharacter  = $this->useSpaces ? ' ' : "\t";
         $tokensByLine     = new LineGrouper($tokens);
@@ -101,7 +101,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param TokenInterface[] $tokensInLine
      * @return bool
      */
-    private function isEmptyLine(array $tokensInLine)
+    private function isEmptyLine(array $tokensInLine): bool
     {
         if (count($tokensInLine) > 1) {
             return false;
@@ -120,7 +120,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param TokenInterface[] $tokensInLine
      * @return int The new indentation level
      */
-    private function reduceIndentationLevel($indentationLevel, array $tokensInLine)
+    private function reduceIndentationLevel(int $indentationLevel, array $tokensInLine): int
     {
         $raisingIndentation = [
             TokenInterface::TYPE_BRACE_CLOSE,
@@ -151,7 +151,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param TokenInterface[] $tokensInLine
      * @return int The new indentation level
      */
-    private function raiseIndentationLevel($indentationLevel, array $tokensInLine)
+    private function raiseIndentationLevel(int $indentationLevel, array $tokensInLine): int
     {
         $raisingIndentation = [
             TokenInterface::TYPE_BRACE_OPEN,
@@ -173,7 +173,7 @@ class IndentationSniff implements TokenStreamSniffInterface
         return $indentationLevel;
     }
 
-    private function createIssue($line, $expectedLevel, $actual)
+    private function createIssue(int $line, int $expectedLevel, string $actual): Issue
     {
         $indentCharacterCount       = ($expectedLevel * $this->indentPerLevel);
         $indentCharacterDescription = ($this->useSpaces ? 'space' : 'tab') . (($indentCharacterCount == 1) ? '' : 's');

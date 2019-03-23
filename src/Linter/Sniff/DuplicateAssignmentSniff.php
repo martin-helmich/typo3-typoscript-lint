@@ -9,7 +9,7 @@ class DuplicateAssignmentSniff extends AbstractSyntaxTreeSniff
     /**
      * @return SniffVisitor
      */
-    protected function buildVisitor()
+    protected function buildVisitor(): SniffVisitor
     {
         return new DuplicateAssignmentVisitor();
     }

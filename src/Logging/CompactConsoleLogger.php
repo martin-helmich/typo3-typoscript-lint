@@ -47,12 +47,12 @@ class CompactConsoleLogger implements LinterLoggerInterface
         $this->printer = $printer;
     }
 
-    public function notifyFileNotFound($file)
+    public function notifyFileNotFound(string $file): void
     {
         $this->output->writeln("<error>WARNING: Input file ${file} does not seem to exist.</error>");
     }
 
-    public function notifyFiles(array $files)
+    public function notifyFiles(array $files): void
     {
         $this->fileCount = count($files);
 
@@ -60,19 +60,19 @@ class CompactConsoleLogger implements LinterLoggerInterface
         $this->progressFormatString = "   [%{$numCount}d / %-{$numCount}d, %3d%%]";
     }
 
-    public function notifyFileStart($filename)
+    public function notifyFileStart(string $filename): void
     {
     }
 
-    public function notifyFileSniffStart($filename, $sniffClass)
+    public function notifyFileSniffStart(string $filename, string $sniffClass): void
     {
     }
 
-    public function nofifyFileSniffComplete($filename, $sniffClass, File $report)
+    public function nofifyFileSniffComplete(string $filename, string $sniffClass, File $report): void
     {
     }
 
-    public function notifyFileComplete($filename, File $report)
+    public function notifyFileComplete(string $filename, File $report): void
     {
         if (count($report->getIssuesBySeverity(Issue::SEVERITY_ERROR)) > 0) {
             $this->output->write("<error>E</error>");
@@ -92,12 +92,12 @@ class CompactConsoleLogger implements LinterLoggerInterface
         }
     }
 
-    private function printProgress()
+    private function printProgress(): void
     {
         $this->output->writeln(sprintf($this->progressFormatString, $this->fileCompletedCount, $this->fileCount, $this->fileCompletedCount / $this->fileCount * 100));
     }
 
-    public function notifyRunComplete(Report $report)
+    public function notifyRunComplete(Report $report): void
     {
         $remaining = $this->fileCompletedCount % self::OUTPUT_WIDTH;
         if ($remaining !== 0) {

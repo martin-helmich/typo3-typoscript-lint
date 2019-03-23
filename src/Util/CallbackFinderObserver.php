@@ -11,7 +11,7 @@ class CallbackFinderObserver implements FinderObserver
         $this->fn = $fn;
     }
 
-    public function onEntryNotFound($fileOrDirectory)
+    public function onEntryNotFound(string $fileOrDirectory): void
     {
         // Because, fuck you, PHP
         $fn = $this->fn;

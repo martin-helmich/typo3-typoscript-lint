@@ -35,7 +35,7 @@ class TokenizeCommand extends Command
      * @param TokenizerInterface $tokenizer The tokenizer.
      * @return void
      */
-    public function injectTokenizer(TokenizerInterface $tokenizer)
+    public function injectTokenizer(TokenizerInterface $tokenizer): void
     {
         $this->tokenizer = $tokenizer;
     }
@@ -47,7 +47,7 @@ class TokenizeCommand extends Command
      * @param TokenPrinterInterface $tokenPrinter The token printer.
      * @return void
      */
-    public function injectTokenPrinter(TokenPrinterInterface $tokenPrinter)
+    public function injectTokenPrinter(TokenPrinterInterface $tokenPrinter): void
     {
         $this->tokenPrinter = $tokenPrinter;
     }
@@ -57,7 +57,7 @@ class TokenizeCommand extends Command
      *
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('tokenize')
@@ -72,7 +72,7 @@ class TokenizeCommand extends Command
      * @param OutputInterface $output Output stream.
      * @return void
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $filename = $input->getArgument('filename');
 

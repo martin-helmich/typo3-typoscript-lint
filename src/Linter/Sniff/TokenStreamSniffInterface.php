@@ -14,5 +14,5 @@ interface TokenStreamSniffInterface extends SniffInterface
      * @param LinterConfiguration $configuration
      * @return void
      */
-    public function sniff(array $tokens, File $file, LinterConfiguration $configuration);
+    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void;
 }

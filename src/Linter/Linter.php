@@ -39,7 +39,7 @@ class Linter implements LinterInterface
      * @param LinterLoggerInterface $logger
      * @return File
      */
-    public function lintFile($filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger)
+    public function lintFile(string $filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger): File
     {
         $file = new File($filename);
 
@@ -74,7 +74,7 @@ class Linter implements LinterInterface
         File $file,
         LinterConfiguration $configuration,
         LinterLoggerInterface $logger
-    ) {
+    ): File {
         $sniffs = $this->sniffLocator->getTokenStreamSniffs($configuration);
 
         foreach ($sniffs as $sniff) {
@@ -102,7 +102,7 @@ class Linter implements LinterInterface
         File $file,
         LinterConfiguration $configuration,
         LinterLoggerInterface $logger
-    ) {
+    ): File {
         $sniffs = $this->sniffLocator->getSyntaxTreeSniffs($configuration);
 
         foreach ($sniffs as $sniff) {

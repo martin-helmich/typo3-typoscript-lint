@@ -18,5 +18,5 @@ interface Printer
      * @param Report $report
      * @return void
      */
-    public function writeReport(Report $report);
+    public function writeReport(Report $report): void;
 }

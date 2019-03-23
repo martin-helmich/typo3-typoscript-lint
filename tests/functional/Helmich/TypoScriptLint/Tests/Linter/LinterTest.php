@@ -96,8 +96,8 @@ class LinterTest extends TestCase
                 function ($line) use ($file) {
                     $values = str_getcsv($line, ';');
                     return new Issue(
-                        $values[0],
-                        $values[1],
+                        (int)$values[0],
+                        (int)$values[1],
                         $values[2],
                         $values[3],
                         $values[4]

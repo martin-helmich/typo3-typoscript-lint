@@ -21,7 +21,7 @@ class Report
      * @param File $file The file sub-report.
      * @return void
      */
-    public function addFile(File $file)
+    public function addFile(File $file): void
     {
         $this->files[] = $file;
     }
@@ -41,7 +41,7 @@ class Report
      *
      * @return int The number of issues for the entire report.
      */
-    public function countIssues()
+    public function countIssues(): int
     {
         $count = 0;
         foreach ($this->files as $file) {
@@ -56,7 +56,7 @@ class Report
      * @param string $severity The severity. Should be one of the Issue class' SEVERITY_* constants
      * @return int The number of issues for the entire report.
      */
-    public function countIssuesBySeverity($severity)
+    public function countIssuesBySeverity(string $severity): int
     {
         $count = 0;
         foreach ($this->files as $file) {

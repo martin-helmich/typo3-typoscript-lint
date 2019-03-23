@@ -52,7 +52,7 @@ class LintCommand extends Command
      * @param LinterInterface $linter The linter to use.
      * @return void
      */
-    public function injectLinter(LinterInterface $linter)
+    public function injectLinter(LinterInterface $linter): void
     {
         $this->linter = $linter;
     }
@@ -63,7 +63,7 @@ class LintCommand extends Command
      * @param ConfigurationLocator $configurationLocator The configuration locator.
      * @return void
      */
-    public function injectLinterConfigurationLocator(ConfigurationLocator $configurationLocator)
+    public function injectLinterConfigurationLocator(ConfigurationLocator $configurationLocator): void
     {
         $this->linterConfigurationLocator = $configurationLocator;
     }
@@ -74,7 +74,7 @@ class LintCommand extends Command
      * @param LinterLoggerBuilder $loggerBuilder A logger builder
      * @return void
      */
-    public function injectLoggerBuilder(LinterLoggerBuilder $loggerBuilder)
+    public function injectLoggerBuilder(LinterLoggerBuilder $loggerBuilder): void
     {
         $this->loggerBuilder = $loggerBuilder;
     }
@@ -85,12 +85,12 @@ class LintCommand extends Command
      * @param Finder $finder The finder.
      * @return void
      */
-    public function injectFinder(Finder $finder)
+    public function injectFinder(Finder $finder): void
     {
         $this->finder = $finder;
     }
 
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -100,7 +100,7 @@ class LintCommand extends Command
      *
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lint')
@@ -113,7 +113,7 @@ class LintCommand extends Command
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }
 
-    private function getPossibleConfigFiles($param)
+    private function getPossibleConfigFiles(string $param): array
     {
         if ($param === 'typoscript-lint.yml') {
             return ["tslint.yml", "typoscript-lint.yml"];
@@ -131,7 +131,7 @@ class LintCommand extends Command
      *
      * @throws BadOutputFileException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $configFiles      = $this->getPossibleConfigFiles($input->getOption('config'));
         $configuration    = $this->linterConfigurationLocator->loadConfiguration($configFiles);

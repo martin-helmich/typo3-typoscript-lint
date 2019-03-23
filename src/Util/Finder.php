@@ -42,7 +42,7 @@ class Finder
      * @param FinderObserver|null $observer
      * @return array A list of file names.
      */
-    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [], FinderObserver $observer = null)
+    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [], FinderObserver $observer = null): array
     {
         $finder = clone $this->finder;
         $finder->files();

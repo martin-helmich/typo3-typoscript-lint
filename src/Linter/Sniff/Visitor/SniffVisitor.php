@@ -9,5 +9,5 @@ interface SniffVisitor extends Visitor
     /**
      * @return Issue[]
      */
-    public function getIssues();
+    public function getIssues(): array;
 }

@@ -26,11 +26,11 @@ class DuplicateAssignmentVisitor implements SniffVisitor
         return $this->issues;
     }
 
-    public function enterTree(array $statements)
+    public function enterTree(array $statements): void
     {
     }
 
-    public function enterNode(Statement $statement)
+    public function enterNode(Statement $statement): void
     {
         if ($statement instanceof ConditionalStatement) {
             $this->inCondition = true;
@@ -57,7 +57,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
         }
     }
 
-    public function exitNode(Statement $statement)
+    public function exitNode(Statement $statement): void
     {
         // Luckily, conditions cannot be nested. Phew.
         if ($statement instanceof ConditionalStatement) {
@@ -65,7 +65,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
         }
     }
 
-    public function exitTree(array $statements)
+    public function exitTree(array $statements): void
     {
     }
 }
