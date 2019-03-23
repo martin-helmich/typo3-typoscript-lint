@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Logging;
 
 
@@ -18,31 +18,31 @@ use Helmich\TypoScriptLint\Linter\Report\Report;
  */
 class NullLogger implements LinterLoggerInterface
 {
-    public function notifyFileNotFound($file)
+    public function notifyFileNotFound(string $file): void
     {
     }
 
-    public function notifyFiles(array $files)
+    public function notifyFiles(array $files): void
     {
     }
 
-    public function notifyFileStart($filename)
+    public function notifyFileStart(string $filename): void
     {
     }
 
-    public function notifyFileSniffStart($filename, $sniffClass)
+    public function notifyFileSniffStart(string $filename, string $sniffClass): void
     {
     }
 
-    public function nofifyFileSniffComplete($filename, $sniffClass, File $report)
+    public function nofifyFileSniffComplete(string $filename, string $sniffClass, File $report): void
     {
     }
 
-    public function notifyFileComplete($filename, File $report)
+    public function notifyFileComplete(string $filename, File $report): void
     {
     }
 
-    public function notifyRunComplete(Report $report)
+    public function notifyRunComplete(Report $report): void
     {
     }
 }

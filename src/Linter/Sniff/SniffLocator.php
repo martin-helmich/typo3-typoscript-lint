@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Exception;
@@ -21,6 +21,8 @@ class SniffLocator
                 }
 
                 $parameters = isset($sniffConfiguration['parameters']) ? $sniffConfiguration['parameters'] : [];
+
+                // @phan-suppress-next-line PhanTypeArraySuspicious
                 $this->sniffs[] = new $sniffConfiguration['class']($parameters);
             }
         }
@@ -31,7 +33,7 @@ class SniffLocator
      * @return TokenStreamSniffInterface[]
      * @throws Exception
      */
-    public function getTokenStreamSniffs(LinterConfiguration $configuration)
+    public function getTokenStreamSniffs(LinterConfiguration $configuration): array
     {
         $this->loadSniffs($configuration);
 
@@ -49,7 +51,7 @@ class SniffLocator
      * @return SyntaxTreeSniffInterface[]
      * @throws Exception
      */
-    public function getSyntaxTreeSniffs(LinterConfiguration $configuration)
+    public function getSyntaxTreeSniffs(LinterConfiguration $configuration): array
     {
         $this->loadSniffs($configuration);
 

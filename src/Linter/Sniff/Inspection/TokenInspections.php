@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Sniff\Inspection;
 
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
@@ -17,7 +17,7 @@ trait TokenInspections
      * @param TokenInterface $token
      * @return bool
      */
-    private static function isOperator(TokenInterface $token)
+    private static function isOperator(TokenInterface $token): bool
     {
         return static::isUnaryOperator($token) || static::isBinaryOperator($token);
     }
@@ -28,7 +28,7 @@ trait TokenInspections
      * @param TokenInterface $token
      * @return bool
      */
-    private static function isUnaryOperator(TokenInterface $token)
+    private static function isUnaryOperator(TokenInterface $token): bool
     {
         return $token->getType() === TokenInterface::TYPE_OPERATOR_DELETE;
     }
@@ -39,7 +39,7 @@ trait TokenInspections
      * @param TokenInterface $token
      * @return bool
      */
-    private static function isBinaryOperator(TokenInterface $token)
+    private static function isBinaryOperator(TokenInterface $token): bool
     {
         return in_array($token->getType(), [
             TokenInterface::TYPE_OPERATOR_ASSIGNMENT,
@@ -55,7 +55,7 @@ trait TokenInspections
      * @param TokenInterface $token
      * @return bool
      */
-    private static function isWhitespace(TokenInterface $token)
+    private static function isWhitespace(TokenInterface $token): bool
     {
         return $token->getType() === TokenInterface::TYPE_WHITESPACE;
     }
@@ -67,7 +67,7 @@ trait TokenInspections
      * @param int            $length
      * @return bool
      */
-    private static function isWhitespaceOfLength(TokenInterface $token, $length)
+    private static function isWhitespaceOfLength(TokenInterface $token, int $length): bool
     {
         return static::isWhitespace($token) && strlen(trim($token->getValue(), "\n")) == $length;
     }

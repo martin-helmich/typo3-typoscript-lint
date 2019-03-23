@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint;
 
 use Symfony\Component\Console\Application as SymfonyApplication;
@@ -53,6 +53,10 @@ class Application extends SymfonyApplication
         while($current !== '/') {
             if (file_exists($current . '/composer.lock')) {
                 $contents = file_get_contents($current . '/composer.lock');
+                if ($contents === false) {
+                    continue;
+                }
+
                 $data = json_decode($contents);
                 $packages = array_values(array_filter($data->packages, function($package) {
                     return $package->name === "helmich/typo3-typoscript-lint";

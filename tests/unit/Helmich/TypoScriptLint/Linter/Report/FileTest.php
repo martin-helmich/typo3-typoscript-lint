@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class FileTest
@@ -10,13 +11,13 @@ use Helmich\TypoScriptLint\Linter\Report\Issue;
  * @package Helmich\TypoScriptLint\Linter\Report
  * @covers  \Helmich\TypoScriptLint\Linter\Report\File
  */
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends TestCase
 {
 
     /** @var File */
     private $file;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->file = new File('test.tys');
     }

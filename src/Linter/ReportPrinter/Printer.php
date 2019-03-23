@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\Report;
@@ -18,5 +18,5 @@ interface Printer
      * @param Report $report
      * @return void
      */
-    public function writeReport(Report $report);
+    public function writeReport(Report $report): void;
 }

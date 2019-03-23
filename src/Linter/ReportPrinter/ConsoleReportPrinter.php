@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\Report;
@@ -37,7 +37,7 @@ class ConsoleReportPrinter implements Printer
      * @param Report $report The report to print.
      * @return void
      */
-    public function writeReport(Report $report)
+    public function writeReport(Report $report): void
     {
         $count = 0;
 
@@ -60,7 +60,7 @@ class ConsoleReportPrinter implements Printer
                 $this->output->writeln(
                     sprintf(
                         '<comment>%4d <%s>%s</%s></comment>',
-                        $issue->getLine(),
+                        $issue->getLine() ?? 0,
                         $style,
                         $issue->getMessage(),
                         $style

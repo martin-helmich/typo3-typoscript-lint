@@ -1,7 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Configuration;
 use Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader;
 use Helmich\TypoScriptLint\Util\Filesystem;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Finder\SplFileInfo;
@@ -10,10 +12,10 @@ use Symfony\Component\Yaml\Parser;
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
  */
-class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
+class YamlConfigurationLoaderTest extends TestCase
 {
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     private
         $fileLocator,
         $yamlParser,
@@ -22,7 +24,7 @@ class YamlConfigurationLoaderTest extends \PHPUnit_Framework_TestCase
     /** @var YamlConfigurationLoader */
     private $loader;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->fileLocator = $this->getMockBuilder(FileLocatorInterface::class)->getMock();
         $this->yamlParser  = $this->getMockBuilder(Parser::class)->disableOriginalConstructor()->getMock();

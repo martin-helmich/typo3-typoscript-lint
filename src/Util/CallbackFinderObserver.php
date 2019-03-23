@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Util;
 
 class CallbackFinderObserver implements FinderObserver
@@ -11,7 +11,7 @@ class CallbackFinderObserver implements FinderObserver
         $this->fn = $fn;
     }
 
-    public function onEntryNotFound($fileOrDirectory)
+    public function onEntryNotFound(string $fileOrDirectory): void
     {
         // Because, fuck you, PHP
         $fn = $this->fn;

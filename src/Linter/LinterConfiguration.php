@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -9,7 +9,7 @@ class LinterConfiguration implements ConfigurationInterface
 
     private $configuration;
 
-    public function setConfiguration(array $configuration)
+    public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
@@ -19,7 +19,7 @@ class LinterConfiguration implements ConfigurationInterface
      *
      * @return string[]
      */
-    public function getPaths()
+    public function getPaths(): array
     {
         $paths = [];
 
@@ -35,12 +35,15 @@ class LinterConfiguration implements ConfigurationInterface
      *
      * @return string[]
      */
-    public function getFilePatterns()
+    public function getFilePatterns(): array
     {
         return $this->configuration['filePatterns'] ?: [];
     }
 
-    public function getSniffConfigurations()
+    /**
+     * @return array
+     */
+    public function getSniffConfigurations(): array
     {
         $sniffs = [];
         foreach ($this->configuration['sniffs'] as $class => $configuration) {
@@ -61,14 +64,15 @@ class LinterConfiguration implements ConfigurationInterface
      *
      * @return TreeBuilder The tree builder
      * @codeCoverageIgnore FU, I'm not going to test this one!
+     * @suppress PhanParamTooMany, PhanUndeclaredMethod
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('typoscript-lint');
-
-        if (method_exists($treeBuilder, 'getRootNode')) {
+        if (method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder('typoscript-lint');
             $root = $treeBuilder->getRootNode();
         } else {
+            $treeBuilder = new TreeBuilder();
             $root = $treeBuilder->root('typoscript-lint');
         }
 

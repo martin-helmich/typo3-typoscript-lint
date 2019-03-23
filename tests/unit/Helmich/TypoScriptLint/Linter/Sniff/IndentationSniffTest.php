@@ -1,23 +1,24 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff
  * @uses   \Helmich\TypoScriptLint\Linter\Report\File
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  */
-class IndentationSniffTest extends \PHPUnit_Framework_TestCase
+class IndentationSniffTest extends TestCase
 {
 
     /** @var  IndentationSniff */
     private $sniff;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sniff = new IndentationSniff([]);
     }

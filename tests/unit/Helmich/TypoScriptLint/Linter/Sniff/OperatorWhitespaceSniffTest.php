@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -7,13 +7,14 @@ use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
+use PHPUnit\Framework\TestCase;
 
-class OperatorWhitespaceSniffTest extends \PHPUnit_Framework_TestCase
+class OperatorWhitespaceSniffTest extends TestCase
 {
     /** @var OperatorWhitespaceSniff */
     private $sniff;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sniff = new OperatorWhitespaceSniff([]);
     }
@@ -28,7 +29,7 @@ class OperatorWhitespaceSniffTest extends \PHPUnit_Framework_TestCase
                 new Token(TokenInterface::TYPE_RIGHTVALUE, "bar", 1)
             ],
             [
-                new Issue(1, null, 'No whitespace after object accessor.', 'warning', OperatorWhitespaceSniff::class)
+                new Issue(1, 0, 'No whitespace after object accessor.', 'warning', OperatorWhitespaceSniff::class)
             ]
         ];
     }

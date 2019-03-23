@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor;
@@ -8,6 +8,7 @@ use Helmich\TypoScriptParser\Parser\AST\ObjectPath;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Scalar;
 use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor
@@ -15,13 +16,13 @@ use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
  *
  * @medium
  */
-class DuplicateAssignmentVisitorTest extends \PHPUnit_Framework_TestCase
+class DuplicateAssignmentVisitorTest extends TestCase
 {
 
     /** @var DuplicateAssignmentVisitor */
     private $visitor;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->visitor = new DuplicateAssignmentVisitor();
     }

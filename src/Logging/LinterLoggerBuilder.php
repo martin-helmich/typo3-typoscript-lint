@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Logging;
 
 
@@ -27,7 +27,7 @@ class LinterLoggerBuilder
      * @param OutputInterface $consoleOutput Output stream for console data (usually STDOUT)
      * @return LinterLoggerInterface The printer matching the user's specifications.
      */
-    public function createLogger($outputFormat, OutputInterface $reportOutput, OutputInterface $consoleOutput)
+    public function createLogger(string $outputFormat, OutputInterface $reportOutput, OutputInterface $consoleOutput): LinterLoggerInterface
     {
         $errorOutput = ($consoleOutput instanceof ConsoleOutputInterface)
             ? $consoleOutput->getErrorOutput()

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
@@ -15,5 +15,5 @@ interface LinterInterface
      * @param LinterLoggerInterface $logger
      * @return File
      */
-    public function lintFile($filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger);
+    public function lintFile(string $filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger): File;
 }

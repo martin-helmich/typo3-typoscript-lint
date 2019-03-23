@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -14,5 +14,5 @@ interface SyntaxTreeSniffInterface extends SniffInterface
      * @param LinterConfiguration $configuration
      * @return void
      */
-    public function sniff(array $statements, File $file, LinterConfiguration $configuration);
+    public function sniff(array $statements, File $file, LinterConfiguration $configuration): void;
 }

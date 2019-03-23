@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Util;
 
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
@@ -8,12 +8,13 @@ class Filesystem extends SymfonyFilesystem
 {
 
     /**
-     * @param $filename
+     * @param string $filename
      * @return SplFileInfo
      */
-    public function openFile($filename)
+    public function openFile(string $filename): SplFileInfo
     {
-        $relative = $this->makePathRelative($filename, getcwd());
+        $start = getcwd() ?: "/";
+        $relative = $this->makePathRelative($filename, $start);
         return new SplFileInfo($filename, dirname($relative), $relative);
     }
 }

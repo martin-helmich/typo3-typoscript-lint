@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Logging;
 
 
@@ -36,34 +36,34 @@ class VerboseConsoleLogger implements LinterLoggerInterface
         $this->printer = $printer;
     }
 
-    public function notifyFileNotFound($file)
+    public function notifyFileNotFound(string $file): void
     {
         $this->output->writeln("<error>WARNING: Input file ${file} does not seem to exist.</error>");
     }
 
-    public function notifyFiles(array $files)
+    public function notifyFiles(array $files): void
     {
     }
 
-    public function notifyFileStart($filename)
+    public function notifyFileStart(string $filename): void
     {
         $this->output->writeln("Linting input file <comment>{$filename}</comment>.");
     }
 
-    public function notifyFileSniffStart($filename, $sniffClass)
+    public function notifyFileSniffStart(string $filename, string $sniffClass): void
     {
         $this->output->writeln('=> <info>Executing sniff <comment>' . $sniffClass . '</comment>.</info>');
     }
 
-    public function nofifyFileSniffComplete($filename, $sniffClass, File $report)
+    public function nofifyFileSniffComplete(string $filename, string $sniffClass, File $report): void
     {
     }
 
-    public function notifyFileComplete($filename, File $report)
+    public function notifyFileComplete(string $filename, File $report): void
     {
     }
 
-    public function notifyRunComplete(Report $report)
+    public function notifyRunComplete(Report $report): void
     {
         $this->printer->writeReport($report);
     }

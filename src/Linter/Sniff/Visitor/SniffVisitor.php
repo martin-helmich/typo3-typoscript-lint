@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Report\Issue;
@@ -9,5 +9,5 @@ interface SniffVisitor extends Visitor
     /**
      * @return Issue[]
      */
-    public function getIssues();
+    public function getIssues(): array;
 }

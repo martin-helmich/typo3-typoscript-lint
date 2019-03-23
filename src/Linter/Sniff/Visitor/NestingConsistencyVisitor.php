@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Report\Issue;
@@ -17,7 +18,7 @@ class NestingConsistencyVisitor implements SniffVisitor
     /** @var integer */
     private $commonPathPrefixThreshold;
 
-    public function __construct($commonPathPrefixThreshold = 1)
+    public function __construct(int $commonPathPrefixThreshold = 1)
     {
         $this->commonPathPrefixThreshold = $commonPathPrefixThreshold;
     }
@@ -25,38 +26,38 @@ class NestingConsistencyVisitor implements SniffVisitor
     /**
      * @return Issue[]
      */
-    public function getIssues()
+    public function getIssues(): array
     {
         return $this->issues;
     }
 
-    public function enterTree(array $statements)
+    public function enterTree(array $statements): void
     {
         $this->walkStatementList($statements);
     }
 
-    public function enterNode(Statement $statement)
+    public function enterNode(Statement $statement): void
     {
         if ($statement instanceof NestedAssignment) {
             $this->walkStatementList($statement->statements);
-        } else if ($statement instanceof ConditionalStatement) {
+        } elseif ($statement instanceof ConditionalStatement) {
             $this->walkStatementList($statement->ifStatements);
             $this->walkStatementList($statement->elseStatements);
         }
     }
 
-    public function exitNode(Statement $statement)
+    public function exitNode(Statement $statement): void
     {
     }
 
-    public function exitTree(array $statements)
+    public function exitTree(array $statements): void
     {
     }
 
     /**
      * @param Statement[] $statements
      */
-    private function walkStatementList(array $statements)
+    private function walkStatementList(array $statements): void
     {
         list($knownObjectPaths, $knownNestedObjectPaths) = $this->getAssignedObjectPathsFromStatementList($statements);
 
@@ -100,7 +101,7 @@ class NestingConsistencyVisitor implements SniffVisitor
                         }
 
                         $descr = [];
-                        foreach($lines as $l) {
+                        foreach ($lines as $l) {
                             $descr[] = sprintf('"%s" in line %d', $l[0], $l[1]);
                         }
 
@@ -125,9 +126,9 @@ class NestingConsistencyVisitor implements SniffVisitor
 
     /**
      * @param string $objectPath
-     * @return array
+     * @return string[]
      */
-    private function getParentObjectPathsForObjectPath($objectPath)
+    private function getParentObjectPathsForObjectPath(string $objectPath): array
     {
         $components = preg_split('/(?<!\\\)\./', $objectPath);
         $paths      = [];
@@ -139,12 +140,13 @@ class NestingConsistencyVisitor implements SniffVisitor
     }
 
     /**
-     * @param array $statements
-     * @return array
+     * @param Statement[] $statements
+     * @return string[][]
+     * @phan-return array{0:array<string,string>,1:array<string,string>}
      */
-    private function getAssignedObjectPathsFromStatementList(array $statements)
+    private function getAssignedObjectPathsFromStatementList(array $statements): array
     {
-        $knownObjectPaths = [];
+        $knownObjectPaths       = [];
         $knownNestedObjectPaths = [];
 
         // Step 1: Discover all nested object assignment statements.
@@ -170,6 +172,6 @@ class NestingConsistencyVisitor implements SniffVisitor
             }
         }
 
-        return array($knownObjectPaths, $knownNestedObjectPaths);
+        return [$knownObjectPaths, $knownNestedObjectPaths];
     }
 }

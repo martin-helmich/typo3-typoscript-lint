@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Report
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
  */
-class ConsoleReportPrinterTest extends \PHPUnit_Framework_TestCase
+class ConsoleReportPrinterTest extends TestCase
 {
 
     const EXPECTED_XML_DOCUMENT = '
@@ -34,7 +35,7 @@ SUMMARY
     /** @var ConsoleReportPrinter */
     private $printer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->output  = new BufferedOutput();
         $this->printer = new ConsoleReportPrinter($this->output);
@@ -47,7 +48,7 @@ SUMMARY
     {
         $file1 = new File('foobar.tys');
         $file1->addIssue(new Issue(123, 12, 'Message #1', Issue::SEVERITY_INFO, 'foobar'));
-        $file1->addIssue(new Issue(124, null, 'Message #2', Issue::SEVERITY_WARNING, 'foobar'));
+        $file1->addIssue(new Issue(124, 0, 'Message #2', Issue::SEVERITY_WARNING, 'foobar'));
 
         $file2 = new File('bar.txt');
         $file2->addIssue(new Issue(412, 141, 'Message #3', Issue::SEVERITY_ERROR, 'barbaz'));

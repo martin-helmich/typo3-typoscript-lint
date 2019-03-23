@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Report;
 
 /**
@@ -23,7 +23,7 @@ class File
      *
      * @param string $filename The filename.
      */
-    public function __construct($filename)
+    public function __construct(string $filename)
     {
         $this->filename = $filename;
     }
@@ -33,7 +33,7 @@ class File
      *
      * @return string The filename.
      */
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }
@@ -44,7 +44,7 @@ class File
      * @param Issue $issue The new issue
      * @return void
      */
-    public function addIssue(Issue $issue)
+    public function addIssue(Issue $issue): void
     {
         $this->issues[] = $issue;
     }
@@ -55,7 +55,7 @@ class File
      *
      * @return Issue[] The issues for this file.
      */
-    public function getIssues()
+    public function getIssues(): array
     {
         usort(
             $this->issues,
@@ -72,7 +72,7 @@ class File
      * @param string $severity The severity. Should be one of the Issue class' SEVERITY_* constants
      * @return Issue[] All issues with the given severity
      */
-    public function getIssuesBySeverity($severity)
+    public function getIssuesBySeverity(string $severity): array
     {
         return array_values(array_filter($this->getIssues(), function(Issue $i) use ($severity) {
             return $i->getSeverity() === $severity;
@@ -84,7 +84,7 @@ class File
      *
      * @return File The new report
      */
-    public function cloneEmpty()
+    public function cloneEmpty(): self
     {
         return new static($this->filename);
     }
@@ -95,7 +95,7 @@ class File
      * @param File $other The file report to merge this report with
      * @return File The merged report
      */
-    public function merge(File $other)
+    public function merge(File $other): self
     {
         $new = new static($this->filename);
         $new->issues = array_merge($this->issues, $other->issues);

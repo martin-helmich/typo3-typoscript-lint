@@ -1,32 +1,26 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Functional\Linter;
 
 use Helmich\TypoScriptLint\Linter\Linter;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
-use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
-use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
-use Helmich\TypoScriptLint\Linter\Sniff\DuplicateAssignmentSniff;
-use Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff;
-use Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff;
-use Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff;
-use Helmich\TypoScriptLint\Linter\Sniff\RepeatingRValueSniff;
+use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Helmich\TypoScriptParser\Parser\Parser;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
-use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Yaml\Yaml;
 
-class LinterTest extends \PHPUnit_Framework_TestCase
+class LinterTest extends TestCase
 {
 
     /** @var  Linter */
     private $linter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $tokenizer = new Tokenizer();
         $parser    = new Parser($tokenizer);
@@ -41,11 +35,13 @@ class LinterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getFunctionalTestFixtures
+     * @param string $typoscriptFile
+     * @param array  $expectedWarnings
      */
-    public function testLinterCreatesExpectedOutput($typoscriptFile, array $expectedWarnings)
+    public function testLinterCreatesExpectedOutput(string $typoscriptFile, array $expectedWarnings)
     {
         $localConfigFilename = dirname($typoscriptFile) . '/tslint.yml';
-        $localConfigData = [];
+        $localConfigData     = [];
         if (file_exists($localConfigFilename)) {
             $localConfigData = Yaml::parse(file_get_contents($localConfigFilename));
         }
@@ -67,9 +63,9 @@ class LinterTest extends \PHPUnit_Framework_TestCase
             new NullLogger()
         );
 
-        $printActualWarnings = function() use ($report) {
+        $printActualWarnings = function () use ($report) {
             $actualWarnings = $report->getFiles()[0]->getIssues();
-            $content = "";
+            $content        = "";
             foreach ($actualWarnings as $warning) {
                 $content .= $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
                     $warning->getSeverity() . ";" . $warning->getSource() . "\n";
@@ -100,8 +96,8 @@ class LinterTest extends \PHPUnit_Framework_TestCase
                 function ($line) use ($file) {
                     $values = str_getcsv($line, ';');
                     return new Issue(
-                        $values[0],
-                        $values[1],
+                        (int)$values[0],
+                        (int)$values[1],
                         $values[2],
                         $values[3],
                         $values[4]
@@ -112,7 +108,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
 
             yield [
                 $file,
-                $reports
+                $reports,
             ];
         }
     }

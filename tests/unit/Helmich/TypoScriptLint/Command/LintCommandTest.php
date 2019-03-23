@@ -1,14 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Helmich\TypoScriptLint\Tests\Unit\Command;
 
 use Helmich\TypoScriptLint\Command\LintCommand;
+use Helmich\TypoScriptLint\Exception\BadOutputFileException;
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\LinterInterface;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Helmich\TypoScriptLint\Util\Finder;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,13 +24,13 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * @package Helmich\TypoScriptLint\Command
  * @covers  \Helmich\TypoScriptLint\Command\LintCommand
  */
-class LintCommandTest extends \PHPUnit_Framework_TestCase
+class LintCommandTest extends TestCase
 {
 
     /** @var LintCommand */
     private $command;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     private
         $linter,
         $linterConfigurationLocator,
@@ -36,7 +39,7 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
     /** @var ObjectProphecy */
     private $loggerBuilder, $eventDispatcher;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->linter = $this->getMockBuilder(LinterInterface::class)->getMock();
         $this->linter->expects(any())->method('lintFile')->willReturn(new File('foo.ts'));
@@ -71,11 +74,10 @@ class LintCommandTest extends \PHPUnit_Framework_TestCase
         $method->invoke($this->command, $in, $out);
     }
 
-    /**
-     * @expectedException \Helmich\TypoScriptLint\Exception\BadOutputFileException
-     */
     public function testCommandThrowsExceptionWhenBadOutputFileIsGiven()
     {
+        $this->expectException(BadOutputFileException::class);
+
         $in = $this->createMock(InputInterface::class);
         $in->expects($this->any())->method('getOption')->willReturnMap(
             [

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -6,7 +6,6 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\Inspection\TokenInspections;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
-use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
 class IndentationSniff implements TokenStreamSniffInterface
@@ -53,7 +52,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param LinterConfiguration $configuration
      * @return void
      */
-    public function sniff(array $tokens, File $file, LinterConfiguration $configuration)
+    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
         $indentCharacter  = $this->useSpaces ? ' ' : "\t";
         $tokensByLine     = new LineGrouper($tokens);
@@ -81,6 +80,8 @@ class IndentationSniff implements TokenStreamSniffInterface
                 continue;
             }
 
+            $line = (int)$line;
+
             if ($indentationLevel === 0 && self::isWhitespace($tokensInLine[0]) && strlen($tokensInLine[0]->getValue())) {
                 $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue()));
             } elseif ($indentationLevel > 0) {
@@ -101,7 +102,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param TokenInterface[] $tokensInLine
      * @return bool
      */
-    private function isEmptyLine(array $tokensInLine)
+    private function isEmptyLine(array $tokensInLine): bool
     {
         if (count($tokensInLine) > 1) {
             return false;
@@ -120,7 +121,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param TokenInterface[] $tokensInLine
      * @return int The new indentation level
      */
-    private function reduceIndentationLevel($indentationLevel, array $tokensInLine)
+    private function reduceIndentationLevel(int $indentationLevel, array $tokensInLine): int
     {
         $raisingIndentation = [
             TokenInterface::TYPE_BRACE_CLOSE,
@@ -151,7 +152,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param TokenInterface[] $tokensInLine
      * @return int The new indentation level
      */
-    private function raiseIndentationLevel($indentationLevel, array $tokensInLine)
+    private function raiseIndentationLevel(int $indentationLevel, array $tokensInLine): int
     {
         $raisingIndentation = [
             TokenInterface::TYPE_BRACE_OPEN,
@@ -173,7 +174,7 @@ class IndentationSniff implements TokenStreamSniffInterface
         return $indentationLevel;
     }
 
-    private function createIssue($line, $expectedLevel, $actual)
+    private function createIssue(int $line, int $expectedLevel, string $actual): Issue
     {
         $indentCharacterCount       = ($expectedLevel * $this->indentPerLevel);
         $indentCharacterDescription = ($this->useSpaces ? 'space' : 'tab') . (($indentCharacterCount == 1) ? '' : 's');

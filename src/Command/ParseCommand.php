@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Command;
 
 use Helmich\TypoScriptParser\Parser\ParserInterface;
@@ -16,12 +16,12 @@ class ParseCommand extends Command
      */
     private $parser;
 
-    public function injectParser(ParserInterface $parser)
+    public function injectParser(ParserInterface $parser): void
     {
         $this->parser = $parser;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('parse')
@@ -29,9 +29,11 @@ class ParseCommand extends Command
             ->addArgument('filename', InputArgument::REQUIRED, 'Input filename');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $filename = $input->getArgument('filename');
+
+        '@phan-var string $filename';
 
         $printer    = new PrettyPrinter();
         $statements = $this->parser->parseStream($filename);

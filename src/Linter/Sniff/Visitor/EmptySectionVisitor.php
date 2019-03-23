@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Sniff\EmptySectionSniff;
@@ -11,16 +11,19 @@ class EmptySectionVisitor implements SniffVisitor
     /** @var Issue[] */
     private $issues = [];
 
-    public function getIssues()
+    /**
+     * @return Issue[]
+     */
+    public function getIssues(): array
     {
         return $this->issues;
     }
 
-    public function enterTree(array $statements)
+    public function enterTree(array $statements): void
     {
     }
 
-    public function enterNode(Statement $statement)
+    public function enterNode(Statement $statement): void
     {
         if (!($statement instanceof NestedAssignment)) {
             return;
@@ -37,11 +40,11 @@ class EmptySectionVisitor implements SniffVisitor
         }
     }
 
-    public function exitNode(Statement $statement)
+    public function exitNode(Statement $statement): void
     {
     }
 
-    public function exitTree(array $statements)
+    public function exitTree(array $statements): void
     {
     }
 

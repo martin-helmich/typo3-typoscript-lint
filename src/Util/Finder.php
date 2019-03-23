@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Util;
 
 use SplFileInfo;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
-use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
+use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo; // @phan-suppress-current-line PhanUnreferencedUseNormal
 
 /**
  * Helper class that selects files to analyze from a list of file and directory names.
@@ -37,12 +37,12 @@ class Finder
     /**
      * Generates a list of file names from a list of file and directory names.
      *
-     * @param array               $fileOrDirectoryNames A list of file and directory names.
+     * @param string[]            $fileOrDirectoryNames A list of file and directory names.
      * @param string[]            $filePatterns         Glob patterns that filenames should match
      * @param FinderObserver|null $observer
-     * @return array A list of file names.
+     * @return string[] A list of file names.
      */
-    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [], FinderObserver $observer = null)
+    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [], FinderObserver $observer = null): array
     {
         $finder = clone $this->finder;
         $finder->files();

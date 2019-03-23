@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Report\Issue;
@@ -21,16 +21,16 @@ class DuplicateAssignmentVisitor implements SniffVisitor
     /**
      * @return Issue[]
      */
-    public function getIssues()
+    public function getIssues(): array
     {
         return $this->issues;
     }
 
-    public function enterTree(array $statements)
+    public function enterTree(array $statements): void
     {
     }
 
-    public function enterNode(Statement $statement)
+    public function enterNode(Statement $statement): void
     {
         if ($statement instanceof ConditionalStatement) {
             $this->inCondition = true;
@@ -57,7 +57,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
         }
     }
 
-    public function exitNode(Statement $statement)
+    public function exitNode(Statement $statement): void
     {
         // Luckily, conditions cannot be nested. Phew.
         if ($statement instanceof ConditionalStatement) {
@@ -65,7 +65,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
         }
     }
 
-    public function exitTree(array $statements)
+    public function exitTree(array $statements): void
     {
     }
 }

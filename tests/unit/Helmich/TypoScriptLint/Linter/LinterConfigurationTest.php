@@ -1,15 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
  * @package Helmich\TypoScriptLint\Linter
  * @covers  \Helmich\TypoScriptLint\Linter\LinterConfiguration
  */
-class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
+class LinterConfigurationTest extends TestCase
 {
     public function testPathsAreCorrectlyMapped()
     {
@@ -73,7 +74,7 @@ class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $sniffConfigs = $configuration->getSniffConfigurations();
 
-        $this->assertInternalType('array', $sniffConfigs);
+        $this->assertIsArray($sniffConfigs);
         $this->assertCount(1, $sniffConfigs);
         $this->assertEquals(DeadCodeSniff::class, $sniffConfigs[0]['class']);
         $this->assertEquals('bar', $sniffConfigs[0]['foo']);
@@ -95,7 +96,7 @@ class LinterConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $sniffConfigs = $configuration->getSniffConfigurations();
 
-        $this->assertInternalType('array', $sniffConfigs);
+        $this->assertIsArray($sniffConfigs);
         $this->assertCount(0, $sniffConfigs);
     }
 }

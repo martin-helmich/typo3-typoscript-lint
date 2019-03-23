@@ -1,14 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Report\Report
  */
-class ReportTest extends \PHPUnit_Framework_TestCase
+class ReportTest extends TestCase
 {
 
     public function testFilesCanBeAddedToReport()

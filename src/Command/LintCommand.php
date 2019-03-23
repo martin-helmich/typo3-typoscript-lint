@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Helmich\TypoScriptLint\Command;
 
@@ -52,7 +52,7 @@ class LintCommand extends Command
      * @param LinterInterface $linter The linter to use.
      * @return void
      */
-    public function injectLinter(LinterInterface $linter)
+    public function injectLinter(LinterInterface $linter): void
     {
         $this->linter = $linter;
     }
@@ -63,7 +63,7 @@ class LintCommand extends Command
      * @param ConfigurationLocator $configurationLocator The configuration locator.
      * @return void
      */
-    public function injectLinterConfigurationLocator(ConfigurationLocator $configurationLocator)
+    public function injectLinterConfigurationLocator(ConfigurationLocator $configurationLocator): void
     {
         $this->linterConfigurationLocator = $configurationLocator;
     }
@@ -74,7 +74,7 @@ class LintCommand extends Command
      * @param LinterLoggerBuilder $loggerBuilder A logger builder
      * @return void
      */
-    public function injectLoggerBuilder(LinterLoggerBuilder $loggerBuilder)
+    public function injectLoggerBuilder(LinterLoggerBuilder $loggerBuilder): void
     {
         $this->loggerBuilder = $loggerBuilder;
     }
@@ -85,12 +85,12 @@ class LintCommand extends Command
      * @param Finder $finder The finder.
      * @return void
      */
-    public function injectFinder(Finder $finder)
+    public function injectFinder(Finder $finder): void
     {
         $this->finder = $finder;
     }
 
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -100,7 +100,7 @@ class LintCommand extends Command
      *
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lint')
@@ -109,11 +109,12 @@ class LintCommand extends Command
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
             ->addOption('exit-code', 'e', InputOption::VALUE_NONE, '(DEPRECATED) Set this flag to exit with a non-zero exit code when there are warnings')
+            // @phan-suppress-next-line PhanTypeMismatchArgument
             ->addOption('fail-on-warnings', null, InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }
 
-    private function getPossibleConfigFiles($param)
+    private function getPossibleConfigFiles(string $param): array
     {
         if ($param === 'typoscript-lint.yml') {
             return ["tslint.yml", "typoscript-lint.yml"];
@@ -131,23 +132,40 @@ class LintCommand extends Command
      *
      * @throws BadOutputFileException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $configFiles      = $this->getPossibleConfigFiles($input->getOption('config'));
-        $configuration    = $this->linterConfigurationLocator->loadConfiguration($configFiles);
-        $paths            = $input->getArgument('paths') ?: $configuration->getPaths();
-        $outputTarget     = $input->getOption('output');
-        $exitWithExitCode = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
+        $configFilesOption = $input->getOption('config');
+        $outputOption = $input->getOption('output');
+        $formatOption = $input->getOption('format');
+
+        '@phan-var string $configFilesOption';
+        '@phan-var string $outputOption';
+        '@phan-var string $formatOption';
+
+        $configFiles       = $this->getPossibleConfigFiles($configFilesOption);
+        $configuration     = $this->linterConfigurationLocator->loadConfiguration($configFiles);
+        $paths             = $input->getArgument('paths') ?: $configuration->getPaths();
+        $outputTarget      = $input->getOption('output');
+        $exitWithExitCode  = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
+
+        '@phan-var string[] $paths';
 
         if (false == $outputTarget) {
             throw new BadOutputFileException('Bad output file.');
         }
 
-        $reportOutput = $input->getOption('output') === '-'
-            ? $output
-            : new StreamOutput(fopen($input->getOption('output'), 'w'));
+        if ($outputOption === '-') {
+            $reportOutput = $output;
+        } else {
+            $fileHandle = fopen($outputOption, 'w');
+            if ($fileHandle === false) {
+                throw new \Exception("could not open file '${outputOption}' for writing");
+            }
 
-        $logger = $this->loggerBuilder->createLogger($input->getOption('format'), $reportOutput, $output);
+            $reportOutput = new StreamOutput($fileHandle);
+        }
+
+        $logger = $this->loggerBuilder->createLogger($formatOption, $reportOutput, $output);
 
         $report   = new Report();
         $patterns = $configuration->getFilePatterns();

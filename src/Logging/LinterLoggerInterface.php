@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Logging;
 
 
@@ -26,7 +26,7 @@ interface LinterLoggerInterface
      * @param string $file
      * @return void
      */
-    public function notifyFileNotFound($file);
+    public function notifyFileNotFound(string $file): void;
 
     /**
      * Called before linting any input file
@@ -34,7 +34,7 @@ interface LinterLoggerInterface
      * @param string[] $files The list of filenames to lint
      * @return void
      */
-    public function notifyFiles(array $files);
+    public function notifyFiles(array $files): void;
 
     /**
      * Called before linting any specific file
@@ -42,7 +42,7 @@ interface LinterLoggerInterface
      * @param string $filename The name of the file to be linted
      * @return void
      */
-    public function notifyFileStart($filename);
+    public function notifyFileStart(string $filename): void;
 
     /**
      * Called before running a specific sniff on a file
@@ -51,7 +51,7 @@ interface LinterLoggerInterface
      * @param string $sniffClass The class name of the sniff to be run
      * @return void
      */
-    public function notifyFileSniffStart($filename, $sniffClass);
+    public function notifyFileSniffStart(string $filename, string $sniffClass): void;
 
     /**
      * Called after completing a specific sniff on a file
@@ -61,7 +61,7 @@ interface LinterLoggerInterface
      * @param File   $report     The (preliminary) linting report for this file
      * @return void
      */
-    public function nofifyFileSniffComplete($filename, $sniffClass, File $report);
+    public function nofifyFileSniffComplete(string $filename, string $sniffClass, File $report): void;
 
     /**
      * Called after completing all sniffs on a file
@@ -70,7 +70,7 @@ interface LinterLoggerInterface
      * @param File   $report     The (final) linting report for this file
      * @return void
      */
-    public function notifyFileComplete($filename, File $report);
+    public function notifyFileComplete(string $filename, File $report): void;
 
     /**
      * Called after all files have been linted
@@ -78,5 +78,5 @@ interface LinterLoggerInterface
      * @param Report $report The final linting report for all files
      * @return void
      */
-    public function notifyRunComplete(Report $report);
+    public function notifyRunComplete(Report $report): void;
 }

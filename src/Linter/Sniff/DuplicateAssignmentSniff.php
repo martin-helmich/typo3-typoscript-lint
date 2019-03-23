@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor;
@@ -9,7 +9,7 @@ class DuplicateAssignmentSniff extends AbstractSyntaxTreeSniff
     /**
      * @return SniffVisitor
      */
-    protected function buildVisitor()
+    protected function buildVisitor(): SniffVisitor
     {
         return new DuplicateAssignmentVisitor();
     }
