@@ -64,14 +64,15 @@ class LinterConfiguration implements ConfigurationInterface
      *
      * @return TreeBuilder The tree builder
      * @codeCoverageIgnore FU, I'm not going to test this one!
+     * @suppress PhanParamTooMany, PhanUndeclaredMethod
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('typoscript-lint');
-
-        if (method_exists($treeBuilder, 'getRootNode')) {
+        if (method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder('typoscript-lint');
             $root = $treeBuilder->getRootNode();
         } else {
+            $treeBuilder = new TreeBuilder();
             $root = $treeBuilder->root('typoscript-lint');
         }
 
