@@ -85,6 +85,8 @@ class NestingConsistencyVisitor implements SniffVisitor
                     $assignmentsWithCommonPrefix = [];
 
                     foreach ($knownObjectPaths as $key => $line) {
+                        $key = "" . $key;
+                        
                         if ($key !== $statement->object->relativeName && strpos($key, $possibleObjectPath . '.') === 0) {
                             if (!isset($assignmentsWithCommonPrefix[$key])) {
                                 $assignmentsWithCommonPrefix[$key] = [];
@@ -92,8 +94,6 @@ class NestingConsistencyVisitor implements SniffVisitor
                             $assignmentsWithCommonPrefix[$possibleObjectPath][] = [$key, $line];
                         }
                     }
-
-                    //var_dump($assignmentsWithCommonPrefix, $this->commonPathPrefixThreshold);
 
                     foreach ($assignmentsWithCommonPrefix as $commonPrefix => $lines) {
                         if (count($lines) < $this->commonPathPrefixThreshold) {
@@ -142,7 +142,7 @@ class NestingConsistencyVisitor implements SniffVisitor
     /**
      * @param Statement[] $statements
      * @return string[][]
-     * @phan-return array{0:array<string,string>,1:array<string,string>}
+     * @phan-return array{0:array<string|int,string>,1:array<string|int,string>}
      */
     private function getAssignedObjectPathsFromStatementList(array $statements): array
     {

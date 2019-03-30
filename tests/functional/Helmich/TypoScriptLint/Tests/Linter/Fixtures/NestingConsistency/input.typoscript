@@ -9,3 +9,14 @@ foo {
 foo\.bar = test1
 
 foo\.baz = test2
+
+bar {
+    0 = test1
+    0 {
+        foo = 1
+    }
+    1 = test2
+    2 = test3
+
+    0.bar = 2
+}
