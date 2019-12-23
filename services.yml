@@ -7,12 +7,12 @@ services:
   lint_command:
     class: Helmich\TypoScriptLint\Command\LintCommand
     public: true
-    calls:
-      - [injectLinter, ['@linter']]
-      - [injectLinterConfigurationLocator, ['@linter_configuration_locator']]
-      - [injectLoggerBuilder, ['@logger_builder']]
-      - [injectFinder, ['@finder']]
-      - [injectEventDispatcher, ['@dispatcher']]
+    arguments:
+      - '@linter'
+      - '@linter_configuration_locator'
+      - '@logger_builder'
+      - '@finder'
+      - '@dispatcher'
   parse_command:
     class: Helmich\TypoScriptLint\Command\ParseCommand
     calls:

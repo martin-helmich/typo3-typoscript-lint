@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
+use DOMDocument;
+use Helmich\TypoScriptLint\Application;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -40,10 +42,10 @@ class CheckstyleReportPrinter implements Printer
      */
     public function writeReport(Report $report): void
     {
-        $xml = new \DOMDocument('1.0', 'UTF-8');
+        $xml = new DOMDocument('1.0', 'UTF-8');
 
         $root = $xml->createElement('checkstyle');
-        $root->setAttribute('version', APP_NAME . '-' . APP_VERSION);
+        $root->setAttribute('version', Application::APP_NAME . '-' . Application::APP_VERSION);
 
         foreach ($report->getFiles() as $file) {
             $xmlFile = $xml->createElement('file');
@@ -51,13 +53,14 @@ class CheckstyleReportPrinter implements Printer
 
             foreach ($file->getIssues() as $issue) {
                 $xmlWarning = $xml->createElement('error');
-                $xmlWarning->setAttribute('line', "" . $issue->getLine());
+                $xmlWarning->setAttribute('line', $issue->getLine() ? ((string) $issue->getLine()) : "");
                 $xmlWarning->setAttribute('severity', $issue->getSeverity());
                 $xmlWarning->setAttribute('message', $issue->getMessage());
                 $xmlWarning->setAttribute('source', $issue->getSource());
 
-                if ($issue->getColumn() !== null) {
-                    $xmlWarning->setAttribute('column', "" . $issue->getColumn());
+                $column = $issue->getColumn();
+                if ($column !== null) {
+                    $xmlWarning->setAttribute('column', "" . $column);
                 }
 
                 $xmlFile->appendChild($xmlWarning);

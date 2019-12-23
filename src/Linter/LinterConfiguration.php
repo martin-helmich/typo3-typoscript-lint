@@ -7,7 +7,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class LinterConfiguration implements ConfigurationInterface
 {
 
-    private $configuration;
+    /** @var array */
+    private $configuration = [];
 
     public function setConfiguration(array $configuration): void
     {
@@ -68,14 +69,15 @@ class LinterConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        if (method_exists(TreeBuilder::class, 'getRootNode')) {
+//        if (method_exists(TreeBuilder::class, 'getRootNode')) {
             $treeBuilder = new TreeBuilder('typoscript-lint');
             $root = $treeBuilder->getRootNode();
-        } else {
-            $treeBuilder = new TreeBuilder();
-            $root = $treeBuilder->root('typoscript-lint');
-        }
+//        } else {
+//            $treeBuilder = new TreeBuilder();
+//            $root = $treeBuilder->root('typoscript-lint');
+//        }
 
+        /** @psalm-suppress PossiblyUndefinedMethod */
         $root
             ->children()
                 ->arrayNode('paths')

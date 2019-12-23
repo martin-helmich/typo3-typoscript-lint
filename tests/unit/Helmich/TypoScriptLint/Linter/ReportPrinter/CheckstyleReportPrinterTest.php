@@ -19,7 +19,7 @@ class CheckstyleReportPrinterTest extends TestCase
 {
 
     const EXPECTED_XML_DOCUMENT = '<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="typoscript-lint-1.0.0">
+<checkstyle version="typoscript-lint-dev">
   <file name="foobar.tys">
     <error line="123" severity="info" message="Message #1" source="foobar" column="12"/>
     <error line="124" severity="warning" message="Message #2" source="foobar"/>
@@ -40,9 +40,6 @@ class CheckstyleReportPrinterTest extends TestCase
     {
         $this->output  = $this->getMockBuilder(OutputInterface::class)->getMock();
         $this->printer = new CheckstyleReportPrinter($this->output);
-
-        define('APP_NAME', 'typoscript-lint');
-        define('APP_VERSION', '1.0.0');
     }
 
     /**

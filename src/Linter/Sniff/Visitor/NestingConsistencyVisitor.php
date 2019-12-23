@@ -141,8 +141,12 @@ class NestingConsistencyVisitor implements SniffVisitor
 
     /**
      * @param Statement[] $statements
-     * @return string[][]
+     *
+     * @return int[][]
+     *
      * @phan-return array{0:array<string|int,string>,1:array<string|int,string>}
+     *
+     * @psalm-return array{0: array<string, int>, 1: array<string, int>}
      */
     private function getAssignedObjectPathsFromStatementList(array $statements): array
     {

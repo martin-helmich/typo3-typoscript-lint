@@ -47,14 +47,14 @@ class YamlConfigurationLoader extends FileLoader
      * @return array
      * @suppress PhanUndeclaredClassCatch
      */
-    public function load($resource, $type = null): array
+    public function load($resource, string $type = null): array
     {
         try {
+            /** @var string $path */
             $path = $this->locator->locate($resource);
             $file = $this->filesystem->openFile($path);
-            $configValues = $this->yamlParser->parse($file->getContents());
 
-            return $configValues;
+            return $this->yamlParser->parse($file->getContents());
         } catch (FileLocatorFileNotFoundException $error) {
             return [];
         }
@@ -68,7 +68,7 @@ class YamlConfigurationLoader extends FileLoader
      *
      * @return bool    true if this class supports the given resource, false otherwise
      */
-    public function supports($resource, $type = null): bool
+    public function supports($resource, string $type = null): bool
     {
         return is_string($resource) &&
             in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml', 'yaml']);

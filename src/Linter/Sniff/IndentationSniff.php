@@ -12,8 +12,10 @@ class IndentationSniff implements TokenStreamSniffInterface
 {
     use TokenInspections;
 
+    /** @var bool */
     private $useSpaces = true;
 
+    /** @var int */
     private $indentPerLevel = 4;
 
     /**
@@ -32,16 +34,18 @@ class IndentationSniff implements TokenStreamSniffInterface
 
     /**
      * @param array $parameters
+     * @psalm-param array{useSpaces: ?bool, indentPerLevel: ?int, indentCondition: ?bool} $parameters
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function __construct(array $parameters)
     {
-        if (array_key_exists('useSpaces', $parameters)) {
+        if (isset($parameters['useSpaces'])) {
             $this->useSpaces = $parameters['useSpaces'];
         }
-        if (array_key_exists('indentPerLevel', $parameters)) {
+        if (isset($parameters['indentPerLevel'])) {
             $this->indentPerLevel = $parameters['indentPerLevel'];
         }
-        if (array_key_exists('indentConditions', $parameters)) {
+        if (isset($parameters['indentConditions'])) {
             $this->indentConditions = $parameters['indentConditions'];
         }
     }
@@ -68,12 +72,9 @@ class IndentationSniff implements TokenStreamSniffInterface
                 $expectedIndentationCharacterCount
             );
 
-            foreach ($tokensInLine as $key => $token) {
-                if ($token->getType() === TokenInterface::TYPE_RIGHTVALUE_MULTILINE) {
-                    unset($tokensInLine[$key]);
-                    $tokensInLine = array_values($tokensInLine);
-                }
-            }
+            $tokensInLine = array_values(array_filter($tokensInLine, function(TokenInterface $token): bool {
+                return $token->getType() !== TokenInterface::TYPE_RIGHTVALUE_MULTILINE;
+            }));
 
             // Skip empty lines and conditions inside conditions.
             if ($this->isEmptyLine($tokensInLine) || $this->insideCondition && $tokensInLine[0] !== TokenInterface::TYPE_CONDITION && !self::isWhitespace($tokensInLine[0])) {

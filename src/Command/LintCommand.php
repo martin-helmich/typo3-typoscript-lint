@@ -46,53 +46,21 @@ class LintCommand extends Command
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /**
-     * Injects a linter.
-     *
-     * @param LinterInterface $linter The linter to use.
-     * @return void
-     */
-    public function injectLinter(LinterInterface $linter): void
+    public function __construct(
+        LinterInterface $linter,
+        ConfigurationLocator $configurationLocator,
+        LinterLoggerBuilder $loggerBuilder,
+        Finder $finder,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
-        $this->linter = $linter;
-    }
+        parent::__construct();
 
-    /**
-     * Injects a locator for the linter configuration.
-     *
-     * @param ConfigurationLocator $configurationLocator The configuration locator.
-     * @return void
-     */
-    public function injectLinterConfigurationLocator(ConfigurationLocator $configurationLocator): void
-    {
+        $this->linter                     = $linter;
         $this->linterConfigurationLocator = $configurationLocator;
-    }
-
-    /**
-     * Injects a logger builder
-     *
-     * @param LinterLoggerBuilder $loggerBuilder A logger builder
-     * @return void
-     */
-    public function injectLoggerBuilder(LinterLoggerBuilder $loggerBuilder): void
-    {
-        $this->loggerBuilder = $loggerBuilder;
-    }
-
-    /**
-     * Injects a finder for finding files.
-     *
-     * @param Finder $finder The finder.
-     * @return void
-     */
-    public function injectFinder(Finder $finder): void
-    {
-        $this->finder = $finder;
-    }
-
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->loggerBuilder              = $loggerBuilder;
+        $this->finder                     = $finder;
+        $this->eventDispatcher            = $eventDispatcher;
     }
 
     /**
@@ -109,7 +77,6 @@ class LintCommand extends Command
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
             ->addOption('exit-code', 'e', InputOption::VALUE_NONE, '(DEPRECATED) Set this flag to exit with a non-zero exit code when there are warnings')
-            // @phan-suppress-next-line PhanTypeMismatchArgument
             ->addOption('fail-on-warnings', null, InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }
@@ -128,27 +95,25 @@ class LintCommand extends Command
      *
      * @param InputInterface  $input  Input options.
      * @param OutputInterface $output Output stream.
-     * @return void
+     * @return int
      *
      * @throws BadOutputFileException
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string $configFilesOption */
         $configFilesOption = $input->getOption('config');
+        /** @var string $outputOption */
         $outputOption = $input->getOption('output');
+        /** @var string $formatOption */
         $formatOption = $input->getOption('format');
 
-        '@phan-var string $configFilesOption';
-        '@phan-var string $outputOption';
-        '@phan-var string $formatOption';
-
-        $configFiles       = $this->getPossibleConfigFiles($configFilesOption);
-        $configuration     = $this->linterConfigurationLocator->loadConfiguration($configFiles);
-        $paths             = $input->getArgument('paths') ?: $configuration->getPaths();
-        $outputTarget      = $input->getOption('output');
-        $exitWithExitCode  = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
-
-        '@phan-var string[] $paths';
+        $configFiles   = $this->getPossibleConfigFiles($configFilesOption);
+        $configuration = $this->linterConfigurationLocator->loadConfiguration($configFiles);
+        /** @var string[] $paths */
+        $paths            = $input->getArgument('paths') ?: $configuration->getPaths();
+        $outputTarget     = $input->getOption('output');
+        $exitWithExitCode = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
 
         if (false == $outputTarget) {
             throw new BadOutputFileException('Bad output file.');
@@ -170,7 +135,7 @@ class LintCommand extends Command
         $report   = new Report();
         $patterns = $configuration->getFilePatterns();
 
-        $files = $this->finder->getFilenames($paths, $patterns, new CallbackFinderObserver(function ($name) use ($logger) {
+        $files = $this->finder->getFilenames($paths, $patterns, new CallbackFinderObserver(function (string $name) use ($logger): void {
             $logger->notifyFileNotFound($name);
         }));
         $logger->notifyFiles($files);
@@ -186,7 +151,7 @@ class LintCommand extends Command
         $exitCode = 0;
         if ($report->countIssuesBySeverity(Issue::SEVERITY_ERROR) > 0) {
             $exitCode = 2;
-        } else if ($exitWithExitCode && $report->countIssues() > 0) {
+        } elseif ($exitWithExitCode && $report->countIssues() > 0) {
             $exitCode = 2;
         }
 
@@ -196,5 +161,7 @@ class LintCommand extends Command
                 $event->setExitCode($exitCode);
             }
         );
+
+        return $exitCode;
     }
 }

@@ -6,7 +6,7 @@
         convertWarningsToExceptions="true">
     <testsuites>
         <testsuite name="Unit tests">
-            <directory phpVersion="5.4.0" phpVersionOperator=">=">tests/unit</directory>
+            <directory>tests/unit</directory>
         </testsuite>
         <testsuite name="Functional tests">
             <directory>tests/functional</directory>
