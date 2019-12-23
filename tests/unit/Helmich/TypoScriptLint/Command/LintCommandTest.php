@@ -8,6 +8,7 @@ use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\LinterInterface;
 use Helmich\TypoScriptLint\Linter\Report\File;
+use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Helmich\TypoScriptLint\Util\Finder;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -53,16 +54,16 @@ class LintCommandTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->loggerBuilder = $this->prophesize('Helmich\\TypoScriptLint\\Logging\\LinterLoggerBuilder');
+        $this->loggerBuilder = $this->prophesize(LinterLoggerBuilder::class);
         $this->eventDispatcher = $this->prophesize(EventDispatcher::class);
 
-        $this->command = new LintCommand();
-
-        $this->command->injectLinter($this->linter);
-        $this->command->injectLinterConfigurationLocator($this->linterConfigurationLocator);
-        $this->command->injectLoggerBuilder($this->loggerBuilder->reveal());
-        $this->command->injectFinder($this->finder);
-        $this->command->injectEventDispatcher($this->eventDispatcher->reveal());
+        $this->command = new LintCommand(
+            $this->linter,
+            $this->linterConfigurationLocator,
+            $this->loggerBuilder->reveal(),
+            $this->finder,
+            $this->eventDispatcher->reveal()
+        );
     }
 
     private function runCommand(InputInterface $in, OutputInterface $out)

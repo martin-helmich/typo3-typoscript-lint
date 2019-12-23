@@ -11,6 +11,7 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
 
     const CONSTANT_EXPRESSION = ',\{\$[a-zA-Z0-9_\.]+\},';
 
+    /** @var array<string, int> */
     private $knownRightValues = [];
 
     /**

@@ -18,28 +18,24 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.2",
-        "symfony/console": "~2.7|~3.0|~4.0",
-        "symfony/dependency-injection": "~2.7|~3.0|~4.0",
-        "symfony/config": "~2.7|~3.0|~4.0",
-        "symfony/yaml": "~2.7|~3.0|~4.0",
-        "symfony/finder": "~2.7|~3.0|~4.0",
-        "symfony/filesystem": "~2.7|~3.0|~4.0",
-        "symfony/event-dispatcher": "~2.7|~3.0|~4.0",
-        "helmich/typo3-typoscript-parser": "^2.0",
-        "phan/phan": "^1.2"
-    },
+        "symfony/console": "~5.0",
+        "symfony/dependency-injection": "~5.0",
+        "symfony/config": "~5.0",
+        "symfony/yaml": "~5.0",
+        "symfony/finder": "~5.0",
+        "symfony/filesystem": "~5.0",
+        "symfony/event-dispatcher": "~5.0",
+        "helmich/typo3-typoscript-parser": "^2.1",
+		"ext-json": "*"
+	},
     "require-dev": {
         "phpunit/phpunit": "^8.0",
-        "codeclimate/php-test-reporter": "dev-master",
-        "symfony/phpunit-bridge": "^3.0 || ^4.0",
-        "mikey179/vfsStream": "^1.6"
+        "mikey179/vfsstream": "^1.6",
+        "vimeo/psalm": "^3.7"
     },
     "bin": [
         "typoscript-lint"
     ],
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "psr-4": {
             "Helmich\\TypoScriptLint\\": "src/"

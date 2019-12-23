@@ -7,25 +7,38 @@ use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 class SniffLocator
 {
 
+    /** @var SniffInterface[]|null */
     private $sniffs = null;
 
-    private function loadSniffs(LinterConfiguration $configuration)
+    /**
+     * @param LinterConfiguration $configuration
+     * @return SniffInterface[]
+     * @throws Exception
+     *
+     * @psalm-return array<int, SniffInterface>
+     */
+    private function loadSniffs(LinterConfiguration $configuration): array
     {
-        if ($this->sniffs === null) {
-            $this->sniffs = [];
-            foreach ($configuration->getSniffConfigurations() as $sniffConfiguration) {
-                if (!class_exists($sniffConfiguration['class'])) {
-                    throw new Exception(
-                        'Class "' . $sniffConfiguration['class'] . '" could not be loaded!', 1402948667
-                    );
-                }
-
-                $parameters = isset($sniffConfiguration['parameters']) ? $sniffConfiguration['parameters'] : [];
-
-                // @phan-suppress-next-line PhanTypeArraySuspicious
-                $this->sniffs[] = new $sniffConfiguration['class']($parameters);
-            }
+        if ($this->sniffs !== null) {
+            return $this->sniffs;
         }
+
+        $this->sniffs = [];
+        foreach ($configuration->getSniffConfigurations() as $sniffConfiguration) {
+            if (!class_exists($sniffConfiguration['class'])) {
+                throw new Exception(
+                    'Class "' . $sniffConfiguration['class'] . '" could not be loaded!', 1402948667
+                );
+            }
+
+            $parameters = isset($sniffConfiguration['parameters']) ? $sniffConfiguration['parameters'] : [];
+
+            /** @var SniffInterface $sniff */
+            $sniff = new $sniffConfiguration['class']($parameters);
+            $this->sniffs[] = $sniff;
+        }
+
+        return $this->sniffs;
     }
 
     /**
@@ -35,10 +48,10 @@ class SniffLocator
      */
     public function getTokenStreamSniffs(LinterConfiguration $configuration): array
     {
-        $this->loadSniffs($configuration);
-
+        $sniffs = $this->loadSniffs($configuration);
         $tokenSniffs = [];
-        foreach ($this->sniffs as $sniff) {
+
+        foreach ($sniffs as $sniff) {
             if ($sniff instanceof TokenStreamSniffInterface) {
                 $tokenSniffs[] = $sniff;
             }
@@ -53,10 +66,10 @@ class SniffLocator
      */
     public function getSyntaxTreeSniffs(LinterConfiguration $configuration): array
     {
-        $this->loadSniffs($configuration);
-
+        $sniffs = $this->loadSniffs($configuration);
         $tokenSniffs = [];
-        foreach ($this->sniffs as $sniff) {
+
+        foreach ($sniffs as $sniff) {
             if ($sniff instanceof SyntaxTreeSniffInterface) {
                 $tokenSniffs[] = $sniff;
             }

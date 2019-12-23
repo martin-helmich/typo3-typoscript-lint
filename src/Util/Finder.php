@@ -70,7 +70,7 @@ class Finder
             $subFinder                   = clone $finder;
             $resolvedFileOrDirectoryName = $fileOrDirectoryName;
 
-            if ($fileOrDirectoryName{0} !== '/' && substr($fileOrDirectoryName, 0, 6) !== 'vfs://') {
+            if ($fileOrDirectoryName[0] !== '/' && substr($fileOrDirectoryName, 0, 6) !== 'vfs://') {
                 $resolvedFileOrDirectoryName = realpath($fileOrDirectoryName);
 
                 if ($resolvedFileOrDirectoryName === false) {

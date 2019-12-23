@@ -3,10 +3,9 @@ sudo: false
 php:
   - 7.2
   - 7.3
+  - 7.4
 env:
-  - SYMFONY_VERSION=~2.7
-  - SYMFONY_VERSION=~3.0
-  - SYMFONY_VERSION=~4.0
+  - SYMFONY_VERSION=~5.0
 
 before_install:
   - composer require --no-update symfony/console $SYMFONY_VERSION
@@ -22,8 +21,5 @@ install:
 
 script:
   - ./typoscript-lint --help
-  - bin/phpunit --coverage-clover build/logs/clover.xml
-  - bin/phan -z -S --allow-polyfill-parser
-
-after_success:
-  - bin/test-reporter
+  - vendor/bin/phpunit --coverage-clover clover.xml
+  - vendor/bin/psalm

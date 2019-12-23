@@ -1,12 +1,17 @@
 <?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint;
 
+use Exception;
+use Helmich\TypoScriptLint\Command\LintCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\DependencyInjection\Container;
 
 class Application extends SymfonyApplication
 {
+    public const APP_NAME = 'typoscript-lint';
+    public const APP_VERSION = 'dev';
 
     /** @var Container */
     private $container;
@@ -14,7 +19,7 @@ class Application extends SymfonyApplication
     public function __construct(Container $container)
     {
         $this->container = $container;
-        parent::__construct(APP_NAME, APP_VERSION);
+        parent::__construct(static::APP_NAME, static::APP_VERSION);
     }
 
     protected function getCommandName(InputInterface $input)
@@ -22,10 +27,17 @@ class Application extends SymfonyApplication
         return 'lint';
     }
 
+    /**
+     * @return Command[]
+     * @throws Exception
+     */
     protected function getDefaultCommands()
     {
+        /** @var LintCommand $lintCommand */
+        $lintCommand = $this->container->get("lint_command");
+
         $defaultCommands   = parent::getDefaultCommands();
-        $defaultCommands[] = $this->container->get('lint_command');
+        $defaultCommands[] = $lintCommand;
 
         return $defaultCommands;
     }
@@ -58,7 +70,7 @@ class Application extends SymfonyApplication
                 }
 
                 $data = json_decode($contents);
-                $packages = array_values(array_filter($data->packages, function($package) {
+                $packages = array_values(array_filter($data->packages, function(\stdClass $package): bool {
                     return $package->name === "helmich/typo3-typoscript-lint";
                 }));
 

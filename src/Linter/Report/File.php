@@ -59,8 +59,8 @@ class File
     {
         usort(
             $this->issues,
-            function (Issue $a, Issue $b) {
-                return $a->getLine() - $b->getLine();
+            function (Issue $a, Issue $b): int {
+                return ($a->getLine() ?? 0) - ($b->getLine() ?? 0);
             }
         );
         return $this->issues;
@@ -74,7 +74,7 @@ class File
      */
     public function getIssuesBySeverity(string $severity): array
     {
-        return array_values(array_filter($this->getIssues(), function(Issue $i) use ($severity) {
+        return array_values(array_filter($this->getIssues(), function(Issue $i) use ($severity): bool {
             return $i->getSeverity() === $severity;
         }));
     }

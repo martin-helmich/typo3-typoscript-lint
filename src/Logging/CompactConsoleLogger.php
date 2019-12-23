@@ -24,7 +24,7 @@ class CompactConsoleLogger implements LinterLoggerInterface
     const OUTPUT_WIDTH = 50;
 
     /** @var int */
-    private $fileCount;
+    private $fileCount = 0;
 
     /** @var int */
     private $issueCount = 0;
@@ -36,7 +36,7 @@ class CompactConsoleLogger implements LinterLoggerInterface
     private $output;
 
     /** @var string */
-    private $progressFormatString;
+    private $progressFormatString = "   [%3d / %-3d, %3d%%]";
 
     /** @var Printer */
     private $printer;

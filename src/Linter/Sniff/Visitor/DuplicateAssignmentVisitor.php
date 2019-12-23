@@ -16,6 +16,7 @@ class DuplicateAssignmentVisitor implements SniffVisitor
     /** @var Issue[] */
     private $issues = [];
 
+    /** @var bool */
     private $inCondition = false;
 
     /**

@@ -47,7 +47,7 @@ class ConfigurationLocator
      * @param LinterConfiguration|null $configuration              The configuration on which to set the loaded configuration values.
      * @return LinterConfiguration The linter configuration from the given configuration file.
      */
-    public function loadConfiguration(array $possibleConfigurationFiles = [], LinterConfiguration $configuration = null): LinterConfiguration
+    public function loadConfiguration(array $possibleConfigurationFiles = [], ?LinterConfiguration $configuration = null): LinterConfiguration
     {
         $configs = [$this->loader->load('typoscript-lint.dist.yml')];
         foreach ($possibleConfigurationFiles as $configurationFile) {
