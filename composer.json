@@ -36,9 +36,6 @@
     "bin": [
         "typoscript-lint"
     ],
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "psr-4": {
             "Helmich\\TypoScriptLint\\": "src/"

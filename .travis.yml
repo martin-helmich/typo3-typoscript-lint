@@ -23,5 +23,5 @@ install:
 
 script:
   - ./typoscript-lint --help
-  - bin/phpunit --coverage-clover clover.xml
-  - bin/psalm
+  - vendor/bin/phpunit --coverage-clover clover.xml
+  - vendor/bin/psalm
