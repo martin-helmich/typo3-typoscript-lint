@@ -33,7 +33,10 @@
         "mikey179/vfsstream": "^1.6",
         "vimeo/psalm": "^3.7"
     },
-    "bin": [
+	"scripts": {
+		"package": "bash .build/package.sh $@"
+	},
+	"bin": [
         "typoscript-lint"
     ],
     "autoload": {
