@@ -36,6 +36,9 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
 
+    - name: Run CLI tool
+      run: ./typoscript-lint
+
     - name: Run type checker
       run: ./vendor/bin/psalm
       
