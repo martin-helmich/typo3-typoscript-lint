@@ -17,15 +17,22 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
     /** @var string[] */
     private $allowedRightValues = [];
 
+    /** @var int */
+    private $valueLengthThreshold = 8;
+
     /**
      * @param array $parameters
-     * @psalm-param array{allowedRightValues: ?string[]} $parameters
+     * @psalm-param array{allowedRightValues: ?string[], valueLengthThreshold: ?int} $parameters
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function __construct(array $parameters)
     {
         if (isset($parameters["allowedRightValues"])) {
             $this->allowedRightValues = $parameters["allowedRightValues"];
+        }
+
+        if (isset($parameters["valueLengthThreshold"])) {
+            $this->valueLengthThreshold = $parameters["valueLengthThreshold"];
         }
     }
 
@@ -38,7 +45,10 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
         foreach ($tokens as $token) {
-            if ($token->getType() !== TokenInterface::TYPE_RIGHTVALUE || strlen($token->getValue()) < 8) {
+            $isRValue                   = $token->getType() === TokenInterface::TYPE_RIGHTVALUE;
+            $valueIsLongerThanThreshold = strlen($token->getValue()) >= $this->valueLengthThreshold;
+
+            if (!$isRValue || !$valueIsLongerThanThreshold) {
                 continue;
             }
 
