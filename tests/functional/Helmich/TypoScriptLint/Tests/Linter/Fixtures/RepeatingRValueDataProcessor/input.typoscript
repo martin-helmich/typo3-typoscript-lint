@@ -1,0 +1,14 @@
+tt_content.custom_element = FLUIDTEMPLATE
+tt_content.custom_element {
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
+        10 {
+            foo = bar
+        }
+
+        20 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
+        20 {
+            bar = baz
+        }
+    }
+}

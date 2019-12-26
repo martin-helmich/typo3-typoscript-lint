@@ -14,11 +14,19 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
     /** @var array<string, int> */
     private $knownRightValues = [];
 
+    /** @var string[] */
+    private $allowedRightValues = [];
+
     /**
      * @param array $parameters
+     * @psalm-param array{allowedRightValues: ?string[]} $parameters
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function __construct(array $parameters)
     {
+        if (isset($parameters["allowedRightValues"])) {
+            $this->allowedRightValues = $parameters["allowedRightValues"];
+        }
     }
 
     /**
@@ -35,6 +43,10 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
             }
 
             if (preg_match(self::CONSTANT_EXPRESSION, $token->getValue())) {
+                continue;
+            }
+
+            if (in_array($token->getValue(), $this->allowedRightValues)) {
                 continue;
             }
 
