@@ -137,7 +137,7 @@ class IndentationSniff implements TokenStreamSniffInterface
                 if ($token->getType() === TokenInterface::TYPE_CONDITION_END) {
                     $this->insideCondition = false;
                 }
-                return $indentationLevel - 1;
+                return max($indentationLevel - 1, 0);
             }
         }
 
