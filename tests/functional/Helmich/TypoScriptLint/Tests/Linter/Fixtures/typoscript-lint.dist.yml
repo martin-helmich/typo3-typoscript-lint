@@ -7,6 +7,9 @@ sniffs:
   - class: DeadCode
   - class: OperatorWhitespace
   - class: RepeatingRValue
+    parameters:
+      allowedRightValues:
+        - "TYPO3\\CMS\\Frontend\\DataProcessing\\DatabaseQueryProcessor"
   - class: DuplicateAssignment
   - class: NestingConsistency
   - class: EmptySection

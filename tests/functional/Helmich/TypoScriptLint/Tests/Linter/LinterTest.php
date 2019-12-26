@@ -46,7 +46,7 @@ class LinterTest extends TestCase
             $localConfigData = Yaml::parse(file_get_contents($localConfigFilename));
         }
 
-        $globalConfigData = Yaml::parse(file_get_contents(__DIR__ . '/Fixtures/tslint.dist.yml'));
+        $globalConfigData = Yaml::parse(file_get_contents(__DIR__ . '/Fixtures/typoscript-lint.dist.yml'));
 
         $report = new Report();
         $config = new LinterConfiguration();

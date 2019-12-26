@@ -97,7 +97,7 @@ configuration file, you can define whether you prefer
 
 By default, the indentation sniff expects code inside TypoScript conditions to
 be **not** indented. You can change this behaviour by setting the
-`indentConditions` flag for the indentation sniff to `true` in your `tslint.yml`
+`indentConditions` flag for the indentation sniff to `true` in your `typoscript-lint.yml`
 configuration file (see below).
 
 #### Dead code
@@ -131,6 +131,10 @@ extract this into a TypoScript constant.
         bar = Hello World
         baz = Hello World
     #         ^----- Time to extract "Hello World" into a constant!
+
+By default, any value with a length of 8 characters or more will trigger a warning if it is repeated more than once. You can configure this threshold by setting the `valueLengthThreshold` parameter for the `RepeatingRValueSniff` in your configuration file.
+
+It is also possible to whitelist certain values that are allowed to repeat. You can set those in the `allowedRightValues` parameter in your configuration file.
 
 #### Duplicate assignments
 
