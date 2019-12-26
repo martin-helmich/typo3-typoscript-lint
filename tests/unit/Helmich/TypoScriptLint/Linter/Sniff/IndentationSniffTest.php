@@ -4,7 +4,10 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff;
+use Helmich\TypoScriptParser\Tokenizer\Printer\StructuredTokenPrinter;
+use Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface;
 use Helmich\TypoScriptParser\Tokenizer\Token;
+use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -45,5 +48,27 @@ class IndentationSniffTest extends TestCase
         $warnings = $file->getIssues();
 
         $this->assertCount(0, $warnings);
+    }
+
+    /**
+     * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/79
+     */
+    public function testSuperflousClosingTokensDoNotCauseWarnings()
+    {
+        $sniff = new IndentationSniff(["indentConditions" => true]);
+        $tokens = (new Tokenizer())->tokenizeString(<<<EOF
+foo {
+    bar = 1
+}
+[global]
+baz = 1
+EOF
+);
+        $file = new File("file");
+
+        $sniff->sniff($tokens, $file, new LinterConfiguration());
+
+        $warnings = $file->getIssues();
+        assertThat($warnings, countOf(0));
     }
 }
