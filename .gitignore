@@ -5,3 +5,4 @@
 /tstest/
 /composer.lock
 /.phpunit.result.cache
+/*.phar
