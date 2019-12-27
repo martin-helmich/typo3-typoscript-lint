@@ -233,9 +233,18 @@ and is thus considered deprecated (although the old file names are still support
   
   ```yaml
   filePatterns:
-    - "*.ts"
+    - "*.typoscript"
     - "setup.txt"
     - # ...
+  ```
+  
+  If you have certain files you want to explicitly *exclude* from linting even if they match the `filePatterns` above, you can specify additional `excludePatterns`:
+  
+  ```yaml
+  filePatterns:
+    - "*.typoscript"
+  excludePatterns:
+    - "Constants.typoscript"
   ```
 
 Articles
