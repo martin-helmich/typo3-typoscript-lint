@@ -81,13 +81,17 @@ class LintCommand extends Command
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }
 
-    private function getPossibleConfigFiles(string $param): array
+    /**
+     * @param string $fileName
+     * @return string[]
+     */
+    private function getPossibleConfigFiles(string $fileName): array
     {
-        if ($param === 'typoscript-lint.yml') {
+        if ($fileName === 'typoscript-lint.yml') {
             return ["tslint.yml", "typoscript-lint.yml"];
         }
 
-        return [$param];
+        return [$fileName];
     }
 
     /**

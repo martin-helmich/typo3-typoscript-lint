@@ -209,6 +209,13 @@ and is thus considered deprecated (although the old file names are still support
     - directory/with/typoscript
     - ...
   ```
+  
+  You can also use the `*` character to match multiple files or directories:
+  
+  ```yaml
+  paths:
+    - typo3conf/ext/yourprefix_*/Configuration/TypoScript
+  ```
 
 * Configure individual sniffs under the `sniff` key in the configuration file. This key
   consists of a list of objects, each with a `class` key and an optional `parameters`
