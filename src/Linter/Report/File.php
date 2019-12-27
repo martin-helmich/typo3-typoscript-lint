@@ -18,14 +18,22 @@ class File
     /** @var Issue[] */
     private $issues = [];
 
+    /** @var string */
+    private $originalContent;
+
+    /** @var string|null */
+    private $fixedContent = null;
+
     /**
      * Constructs a new file report.
      *
      * @param string $filename The filename.
+     * @param string $content  The original content of this file.
      */
-    public function __construct(string $filename)
+    public function __construct(string $filename, string $content)
     {
-        $this->filename = $filename;
+        $this->filename        = $filename;
+        $this->originalContent = $content;
     }
 
     /**
@@ -80,13 +88,37 @@ class File
     }
 
     /**
+     * @return string
+     */
+    public function getOriginalContent(): string
+    {
+        return $this->originalContent;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFixedContent(): ?string
+    {
+        return $this->fixedContent;
+    }
+
+    /**
+     * @param string $fixedContent
+     */
+    public function setFixedContent(string $fixedContent): void
+    {
+        $this->fixedContent = $fixedContent;
+    }
+
+    /**
      * Creates a new empty report for the same file
      *
      * @return File The new report
      */
     public function cloneEmpty(): self
     {
-        return new static($this->filename);
+        return new static($this->filename, $this->originalContent);
     }
 
     /**
@@ -97,8 +129,9 @@ class File
      */
     public function merge(File $other): self
     {
-        $new = new static($this->filename);
+        $new = new static($this->filename, $this->originalContent);
         $new->issues = array_merge($this->issues, $other->issues);
+        $new->fixedContent = $this->fixedContent;
         return $new;
     }
 }

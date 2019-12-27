@@ -9,6 +9,8 @@ use Helmich\TypoScriptLint\Logging\LinterLoggerInterface;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
 use Helmich\TypoScriptParser\Parser\ParseError;
 use Helmich\TypoScriptParser\Parser\ParserInterface;
+use Helmich\TypoScriptParser\Tokenizer\Printer\CodeTokenPrinter;
+use Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerInterface;
@@ -25,11 +27,20 @@ class Linter implements LinterInterface
     /** @var SniffLocator */
     private $sniffLocator;
 
-    public function __construct(TokenizerInterface $tokenizer, ParserInterface $parser, SniffLocator $sniffLocator)
+    /** @var TokenPrinterInterface */
+    private $tokenPrinter;
+
+    public function __construct(
+        TokenizerInterface $tokenizer,
+        ParserInterface $parser,
+        SniffLocator $sniffLocator,
+        TokenPrinterInterface $tokenPrinter
+    )
     {
         $this->tokenizer    = $tokenizer;
         $this->parser       = $parser;
         $this->sniffLocator = $sniffLocator;
+        $this->tokenPrinter = $tokenPrinter;
     }
 
     /**
@@ -41,7 +52,15 @@ class Linter implements LinterInterface
      */
     public function lintFile(string $filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger): File
     {
-        $file = new File($filename);
+        $content = file_get_contents($filename);
+        if ($content === false) {
+            $file = new File($filename, "");
+            $file->addIssue(new Issue(null, null, "file not readable", Issue::SEVERITY_ERROR, ""));
+
+            return $file;
+        }
+
+        $file = new File($filename, $content);
 
         try {
             $tokens     = $this->tokenizer->tokenizeStream($filename);
@@ -81,11 +100,15 @@ class Linter implements LinterInterface
             $sniffReport = $file->cloneEmpty();
 
             $logger->notifyFileSniffStart($file->getFilename(), get_class($sniff));
-            $sniff->sniff($tokens, $sniffReport, $configuration);
+            $tokens = $sniff->sniff($tokens, $sniffReport, $configuration);
 
             $file = $file->merge($sniffReport);
             $logger->nofifyFileSniffComplete($file->getFilename(), get_class($sniff), $sniffReport);
         }
+
+        $renderedFileContent = (new CodeTokenPrinter())->printTokenStream($tokens);
+
+        $file->setFixedContent($renderedFileContent);
 
         return $file;
     }

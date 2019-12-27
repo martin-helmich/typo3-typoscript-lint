@@ -40,9 +40,9 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
      * @param TokenInterface[]    $tokens
      * @param File                $file
      * @param LinterConfiguration $configuration
-     * @return void
+     * @return TokenInterface[]
      */
-    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
+    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): array
     {
         foreach ($tokens as $token) {
             $isRValue                   = $token->getType() === TokenInterface::TYPE_RIGHTVALUE;
@@ -76,5 +76,7 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
                 ));
             }
         }
+
+        return $tokens;
     }
 }

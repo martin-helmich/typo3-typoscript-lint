@@ -40,6 +40,7 @@ class ConsoleReportPrinter implements Printer
     public function writeReport(Report $report): void
     {
         $count = 0;
+        $fixableCount = 0;
 
         $this->output->writeln('');
         $this->output->writeln('<comment>CHECKSTYLE REPORT</comment>');
@@ -59,13 +60,18 @@ class ConsoleReportPrinter implements Printer
 
                 $this->output->writeln(
                     sprintf(
-                        '<comment>%4d <%s>%s</%s></comment>',
+                        '    <comment>%4d <%s>%s</%s></comment>%s',
                         $issue->getLine() ?? 0,
                         $style,
                         $issue->getMessage(),
-                        $style
+                        $style,
+                        $issue->isFixable() ? " <info>(FIXABLE)</info>" : ""
                     )
                 );
+
+                if ($issue->isFixable()) {
+                    $fixableCount ++;
+                }
             }
         }
 
@@ -84,6 +90,15 @@ class ConsoleReportPrinter implements Printer
 
         if ($count > 0) {
             $this->output->writeln(" (" . implode(', ', $summary) . ")");
+        } else {
+            $this->output->writeln("");
+        }
+
+        if ($fixableCount > 0) {
+            $this->output->writeln("");
+            $this->output->writeln('<comment>AUTOMATIC FIXING</comment>');
+            $this->output->writeln("<comment>{$fixableCount}</comment> issues can be fixed automatically.");
+            $this->output->writeln("Run this tool with <comment>--fix</comment> to preview possible fixes and with <comment>--fix-apply</comment> to apply them.");
         }
     }
 }

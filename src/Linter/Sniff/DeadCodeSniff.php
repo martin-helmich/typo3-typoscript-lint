@@ -24,11 +24,17 @@ class DeadCodeSniff implements TokenStreamSniffInterface
      * @param TokenInterface[]    $tokens
      * @param File                $file
      * @param LinterConfiguration $configuration
-     * @return void
+     * @return TokenInterface[]
      */
-    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
+    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): array
     {
-        foreach ($tokens as $token) {
+        $fixedTokens = $tokens;
+
+        //foreach ($tokens as $i => $token) {
+        $count = count($tokens);
+        for ($i = 0; $i < $count; $i ++) {
+            $token = $tokens[$i];
+
             if (!($token->getType() === TokenInterface::TYPE_COMMENT_ONELINE
                 || $token->getType() === TokenInterface::TYPE_COMMENT_MULTILINE)) {
                 continue;
@@ -43,17 +49,32 @@ class DeadCodeSniff implements TokenStreamSniffInterface
                     $parser = new Parser(new Tokenizer());
                     $parser->parseString($commentContent);
 
+                    unset($fixedTokens[$i]);
+                    for ($j = $i - 1; $j >= 0 && $tokens[$j]->getLine() === $tokens[$i]->getLine(); $j --) {
+                        if ($tokens[$j]->getType() === TokenInterface::TYPE_WHITESPACE) {
+                            unset($fixedTokens[$j]);
+                        }
+                    }
+                    for ($j = $i + 1; $j < $count && $tokens[$j]->getLine() === $tokens[$i]->getLine(); $j ++) {
+                        if ($tokens[$j]->getType() === TokenInterface::TYPE_WHITESPACE) {
+                            unset($fixedTokens[$j]);
+                        }
+                    }
+
                     $file->addIssue(new Issue(
                         $token->getLine(),
                         0,
                         'Found commented code (' . $matches[0] . ').',
                         Issue::SEVERITY_INFO,
-                        __CLASS__
+                        __CLASS__,
+                        true
                     ));
                 } catch (\Exception $e) {
                     // pass
                 }
             }
         }
+
+        return array_values($fixedTokens);
     }
 }

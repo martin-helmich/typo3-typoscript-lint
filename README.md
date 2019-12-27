@@ -20,9 +20,17 @@ Contents
 - [Getting started](#getting-started)
   - [Setup](#setup)
   - [Usage](#usage)
+  - [Automatically fixing issues](#automatically-fixing-issues)
   - [Example](#example)
 - [Code validation](#code-validation)
   - [Features](#features)
+    - [Indentation](#indentation)
+    - [Dead code](#dead-code)
+    - [Whitespaces](#whitespaces)
+    - [Repeating values](#repeating-values)
+    - [Duplicate assignments](#duplicate-assignments)
+    - [Nesting consistency](#nesting-consistency)
+    - [Empty blocks](#empty-blocks)
   - [Configuration](#configuration)
 - [Articles](#articles)
 - [Future features](#future-features)
@@ -32,10 +40,9 @@ Contents
 Synopsis
 --------
 
-This package contains a tool that can parse TYPO3's configuration language,
-"TypoScript", into an syntax tree and perform static code analysis on the
-parsed code. `typoscript-lint` can generate [Checkstyle](http://checkstyle.sourceforge.net/)-compatible output and can be used
-in Continuous Integration environments.
+This package contains a tool that can parse TYPO3's configuration language, "TypoScript", into an syntax tree and perform static code analysis on the parsed code. `typoscript-lint` can generate [Checkstyle](http://checkstyle.sourceforge.net/)-compatible output and can be used in Continuous Integration environments.
+
+In some cases, it can also automatically fix some common issues in your code for you.
 
 Why?!
 -----
@@ -64,11 +71,25 @@ Of course, this works best if your TYPO3 project is also Composer-based. If it i
 
 Call typo3-typoscript-lint as follows:
 
-    vendor/bin/typoscript-lint path/to/your.ts
+    vendor/bin/typoscript-lint path/to/your.typoscript
 
 By default, it will print a report on the console. To generate a checkstyle-format XML file, call as follows:
 
-    vendor/bin/typoscript-lint -f xml -o checkstyle.xml path/to/your.ts
+    vendor/bin/typoscript-lint -f xml -o checkstyle.xml path/to/your.typoscript
+
+### Automatically fixing issues
+
+To automatically fix issues where possible, run the command with the `--fix` option:
+
+    vendor/bin/typoscript-lint --fix path/to/your.typoscript
+
+Using the `--fix` option will not apply any of these changes. You can use the `--fix` option together with the `--output` option (or a simple pipe) to create a patch file that you can then apply:
+
+    vendor/bin/typoscript-lint -o fixes.patch --fix path/to/your.typoscript
+    patch -u -p1 fixes.patch
+    
+    # alternatively:
+    vendor/bin/typoscript-lint --fix path/to/your.typoscript | patch -u -p1
 
 ### Example
 
@@ -85,9 +106,7 @@ for checking the following common mistakes or code-smells in TypoScript:
 
 #### Indentation
 
-The indentation level should be increased with each nested statement. In the
-configuration file, you can define whether you prefer
-[tabs or spaces](http://www.jwz.org/doc/tabs-vs-spaces.html) for indentation.
+The indentation level should be increased with each nested statement. In the configuration file, you can define whether you prefer [tabs or spaces](http://www.jwz.org/doc/tabs-vs-spaces.html) for indentation.
 
     foo {
         bar = 2
@@ -95,10 +114,9 @@ configuration file, you can define whether you prefer
     # ^----------- This will raise a warning!
     }
 
-By default, the indentation sniff expects code inside TypoScript conditions to
-be **not** indented. You can change this behaviour by setting the
-`indentConditions` flag for the indentation sniff to `true` in your `typoscript-lint.yml`
-configuration file (see below).
+By default, the indentation sniff expects code inside TypoScript conditions to be **not** indented. You can change this behaviour by setting the `indentConditions` flag for the indentation sniff to `true` in your `typoscript-lint.yml` configuration file (see below).
+
+**Issues reported by this sniff can be fixed automatically.**
 
 #### Dead code
 
@@ -111,6 +129,8 @@ use version control, do you?).
         #baz.foo = Hello World
     #   ^----------- This will raise a warning!
     }
+    
+**Issues reported by this sniff can be fixed automatically.**
 
 #### Whitespaces
 
@@ -121,6 +141,8 @@ Check that no superflous whitespace float around your operators.
         bar= 3
     #      ^-------- This will also raise a warning (one space too few)
     }
+    
+**Issues reported by this sniff can be fixed automatically.**
 
 #### Repeating values
 
