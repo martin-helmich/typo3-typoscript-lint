@@ -42,6 +42,16 @@ class LinterConfiguration implements ConfigurationInterface
     }
 
     /**
+     * Returns the list of filename patterns that should be excluded even if supported.
+     *
+     * @return string[]
+     */
+    public function getExcludePatterns(): array
+    {
+        return $this->configuration['excludePatterns'] ?: [];
+    }
+
+    /**
      * @return array
      */
     public function getSniffConfigurations(): array
@@ -90,6 +100,9 @@ class LinterConfiguration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('filePatterns')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('excludePatterns')
                     ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('sniffs')
