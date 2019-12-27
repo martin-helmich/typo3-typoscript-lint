@@ -132,12 +132,14 @@ class LintCommand extends Command
 
         $logger = $this->loggerBuilder->createLogger($formatOption, $reportOutput, $output);
 
-        $report   = new Report();
-        $patterns = $configuration->getFilePatterns();
-
-        $files = $this->finder->getFilenames($paths, $patterns, new CallbackFinderObserver(function (string $name) use ($logger): void {
+        $report          = new Report();
+        $filePatterns    = $configuration->getFilePatterns();
+        $excludePatterns = $configuration->getExcludePatterns();
+        $observer        = new CallbackFinderObserver(function (string $name) use ($logger): void {
             $logger->notifyFileNotFound($name);
-        }));
+        });
+
+        $files = $this->finder->getFilenames($paths, $filePatterns, $excludePatterns, $observer);
         $logger->notifyFiles($files);
 
         foreach ($files as $filename) {
