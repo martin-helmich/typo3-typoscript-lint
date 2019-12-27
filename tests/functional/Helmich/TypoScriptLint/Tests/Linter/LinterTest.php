@@ -87,6 +87,8 @@ class LinterTest extends TestCase
     public function getFunctionalTestFixtures()
     {
         $files = glob(__DIR__ . '/Fixtures/*/*.typoscript');
+        $testCases = [];
+
         foreach ($files as $file) {
             $output      = dirname($file) . '/output.txt';
             $outputLines = explode("\n", file_get_contents($output));
@@ -106,10 +108,10 @@ class LinterTest extends TestCase
                 $outputLines
             );
 
-            yield [
-                $file,
-                $reports,
-            ];
+            $testCaseName = basename(dirname($file));
+            $testCases[$testCaseName] = [$file, $reports];
         }
+
+        return $testCases;
     }
 }

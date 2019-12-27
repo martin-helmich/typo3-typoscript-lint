@@ -6,8 +6,6 @@ use SplFileInfo;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 
-// @phan-suppress-current-line PhanUnreferencedUseNormal
-
 /**
  * Helper class that selects files to analyze from a list of file and directory names.
  *
@@ -80,8 +78,22 @@ class Finder
         }
 
         $filenames = [];
+        $globbedFileOrDirectoryNames = [];
 
-        foreach ($fileOrDirectoryNames as $fileOrDirectoryName) {
+        foreach($fileOrDirectoryNames as $fileOrDirectoryName) {
+            if (strpos($fileOrDirectoryName, "*") !== false) {
+                $files = glob($fileOrDirectoryName);
+                if ($files === false) {
+                    continue;
+                }
+
+                $globbedFileOrDirectoryNames = array_merge($globbedFileOrDirectoryNames, $files);
+            } else {
+                $globbedFileOrDirectoryNames[] = $fileOrDirectoryName;
+            }
+        }
+
+        foreach ($globbedFileOrDirectoryNames as $fileOrDirectoryName) {
             $subFinder                   = clone $finder;
             $resolvedFileOrDirectoryName = $fileOrDirectoryName;
 
