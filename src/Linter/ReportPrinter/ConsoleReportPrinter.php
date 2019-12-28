@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
-use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
+use Helmich\TypoScriptLint\Linter\Report\Report;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -51,20 +51,32 @@ class ConsoleReportPrinter implements Printer
             Issue::SEVERITY_INFO    => 'info',
         ];
 
+        $styleLabelMap = [
+            Issue::SEVERITY_ERROR   => "ERROR",
+            Issue::SEVERITY_WARNING => "WARN",
+            Issue::SEVERITY_INFO    => "INFO",
+        ];
+
         foreach ($report->getFiles() as $file) {
-            $this->output->writeln("=> <comment>{$file->getFilename()}</comment>.");
+            $relativeFilename = PathUtils::getRelativePath($file->getFilename());
+
+            $this->output->writeln("");
+            $this->output->writeln("=> <comment>{$relativeFilename}</comment>");
+
             foreach ($file->getIssues() as $issue) {
                 $count++;
 
                 $style = $styleMap[$issue->getSeverity()];
+                $label = $styleLabelMap[$issue->getSeverity()];
+
+                $level = sprintf("<{$style}>%5s</{$style}>", $label);
 
                 $this->output->writeln(
                     sprintf(
-                        '    <comment>%4d <%s>%s</%s></comment>%s',
+                        '    %s %4d %s%s',
+                        $level,
                         $issue->getLine() ?? 0,
-                        $style,
                         $issue->getMessage(),
-                        $style,
                         $issue->isFixable() ? " <info>(FIXABLE)</info>" : ""
                     )
                 );
@@ -86,7 +98,7 @@ class ConsoleReportPrinter implements Printer
 
         $this->output->writeln("");
         $this->output->writeln('<comment>SUMMARY</comment>');
-        $this->output->write("<info><comment>$count</comment> issues in total.</info>");
+        $this->output->write("  <info><comment>$count</comment> issues in total.</info>");
 
         if ($count > 0) {
             $this->output->writeln(" (" . implode(', ', $summary) . ")");
@@ -97,8 +109,8 @@ class ConsoleReportPrinter implements Printer
         if ($fixableCount > 0) {
             $this->output->writeln("");
             $this->output->writeln('<comment>AUTOMATIC FIXING</comment>');
-            $this->output->writeln("<comment>{$fixableCount}</comment> issues can be fixed automatically.");
-            $this->output->writeln("Run this tool with <comment>--fix</comment> to preview possible fixes and with <comment>--fix-apply</comment> to apply them.");
+            $this->output->writeln("  <comment>{$fixableCount}</comment> issues can be fixed automatically.");
+            $this->output->writeln("  Run this tool with <comment>--fix</comment> to preview possible fixes.");
         }
     }
 }

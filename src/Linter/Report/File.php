@@ -88,6 +88,18 @@ class File
     }
 
     /**
+     * @param string $severity
+     * @param string $sniff
+     * @return Issue[]
+     */
+    public function getIssuesBySniffAndSeverity(string $severity, string $sniff): array
+    {
+        return array_values(array_filter($this->getIssues(), function(Issue $i) use ($severity, $sniff): bool {
+            return $i->getSeverity() === $severity && $i->getSource() === $sniff;
+        }));
+    }
+
+    /**
      * @return string
      */
     public function getOriginalContent(): string

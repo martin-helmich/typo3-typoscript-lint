@@ -25,11 +25,7 @@ class AutofixReportPrinter implements Printer
     public function writeReport(Report $report): void
     {
         foreach ($report->getFiles() as $file) {
-            $relativeFilename = $file->getFilename();
-            if (substr($relativeFilename, 0, mb_strlen(getcwd())) === getcwd()) {
-                $relativeFilename = substr($relativeFilename, mb_strlen(getcwd()));
-                $relativeFilename = ltrim($relativeFilename, DIRECTORY_SEPARATOR);
-            }
+            $relativeFilename = PathUtils::getRelativePath($file->getFilename());
 
             $builder = new StrictUnifiedDiffOutputBuilder([
                 'collapseRanges'      => true,

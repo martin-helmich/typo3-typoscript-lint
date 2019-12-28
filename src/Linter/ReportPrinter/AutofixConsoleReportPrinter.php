@@ -33,11 +33,7 @@ class AutofixConsoleReportPrinter implements Printer
 
 
         foreach ($report->getFiles() as $file) {
-            $relativeFilename = $file->getFilename();
-            if (substr($relativeFilename, 0, mb_strlen(getcwd())) === getcwd()) {
-                $relativeFilename = substr($relativeFilename, mb_strlen(getcwd()));
-                $relativeFilename = ltrim($relativeFilename, DIRECTORY_SEPARATOR);
-            }
+            $relativeFilename = PathUtils::getRelativePath($file->getFilename());
 
             $builder = new StrictUnifiedDiffOutputBuilder([
                 'collapseRanges'      => true,
@@ -68,7 +64,7 @@ class AutofixConsoleReportPrinter implements Printer
                         ($hasPrefix("+") && !$hasPrefix("+++")) ||
                         ($hasPrefix("-") && !$hasPrefix("---"))) {
                         $line = str_replace(" ", "·", $line);
-                        $line = str_replace("\t", "⇥", $line);
+                        $line = str_replace("\t", "   ⇥", $line);
                     }
 
                     if (mb_strlen($line) > 0 && mb_substr($line, 0, 1) === "·") {

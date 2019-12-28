@@ -106,7 +106,7 @@ class Linter implements LinterInterface
             $logger->nofifyFileSniffComplete($file->getFilename(), get_class($sniff), $sniffReport);
         }
 
-        $renderedFileContent = (new CodeTokenPrinter())->printTokenStream($tokens);
+        $renderedFileContent = $this->tokenPrinter->printTokenStream($tokens);
 
         $file->setFixedContent($renderedFileContent);
 

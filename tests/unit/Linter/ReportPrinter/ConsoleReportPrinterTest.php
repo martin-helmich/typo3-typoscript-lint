@@ -19,14 +19,16 @@ class ConsoleReportPrinterTest extends TestCase
 
     const EXPECTED_XML_DOCUMENT = '
 CHECKSTYLE REPORT
-=> foobar.tys.
-     123 Message #1
-     124 Message #2
-=> bar.txt.
-     412 Message #3
+
+=> foobar.tys
+     INFO  123 Message #1
+     WARN  124 Message #2
+
+=> bar.txt
+    ERROR  412 Message #3
 
 SUMMARY
-3 issues in total. (1 errors, 1 warnings, 1 infos)
+  3 issues in total. (1 errors, 1 warnings, 1 infos)
 ';
 
     /** @var BufferedOutput */
