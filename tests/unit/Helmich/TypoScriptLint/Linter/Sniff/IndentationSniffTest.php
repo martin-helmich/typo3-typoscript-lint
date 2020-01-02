@@ -53,7 +53,7 @@ class IndentationSniffTest extends TestCase
     /**
      * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/79
      */
-    public function testSuperflousClosingTokensDoNotCauseWarnings()
+    public function testNoNegativeIndentationLevelsForSuperflousClosingToken()
     {
         $sniff = new IndentationSniff(["indentConditions" => true]);
         $tokens = (new Tokenizer())->tokenizeString(<<<EOF
@@ -70,5 +70,31 @@ EOF
 
         $warnings = $file->getIssues();
         assertThat($warnings, countOf(0));
+    }
+
+    /**
+     * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/88
+     */
+    public function testNoNegativeIndentationLevels()
+    {
+        $code = <<<EOF
+plugin.tx_solr {
+    # ...
+}
+[extensionLoaded("persons")]
+plugin.tx_solr {
+    #...
+}
+[end]
+EOF;
+
+        $sniff = new IndentationSniff(["indentConditions" => true]);
+        $tokens = (new Tokenizer())->tokenizeString($code);
+        $file = new File("file");
+
+        $sniff->sniff($tokens, $file, new LinterConfiguration());
+
+        $warnings = $file->getIssues();
+        assertThat($warnings, equalTo([]));
     }
 }
