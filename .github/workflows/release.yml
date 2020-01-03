@@ -20,11 +20,14 @@ jobs:
 
       - name: Build PHAR
         run: composer run-script package ${{ steps.tagName.outputs.tag }}
+        env:
+          signing_key: ${{ secrets.pharSigningKey }}
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            typoscript-lint_*.phar
+            typoscript-lint-*.phar
+            typoscript-lint-*.phar.asc
         env:
           GITHUB_TOKEN: ${{ secrets.githubToken }}
