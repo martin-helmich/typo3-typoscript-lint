@@ -50,7 +50,7 @@ class YamlConfigurationLoader extends FileLoader
      *
      * @psalm-suppress MethodSignatureMismatch
      */
-    public function load($resource, string $type = null): array
+    public function load($resource, $type = null): array
     {
         try {
             /** @var string $path */
@@ -72,7 +72,7 @@ class YamlConfigurationLoader extends FileLoader
      *
      * @psalm-suppress MethodSignatureMismatch
      */
-    public function supports($resource, string $type = null): bool
+    public function supports($resource, $type = null): bool
     {
         return is_string($resource) &&
             in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml', 'yaml']);
