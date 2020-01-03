@@ -78,6 +78,7 @@ class LintCommand extends Command
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
             ->addOption('exit-code', 'e', InputOption::VALUE_NONE, '(DEPRECATED) Set this flag to exit with a non-zero exit code when there are warnings')
             ->addOption('fail-on-warnings', null, InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
+            ->addOption('fix', null, InputOption::VALUE_NONE, 'Automatically fix issues where possible (preview)')
             ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
     }
 
@@ -111,6 +112,8 @@ class LintCommand extends Command
         $outputOption = $input->getOption('output');
         /** @var string $formatOption */
         $formatOption = $input->getOption('format');
+        /** @var bool $fix */
+        $fix = $input->getOption("fix");
 
         $configFiles   = $this->getPossibleConfigFiles($configFilesOption);
         $configuration = $this->linterConfigurationLocator->loadConfiguration($configFiles);
@@ -123,6 +126,8 @@ class LintCommand extends Command
             throw new BadOutputFileException('Bad output file.');
         }
 
+        $isTTY = stream_isatty(STDOUT);
+
         if ($outputOption === '-') {
             $reportOutput = $output;
         } else {
@@ -134,7 +139,11 @@ class LintCommand extends Command
             $reportOutput = new StreamOutput($fileHandle);
         }
 
-        $logger = $this->loggerBuilder->createLogger($formatOption, $reportOutput, $output);
+        if ($fix) {
+            $formatOption = "diff";
+        }
+
+        $logger = $this->loggerBuilder->createLogger($formatOption, $reportOutput, $output, $isTTY);
 
         $report          = new Report();
         $filePatterns    = $configuration->getFilePatterns();

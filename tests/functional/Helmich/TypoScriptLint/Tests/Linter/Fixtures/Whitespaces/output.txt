@@ -1,2 +1,0 @@
-1;;No whitespace after object accessor.;warning;Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff
-2;;No whitespace after object accessor.;warning;Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff

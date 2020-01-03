@@ -35,6 +35,9 @@ class Issue
     /** @var string */
     private $source;
 
+    /** @var bool */
+    private $fixable;
+
     /**
      * Creates a new warning from a parse error.
      *
@@ -77,14 +80,16 @@ class Issue
      * @param string   $message  The warning message.
      * @param string   $severity The warning severity (see Issue::SEVERITY_* constants).
      * @param string   $source   An arbitrary identifier for the generator of this warning.
+     * @param bool     $fixable
      */
-    public function __construct(?int $line, ?int $column, string $message, string $severity, string $source)
+    public function __construct(?int $line, ?int $column, string $message, string $severity, string $source, bool $fixable = false)
     {
         $this->line     = $line;
         $this->column   = $column;
         $this->message  = $message;
         $this->severity = $severity;
         $this->source   = $source;
+        $this->fixable  = $fixable;
     }
 
     /**
@@ -136,4 +141,13 @@ class Issue
     {
         return $this->source;
     }
+
+    /**
+     * @return bool
+     */
+    public function isFixable(): bool
+    {
+        return $this->fixable;
+    }
+
 }

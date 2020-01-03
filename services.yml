@@ -19,7 +19,7 @@ services:
       - [injectParser, ['@parser']]
   linter:
     class: Helmich\TypoScriptLint\Linter\Linter
-    arguments: ['@tokenizer', '@parser', '@sniff_locator']
+    arguments: ['@tokenizer', '@parser', '@sniff_locator', '@token_printer_code']
   linter_configuration:
     class: Helmich\TypoScriptLint\Linter\LinterConfiguration
   linter_configuration_locator:

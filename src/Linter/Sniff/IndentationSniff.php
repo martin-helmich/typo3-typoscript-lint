@@ -6,6 +6,7 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\Inspection\TokenInspections;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
+use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
 class IndentationSniff implements TokenStreamSniffInterface
@@ -54,17 +55,20 @@ class IndentationSniff implements TokenStreamSniffInterface
      * @param TokenInterface[]    $tokens
      * @param File                $file
      * @param LinterConfiguration $configuration
-     * @return void
+     * @return TokenInterface[]
      */
-    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
+    public function sniff(array $tokens, File $file, LinterConfiguration $configuration): array
     {
+        $fixedTokens = [];
         $indentCharacter  = $this->useSpaces ? ' ' : "\t";
         $tokensByLine     = new LineGrouper($tokens);
         $indentationLevel = 0;
 
         /** @var TokenInterface[] $tokensInLine */
         foreach ($tokensByLine->getLines() as $line => $tokensInLine) {
-            $indentationLevel = $this->reduceIndentationLevel($indentationLevel, $tokensInLine);
+            $originalTokensInLine = $tokensInLine;
+            $fixedTokensInLine    = $tokensInLine;
+            $indentationLevel     = $this->reduceIndentationLevel($indentationLevel, $tokensInLine);
 
             $expectedIndentationCharacterCount = $this->indentPerLevel * $indentationLevel;
             $expectedIndentation               = str_repeat(
@@ -78,23 +82,36 @@ class IndentationSniff implements TokenStreamSniffInterface
 
             // Skip empty lines and conditions inside conditions.
             if ($this->isEmptyLine($tokensInLine) || $this->insideCondition && $tokensInLine[0] !== TokenInterface::TYPE_CONDITION && !self::isWhitespace($tokensInLine[0])) {
+                $fixedTokens = array_merge($fixedTokens, $originalTokensInLine);
                 continue;
             }
 
             $line = (int)$line;
 
             if ($indentationLevel === 0 && self::isWhitespace($tokensInLine[0]) && strlen($tokensInLine[0]->getValue())) {
-                $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue()));
+                $fixedTokensInLine = array_slice($originalTokensInLine, 1);
+                $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue(), true));
             } elseif ($indentationLevel > 0) {
                 if (!self::isWhitespace($tokensInLine[0])) {
-                    $file->addIssue($this->createIssue($line, $indentationLevel, ''));
+                    $fixedTokensInLine = array_merge(
+                        [new Token(TokenInterface::TYPE_WHITESPACE, $expectedIndentation, $line, 1)],
+                        $originalTokensInLine
+                    );
+                    $file->addIssue($this->createIssue($line, $indentationLevel, '', true));
                 } elseif ($tokensInLine[0]->getValue() !== $expectedIndentation) {
-                    $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue()));
+                    $fixedTokensInLine = array_merge(
+                        [new Token(TokenInterface::TYPE_WHITESPACE, $expectedIndentation, $line, 1)],
+                        array_slice($originalTokensInLine, 1)
+                    );
+                    $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue(), true));
                 }
             }
 
             $indentationLevel = $this->raiseIndentationLevel($indentationLevel, $tokensInLine);
+            $fixedTokens = array_merge($fixedTokens, $fixedTokensInLine);
         }
+
+        return $fixedTokens;
     }
 
     /**
@@ -175,13 +192,13 @@ class IndentationSniff implements TokenStreamSniffInterface
         return $indentationLevel;
     }
 
-    private function createIssue(int $line, int $expectedLevel, string $actual): Issue
+    private function createIssue(int $line, int $expectedLevel, string $actual, bool $fixable): Issue
     {
         $indentCharacterCount       = ($expectedLevel * $this->indentPerLevel);
         $indentCharacterDescription = ($this->useSpaces ? 'space' : 'tab') . (($indentCharacterCount == 1) ? '' : 's');
 
         $expectedMessage = "Expected indent of {$indentCharacterCount} {$indentCharacterDescription}.";
 
-        return new Issue($line, strlen($actual), $expectedMessage, Issue::SEVERITY_WARNING, __CLASS__);
+        return new Issue($line, strlen($actual), $expectedMessage, Issue::SEVERITY_WARNING, __CLASS__, $fixable);
     }
 }

@@ -30,7 +30,16 @@ class CompactConsoleLogger implements LinterLoggerInterface
     private $issueCount = 0;
 
     /** @var int */
-    private $fileCompletedCount = 0;
+    private $sniffCompletedCount = 0;
+
+    /** @var int */
+    private $sniffCount = 0;
+
+    /**
+     * @var array
+     * @psalm-var array<string, bool>
+     */
+    private $knownSniffs = [];
 
     /** @var OutputInterface */
     private $output;
@@ -58,6 +67,9 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
         $numCount = strlen("" . $this->fileCount);
         $this->progressFormatString = "   [%{$numCount}d / %-{$numCount}d, %3d%%]";
+
+        $this->output->writeln("Linting <comment>{$this->fileCount}</comment> files");
+        $this->output->writeln("");
     }
 
     public function notifyFileStart(string $filename): void
@@ -66,40 +78,48 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
     public function notifyFileSniffStart(string $filename, string $sniffClass): void
     {
+        $this->knownSniffs[$sniffClass] = true;
+
+        $totalSniffCount = $this->fileCount * count($this->knownSniffs);
+
+        $numCount = strlen((string) $totalSniffCount);
+        $this->progressFormatString = "   [%{$numCount}d / %-{$numCount}d, %3d%%]";
     }
 
     public function nofifyFileSniffComplete(string $filename, string $sniffClass, File $report): void
     {
-    }
-
-    public function notifyFileComplete(string $filename, File $report): void
-    {
-        if (count($report->getIssuesBySeverity(Issue::SEVERITY_ERROR)) > 0) {
+        if (count($report->getIssuesBySniffAndSeverity(Issue::SEVERITY_ERROR, $sniffClass)) > 0) {
             $this->output->write("<error>E</error>");
-        } elseif (count($report->getIssuesBySeverity(Issue::SEVERITY_WARNING)) > 0) {
+        } elseif (count($report->getIssuesBySniffAndSeverity(Issue::SEVERITY_WARNING, $sniffClass)) > 0) {
             $this->output->write("<comment>W</comment>");
-        } elseif (count($report->getIssuesBySeverity(Issue::SEVERITY_INFO)) > 0) {
+        } elseif (count($report->getIssuesBySniffAndSeverity(Issue::SEVERITY_INFO, $sniffClass)) > 0) {
             $this->output->write("<comment>I</comment>");
         } else {
             $this->output->write("<info>.</info>");
         }
 
-        $this->fileCompletedCount += 1;
-        $this->issueCount += count($report->getIssues());
+        $this->sniffCompletedCount += 1;
+        $this->issueCount          += count($report->getIssues());
 
-        if ($this->fileCompletedCount % self::OUTPUT_WIDTH === 0) {
+        if ($this->sniffCompletedCount % self::OUTPUT_WIDTH === 0) {
             $this->printProgress();
         }
     }
 
+    public function notifyFileComplete(string $filename, File $report): void
+    {
+
+    }
+
     private function printProgress(): void
     {
-        $this->output->writeln(sprintf($this->progressFormatString, $this->fileCompletedCount, $this->fileCount, $this->fileCompletedCount / $this->fileCount * 100));
+        $totalSniffCount = $this->fileCount * count($this->knownSniffs);
+        $this->output->writeln(sprintf($this->progressFormatString, $this->sniffCompletedCount, $totalSniffCount, $this->sniffCompletedCount / $totalSniffCount * 100));
     }
 
     public function notifyRunComplete(Report $report): void
     {
-        $remaining = $this->fileCompletedCount % self::OUTPUT_WIDTH;
+        $remaining = $this->sniffCompletedCount % self::OUTPUT_WIDTH;
         if ($remaining !== 0) {
             $this->output->write(str_repeat(' ', self::OUTPUT_WIDTH - $remaining));
             $this->printProgress();

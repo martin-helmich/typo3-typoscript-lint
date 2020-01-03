@@ -1,1 +1,0 @@
-3;0;Found commented code (baz.foo = Hello World).;info;Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff

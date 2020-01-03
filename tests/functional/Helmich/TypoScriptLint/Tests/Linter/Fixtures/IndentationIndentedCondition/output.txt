@@ -1,1 +1,0 @@
-6;3;Expected indent of 4 spaces.;warning;Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff
