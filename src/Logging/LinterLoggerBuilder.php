@@ -3,6 +3,7 @@ namespace Helmich\TypoScriptLint\Logging;
 
 
 use Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\CodeClimateReportPrinter;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,6 +35,9 @@ class LinterLoggerBuilder
             : $consoleOutput;
 
         switch ($outputFormat) {
+            case 'json':
+            case 'codeclimate':
+                return new CompactConsoleLogger(new CodeClimateReportPrinter($reportOutput), $errorOutput);
             case 'checkstyle':
             case 'xml':
                 return new CompactConsoleLogger(new CheckstyleReportPrinter($reportOutput), $errorOutput);
