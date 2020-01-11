@@ -45,6 +45,21 @@ jobs:
     - name: Run unit tests
       run: ./vendor/bin/phpunit --testdox
 
+  test-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install dependencies
+        run: composer install --no-dev --prefer-dist --no-progress --no-suggest
+
+      - name: Build PHAR
+        run: composer run-script package prtest
+
+      - name: Test PHAR
+        run: ./typoscript-lint-prtest.phar --help
+
   test-coverage:
     runs-on: ubuntu-latest
     steps:

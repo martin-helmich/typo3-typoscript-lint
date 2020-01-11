@@ -25,6 +25,8 @@ phar_name="typoscript-lint-${VERSION}.phar"
 chmod +x phar-composer-*.phar
 ./phar-composer-*.phar build "./${build_dir}" "${phar_name}"
 
-echo "${signing_key}" | gpg --import
-
-gpg --detach-sign --output "${phar_name}.asc" "${phar_name}"
+if [ -n "${signing_key}" ] ; then
+  echo "${signing_key}" | gpg --import
+  
+  gpg --detach-sign --output "${phar_name}.asc" "${phar_name}"
+fi
