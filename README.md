@@ -60,7 +60,7 @@ Of course, this works best if your TYPO3 project is also Composer-based. If it i
 
     composer global require helmich/typo3-typoscript-lint
 
-### Setup (using [Phive](https://phar.io/)))
+### Setup (using [Phive](https://phar.io/))
 
 Alternatively, you can also install typo3-typoscript-lint with Phive:
 
