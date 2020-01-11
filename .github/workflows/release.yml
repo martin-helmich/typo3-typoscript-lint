@@ -1,4 +1,4 @@
-name: Main
+name: Build PHAR for release
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - uses: olegtarasov/get-tag@j1
+      - uses: olegtarasov/get-tag@v1
         id: tagName
 
       - name: Install dependencies
