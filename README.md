@@ -50,7 +50,7 @@ excercise might actually be useful to someone. So, that's that. Enjoy.
 Getting started
 ---------------
 
-### Setup
+### Setup (using Composer)
 
 Install typo3-typoscript-lint with Composer:
 
@@ -60,15 +60,25 @@ Of course, this works best if your TYPO3 project is also Composer-based. If it i
 
     composer global require helmich/typo3-typoscript-lint
 
+### Setup (using [Phive](https://phar.io/))
+
+Alternatively, you can also install typo3-typoscript-lint with Phive:
+
+    phive install martin-helmich/typo3-typoscript-lint
+    
+In this case, it will be installed into the `./tools` folder of your current directory:
+
+    ./tools/typoscript-lint path/to/your.typoscript
+
 ### Usage
 
 Call typo3-typoscript-lint as follows:
 
-    vendor/bin/typoscript-lint path/to/your.ts
+    vendor/bin/typoscript-lint path/to/your.typoscript
 
 By default, it will print a report on the console. To generate a checkstyle-format XML file, call as follows:
 
-    vendor/bin/typoscript-lint -f xml -o checkstyle.xml path/to/your.ts
+    vendor/bin/typoscript-lint -f xml -o checkstyle.xml path/to/your.typoscript
 
 ### Example
 
