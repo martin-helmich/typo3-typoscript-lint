@@ -73,7 +73,7 @@ class CodeClimateReportPrinter implements Printer
         $this->output->write(json_encode($issues));
     }
 
-    protected function fingerprint(array $issue)
+    protected function fingerprint(array $issue): string
     {
         return md5(json_encode($issue));
     }
