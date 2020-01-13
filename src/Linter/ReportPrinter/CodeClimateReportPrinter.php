@@ -54,7 +54,7 @@ class CodeClimateReportPrinter implements Printer
                     'location' => [
                         'path' => $file->getFilename(),
                         'lines' =>  [
-                            'begin' => $issue->getLine() ? ((string) $issue->getLine()) : 0
+                            'begin' => $issue->getLine() ? ((int) $issue->getLine()) : 0
                         ]
                     ]
                 ];
@@ -73,7 +73,7 @@ class CodeClimateReportPrinter implements Printer
         $this->output->write(json_encode($issues));
     }
 
-    protected function fingerprint(array $issue): string
+    protected function fingerprint(array $issue)
     {
         return md5(json_encode($issue));
     }
