@@ -4,6 +4,7 @@ namespace Helmich\TypoScriptLint\Logging;
 
 use Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
+use Helmich\TypoScriptLint\Linter\ReportPrinter\GccReportPrinter;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -42,6 +43,8 @@ class LinterLoggerBuilder
                 return new VerboseConsoleLogger(new ConsoleReportPrinter($reportOutput), $consoleOutput);
             case 'compact':
                 return new CompactConsoleLogger(new ConsoleReportPrinter($reportOutput), $consoleOutput);
+            case 'gcc':
+                return new MinimalConsoleLogger(new GccReportPrinter($reportOutput), $errorOutput);
             default:
                 throw new \InvalidArgumentException('Invalid report printer "' . $outputFormat . '"!');
         }
