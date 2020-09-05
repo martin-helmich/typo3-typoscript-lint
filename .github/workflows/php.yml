@@ -1,6 +1,8 @@
 name: PHP type checking and unit testing
 
-on: [push]
+on:
+  push:
+  pull_request:
 
 jobs:
   build:
