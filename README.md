@@ -80,6 +80,10 @@ By default, it will print a report on the console. To generate a checkstyle-form
 
     vendor/bin/typoscript-lint -f xml -o checkstyle.xml path/to/your.typoscript
 
+To generate a report formatted according to the GNU Coding Standards, call as follows:
+
+    vendor/bin/typoscript-lint -f gcc path/to/your.typoscript
+
 ### Example
 
 [![asciicast](https://asciinema.org/a/1jOJv3Z6onWSdIkTAxAWsGgoy.png)](https://asciinema.org/a/1jOJv3Z6onWSdIkTAxAWsGgoy)
