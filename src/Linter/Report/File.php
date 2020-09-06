@@ -86,7 +86,7 @@ class File
      */
     public function cloneEmpty(): self
     {
-        return new static($this->filename);
+        return new self($this->filename);
     }
 
     /**
@@ -97,7 +97,7 @@ class File
      */
     public function merge(File $other): self
     {
-        $new = new static($this->filename);
+        $new = new self($this->filename);
         $new->issues = array_merge($this->issues, $other->issues);
         return $new;
     }
