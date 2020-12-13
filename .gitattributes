@@ -7,3 +7,5 @@ composer.lock export-ignore
 phpunit.xml.dist export-ignore
 tslint.yml export-ignore
 tests/ export-ignore
+.github/ export-ignore
+.build/ export-ignore
