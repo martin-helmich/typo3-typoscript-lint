@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - uses: olegtarasov/get-tag@v1
+      - uses: little-core-labs/get-git-tag@v3.0.1
         id: tagName
 
       - name: Install dependencies
