@@ -1,0 +1,2 @@
+2;;Setting config.no_cache = 1 is discouraged as it is bad for performance. Consider using USER_INT object instead. Found in path: testPage2.config.no_cache;warning;Helmich\TypoScriptLint\Linter\Sniff\ConfigNoCacheSniff
+8;;Setting config.no_cache = 1 is discouraged as it is bad for performance. Consider using USER_INT object instead. Found in path: testPage.config.no_cache;warning;Helmich\TypoScriptLint\Linter\Sniff\ConfigNoCacheSniff

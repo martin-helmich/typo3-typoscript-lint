@@ -13,3 +13,4 @@ sniffs:
   - class: DuplicateAssignment
   - class: NestingConsistency
   - class: EmptySection
+  - class: ConfigNoCache

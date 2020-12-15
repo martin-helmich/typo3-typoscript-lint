@@ -205,6 +205,12 @@ Raises warnings about empty assignment blocks:
     foo {
     }
 
+#### Discourage config.no_cache = 1
+
+Raises warning about usage of `config.no_cache = 1`.
+Instead USER_INT or COA_INT should be used.
+
+
 ### Configuration
 
 `typoscript-lint` looks for a file `typoscript-lint.yml` in the current working directory.
