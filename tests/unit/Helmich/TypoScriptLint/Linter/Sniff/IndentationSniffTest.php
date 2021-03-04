@@ -88,7 +88,7 @@ plugin.tx_solr {
 [end]
 EOF;
 
-        $sniff = new IndentationSniff(["indentConditions" => true]);
+        $sniff = new IndentationSniff([]);
         $tokens = (new Tokenizer())->tokenizeString($code);
         $file = new File("file");
 
@@ -96,5 +96,29 @@ EOF;
 
         $warnings = $file->getIssues();
         assertThat($warnings, equalTo([]));
+    }
+
+    /**
+     * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/101
+     */
+    public function testWarningIsGeneratedForNotIndentedLinesInConditions()
+    {
+        $code = <<<EOF
+[globalString = GP:foo = 1]
+foo.bar = 3
+[global]
+EOF;
+
+        $sniff = new IndentationSniff(["indentConditions" => true]);
+        $tokens = (new Tokenizer())->tokenizeString($code);
+        $file = new File("file");
+
+        $sniff->sniff($tokens, $file, new LinterConfiguration());
+
+        $warnings = $file->getIssues();
+
+        $this->assertCount(1, $warnings);
+        $this->assertEquals('Expected indent of 4 spaces.', $warnings[0]->getMessage());
+        $this->assertEquals(2, $warnings[0]->getLine());
     }
 }
