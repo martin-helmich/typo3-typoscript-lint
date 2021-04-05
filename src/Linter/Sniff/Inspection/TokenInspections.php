@@ -71,4 +71,15 @@ trait TokenInspections
     {
         return static::isWhitespace($token) && strlen(trim($token->getValue(), "\n")) == $length;
     }
+
+    /**
+     * Tests whether a token is a condition
+     *
+     * @param TokenInterface $token
+     * @return bool
+     */
+    private static function isCondition(TokenInterface $token): bool
+    {
+        return $token->getType() === TokenInterface::TYPE_CONDITION || $token->getType() === TokenInterface::TYPE_CONDITION_ELSE;
+    }
 }

@@ -77,7 +77,7 @@ class IndentationSniff implements TokenStreamSniffInterface
             }));
 
             // Skip empty lines and conditions inside conditions.
-            if ($this->isEmptyLine($tokensInLine) || $this->insideCondition && $tokensInLine[0] !== TokenInterface::TYPE_CONDITION && !self::isWhitespace($tokensInLine[0])) {
+            if ($this->isEmptyLine($tokensInLine) || ($this->insideCondition && self::isCondition($tokensInLine[0]))) {
                 continue;
             }
 
