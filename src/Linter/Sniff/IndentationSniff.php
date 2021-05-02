@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -72,7 +75,7 @@ class IndentationSniff implements TokenStreamSniffInterface
                 $expectedIndentationCharacterCount
             );
 
-            $tokensInLine = array_values(array_filter($tokensInLine, function(TokenInterface $token): bool {
+            $tokensInLine = array_values(array_filter($tokensInLine, function (TokenInterface $token): bool {
                 return $token->getType() !== TokenInterface::TYPE_RIGHTVALUE_MULTILINE;
             }));
 
@@ -105,6 +108,14 @@ class IndentationSniff implements TokenStreamSniffInterface
      */
     private function isEmptyLine(array $tokensInLine): bool
     {
+        $tokensInLine = array_values(array_filter($tokensInLine, function (TokenInterface $t): bool {
+            return $t->getType() !== TokenInterface::TYPE_EMPTY_LINE;
+        }));
+
+        if (count($tokensInLine) === 0) {
+            return true;
+        }
+
         if (count($tokensInLine) > 1) {
             return false;
         }
