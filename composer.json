@@ -25,7 +25,7 @@
         "symfony/finder": "~3.0|~4.0|~5.0",
         "symfony/filesystem": "~3.0|~4.0|~5.0",
         "symfony/event-dispatcher": "~3.0|~4.0|~5.0",
-        "helmich/typo3-typoscript-parser": "^2.1",
+        "helmich/typo3-typoscript-parser": "^2.3",
         "ext-json": "*"
     },
     "require-dev": {
