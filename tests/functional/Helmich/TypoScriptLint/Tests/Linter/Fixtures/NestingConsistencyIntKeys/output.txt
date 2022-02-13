@@ -1,1 +1,1 @@
-9;;Assignment to value "0.bar", altough nested statement for path "0" exists at line 3.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
+9;;Operation on value "0.bar", altough nested statement for path "0" exists at line 3.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff

@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertThat;
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\equalTo;
 use function PHPUnit\Framework\countOf;
 
 /**
@@ -72,11 +71,11 @@ class NestingConsistencyVisitorTest extends TestCase
 
         assertThat($warnings, countOf(2));
         assertEquals(
-            'Common path prefix "foo" with assignment to "foo.baz" in line 2. Consider merging them into a nested assignment.',
+            'Common path prefix "foo" with operation to "foo.baz" in line 2. Consider merging them into a nested statement.',
             $warnings[0]->getMessage()
         );
         assertEquals(
-            'Common path prefix "foo" with assignment to "foo.bar" in line 1. Consider merging them into a nested assignment.',
+            'Common path prefix "foo" with operation to "foo.bar" in line 1. Consider merging them into a nested statement.',
             $warnings[1]->getMessage()
         );
     }
@@ -115,7 +114,7 @@ class NestingConsistencyVisitorTest extends TestCase
 
         assertThat($warnings, countOf(1));
         assertEquals(
-            'Assignment to value "foo.baz", altough nested statement for path "foo" exists at line 1.',
+            'Operation on value "foo.baz", altough nested statement for path "foo" exists at line 1.',
             $warnings[0]->getMessage()
         );
     }

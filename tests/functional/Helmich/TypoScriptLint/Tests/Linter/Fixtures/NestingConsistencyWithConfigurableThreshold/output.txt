@@ -1,3 +1,3 @@
-4;;Common path prefix "bar" with assignments to "bar.bar" in line 5, "bar.baz" in line 6. Consider merging them into a nested assignment.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
-5;;Common path prefix "bar" with assignments to "bar.foo" in line 4, "bar.baz" in line 6. Consider merging them into a nested assignment.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
-6;;Common path prefix "bar" with assignments to "bar.foo" in line 4, "bar.bar" in line 5. Consider merging them into a nested assignment.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
+4;;Common path prefix "bar" with operations to "bar.bar" in line 5, "bar.baz" in line 6. Consider merging them into a nested statement.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
+5;;Common path prefix "bar" with operations to "bar.foo" in line 4, "bar.baz" in line 6. Consider merging them into a nested statement.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
+6;;Common path prefix "bar" with operations to "bar.foo" in line 4, "bar.bar" in line 5. Consider merging them into a nested statement.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff

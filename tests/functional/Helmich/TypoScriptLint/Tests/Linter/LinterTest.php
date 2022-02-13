@@ -73,6 +73,14 @@ class LinterTest extends TestCase
             return $content;
         };
 
+        if (getenv("UPDATE_SNAPSHOTS")) {
+            $output = dirname($typoscriptFile) . '/output.txt';
+            file_put_contents($output, trim($printActualWarnings()));
+
+            $this->markTestIncomplete();
+            return;
+        }
+
         if (count($expectedWarnings) === 0 && count($report->getFiles()) > 0) {
             $this->fail($printActualWarnings());
         }
@@ -95,7 +103,7 @@ class LinterTest extends TestCase
             $outputLines = array_filter($outputLines, 'strlen');
 
             $reports = array_map(
-                function ($line) use ($file) {
+                function ($line) {
                     $values = str_getcsv($line, ';');
                     return new Issue(
                         (int)$values[0],
