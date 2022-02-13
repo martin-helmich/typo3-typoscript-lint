@@ -1,0 +1,2 @@
+1;;Common path prefix "foo" with operation to "foo.baz" in line 2. Consider merging them into a nested statement.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
+2;;Common path prefix "foo" with operation to "foo.bar" in line 1. Consider merging them into a nested statement.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff

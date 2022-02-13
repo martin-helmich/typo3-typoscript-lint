@@ -13,10 +13,9 @@ class NestingConsistencyVisitor implements SniffVisitor
 {
 
     /** @var Issue[] */
-    private $issues = [];
+    private array $issues = [];
 
-    /** @var integer */
-    private $commonPathPrefixThreshold;
+    private int $commonPathPrefixThreshold;
 
     public function __construct(int $commonPathPrefixThreshold = 1)
     {
@@ -64,63 +63,65 @@ class NestingConsistencyVisitor implements SniffVisitor
         // Step 2: Discover all plain assignments and determine whether any of them
         // can be moved within one of the nested assignments.
         foreach ($statements as $statement) {
-            if ($statement instanceof Assignment || $statement instanceof NestedAssignment) {
-                $commonPrefixWarnings = [];
-                foreach ($this->getParentObjectPathsForObjectPath($statement->object->relativeName) as $possibleObjectPath) {
-                    if (isset($knownNestedObjectPaths[$possibleObjectPath])) {
-                        $this->issues[] = new Issue(
-                            $statement->sourceLine,
-                            null,
-                            sprintf(
-                                'Assignment to value "%s", altough nested statement for path "%s" exists at line %d.',
-                                $statement->object->relativeName,
-                                $possibleObjectPath,
-                                $knownNestedObjectPaths[$possibleObjectPath]
-                            ),
-                            Issue::SEVERITY_WARNING,
-                            NestingConsistencySniff::class
-                        );
-                    }
+            if (!isset($statement->object)) {
+                continue;
+            }
+            
+            $commonPrefixWarnings = [];
+            foreach ($this->getParentObjectPathsForObjectPath($statement->object->relativeName) as $possibleObjectPath) {
+                if (isset($knownNestedObjectPaths[$possibleObjectPath])) {
+                    $this->issues[] = new Issue(
+                        $statement->sourceLine,
+                        null,
+                        sprintf(
+                            'Operation on value "%s", altough nested statement for path "%s" exists at line %d.',
+                            $statement->object->relativeName,
+                            $possibleObjectPath,
+                            $knownNestedObjectPaths[$possibleObjectPath]
+                        ),
+                        Issue::SEVERITY_WARNING,
+                        NestingConsistencySniff::class
+                    );
+                }
 
-                    $assignmentsWithCommonPrefix = [];
+                $assignmentsWithCommonPrefix = [];
 
-                    foreach ($knownObjectPaths as $key => $line) {
-                        $key = "" . $key;
+                foreach ($knownObjectPaths as $key => $line) {
+                    $key = "" . $key;
 
-                        if ($key !== $statement->object->relativeName && strpos($key, $possibleObjectPath . '.') === 0) {
-                            if (!isset($assignmentsWithCommonPrefix[$key])) {
-                                $assignmentsWithCommonPrefix[$key] = [];
-                            }
-                            $assignmentsWithCommonPrefix[$possibleObjectPath][] = [$key, $line];
+                    if ($key !== $statement->object->relativeName && strpos($key, $possibleObjectPath . '.') === 0) {
+                        if (!isset($assignmentsWithCommonPrefix[$key])) {
+                            $assignmentsWithCommonPrefix[$key] = [];
                         }
-                    }
-
-                    foreach ($assignmentsWithCommonPrefix as $commonPrefix => $lines) {
-                        if (count($lines) < $this->commonPathPrefixThreshold) {
-                            continue;
-                        }
-
-                        $descr = [];
-                        foreach ($lines as $l) {
-                            $descr[] = sprintf('"%s" in line %d', $l[0], $l[1]);
-                        }
-
-                        $commonPrefixWarnings[$commonPrefix] = new Issue(
-                            $statement->sourceLine,
-                            null,
-                            sprintf(
-                                'Common path prefix "%s" with %s to %s. Consider merging them into a nested assignment.',
-                                $commonPrefix,
-                                count($lines) === 1 ? 'assignment' : 'assignments',
-                                implode(", ", $descr)
-                            ),
-                            Issue::SEVERITY_WARNING,
-                            NestingConsistencySniff::class
-                        );
+                        $assignmentsWithCommonPrefix[$possibleObjectPath][] = [$key, $line];
                     }
                 }
-                $this->issues = array_merge($this->issues, array_values($commonPrefixWarnings));
+
+                foreach ($assignmentsWithCommonPrefix as $commonPrefix => $lines) {
+                    if (count($lines) < $this->commonPathPrefixThreshold) {
+                        continue;
+                    }
+
+                    $descr = [];
+                    foreach ($lines as $l) {
+                        $descr[] = sprintf('"%s" in line %d', $l[0], $l[1]);
+                    }
+
+                    $commonPrefixWarnings[$commonPrefix] = new Issue(
+                        $statement->sourceLine,
+                        null,
+                        sprintf(
+                            'Common path prefix "%s" with %s to %s. Consider merging them into a nested statement.',
+                            $commonPrefix,
+                            count($lines) === 1 ? 'operation' : 'operations',
+                            implode(", ", $descr)
+                        ),
+                        Issue::SEVERITY_WARNING,
+                        NestingConsistencySniff::class
+                    );
+                }
             }
+            $this->issues = array_merge($this->issues, array_values($commonPrefixWarnings));
         }
     }
 
@@ -143,10 +144,6 @@ class NestingConsistencyVisitor implements SniffVisitor
      * @param Statement[] $statements
      *
      * @return int[][]
-     *
-     * @phan-return array{0:array<string|int,string>,1:array<string|int,string>}
-     *
-     * @psalm-return array{0: array<string, int>, 1: array<string, int>}
      */
     private function getAssignedObjectPathsFromStatementList(array $statements): array
     {
@@ -155,23 +152,25 @@ class NestingConsistencyVisitor implements SniffVisitor
 
         // Step 1: Discover all nested object assignment statements.
         foreach ($statements as $statement) {
-            if ($statement instanceof Assignment || $statement instanceof NestedAssignment) {
-                $knownObjectPaths[$statement->object->relativeName] = $statement->sourceLine;
-                if ($statement instanceof NestedAssignment) {
-                    if (isset($knownNestedObjectPaths[$statement->object->relativeName])) {
-                        $this->issues[] = new Issue(
-                            $statement->sourceLine,
-                            null,
-                            sprintf(
-                                'Multiple nested statements for object path "%s". Consider merging them into one statement.',
-                                $statement->object->relativeName
-                            ),
-                            Issue::SEVERITY_WARNING,
-                            NestingConsistencySniff::class
-                        );
-                    } else {
-                        $knownNestedObjectPaths[$statement->object->relativeName] = $statement->sourceLine;
-                    }
+            if (!isset($statement->object)) {
+                continue;
+            }
+            
+            $knownObjectPaths[$statement->object->relativeName] = $statement->sourceLine;
+            if ($statement instanceof NestedAssignment) {
+                if (isset($knownNestedObjectPaths[$statement->object->relativeName])) {
+                    $this->issues[] = new Issue(
+                        $statement->sourceLine,
+                        null,
+                        sprintf(
+                            'Multiple nested statements for object path "%s". Consider merging them into one statement.',
+                            $statement->object->relativeName
+                        ),
+                        Issue::SEVERITY_WARNING,
+                        NestingConsistencySniff::class
+                    );
+                } else {
+                    $knownNestedObjectPaths[$statement->object->relativeName] = $statement->sourceLine;
                 }
             }
         }

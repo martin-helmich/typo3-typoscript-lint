@@ -1,1 +1,1 @@
-;;Parse error: Unterminated nested statement!;error;Helmich\TypoScriptParser\Parser\ParseError
+;0;Parse error: Unterminated nested statement!;error;Helmich\TypoScriptParser\Parser\ParseError

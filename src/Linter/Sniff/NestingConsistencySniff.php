@@ -6,8 +6,7 @@ use Helmich\TypoScriptLint\Linter\Sniff\Visitor\SniffVisitor;
 
 class NestingConsistencySniff extends AbstractSyntaxTreeSniff
 {
-    /** @var int */
-    private $commonPathPrefixThreshold = 1;
+    private int $commonPathPrefixThreshold = 1;
 
     public function __construct(array $parameters)
     {
