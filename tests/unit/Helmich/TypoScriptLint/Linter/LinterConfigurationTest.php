@@ -6,6 +6,9 @@ use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\equalTo;
+
 /**
  * @package Helmich\TypoScriptLint\Linter
  * @covers  \Helmich\TypoScriptLint\Linter\LinterConfiguration

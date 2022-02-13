@@ -5,6 +5,13 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\equalTo;
+use function PHPUnit\Framework\identicalTo;
+use function PHPUnit\Framework\any;
+
 /**
  * Class FileTest
  *
@@ -32,8 +39,8 @@ class FileTest extends TestCase
         $warning = $this->getMockBuilder(Issue::class)->disableOriginalConstructor()->getMock();
         $this->file->addIssue($warning);
 
-        $this->assertCount(1, $this->file->getIssues());
-        $this->assertSame($warning, $this->file->getIssues()[0]);
+        assertCount(1, $this->file->getIssues());
+        assertSame($warning, $this->file->getIssues()[0]);
     }
 
     /**
@@ -44,15 +51,15 @@ class FileTest extends TestCase
         $warningBuilder = $this->getMockBuilder(Issue::class)->disableOriginalConstructor();
 
         $warning1 = $warningBuilder->getMock();
-        $warning1->expects($this->any())->method('getLine')->willReturn(10);
+        $warning1->expects(any())->method('getLine')->willReturn(10);
         $warning2 = $warningBuilder->getMock();
-        $warning2->expects($this->any())->method('getLine')->willReturn(1);
+        $warning2->expects(any())->method('getLine')->willReturn(1);
 
         $this->file->addIssue($warning1);
         $this->file->addIssue($warning2);
 
-        $this->assertSame($warning2, $this->file->getIssues()[0]);
-        $this->assertSame($warning1, $this->file->getIssues()[1]);
+        assertSame($warning2, $this->file->getIssues()[0]);
+        assertSame($warning1, $this->file->getIssues()[1]);
     }
 
     public function testIssuesCanBeFilteredBySeverity()
@@ -65,7 +72,7 @@ class FileTest extends TestCase
 
         $warnings = $this->file->getIssuesBySeverity(Issue::SEVERITY_WARNING);
 
-        assertThat(count($warnings), equalTo(1));
-        assertThat($warnings[0], identicalTo($warning));
+        assertCount(1, $warnings);
+        assertSame($warnings[0], $warning);
     }
 }

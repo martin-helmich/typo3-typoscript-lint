@@ -11,6 +11,11 @@ use Helmich\TypoScriptParser\Parser\AST\Scalar;
 use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\equalTo;
+use function PHPUnit\Framework\countOf;
+
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\NestingConsistencyVisitor
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
@@ -47,8 +52,8 @@ class NestingConsistencyVisitorTest extends TestCase
 
         $warnings = $this->visitor->getIssues();
 
-        $this->assertCount(1, $warnings);
-        $this->assertEquals(
+        assertThat($warnings, countOf(1));
+        assertEquals(
             'Multiple nested statements for object path "foo". Consider merging them into one statement.',
             $warnings[0]->getMessage()
         );
@@ -65,12 +70,12 @@ class NestingConsistencyVisitorTest extends TestCase
 
         $warnings = $this->visitor->getIssues();
 
-        $this->assertCount(2, $warnings);
-        $this->assertEquals(
+        assertThat($warnings, countOf(2));
+        assertEquals(
             'Common path prefix "foo" with assignment to "foo.baz" in line 2. Consider merging them into a nested assignment.',
             $warnings[0]->getMessage()
         );
-        $this->assertEquals(
+        assertEquals(
             'Common path prefix "foo" with assignment to "foo.bar" in line 1. Consider merging them into a nested assignment.',
             $warnings[1]->getMessage()
         );
@@ -90,7 +95,7 @@ class NestingConsistencyVisitorTest extends TestCase
 
         $warnings = $this->visitor->getIssues();
 
-        assertThat(count($warnings), equalTo(0));
+        assertThat($warnings, countOf(0));
     }
 
     public function testWarningIsGeneratedForAssignmentWhenNestedAssignmentWithCommonPrefixExists()
@@ -108,8 +113,8 @@ class NestingConsistencyVisitorTest extends TestCase
 
         $warnings = $this->visitor->getIssues();
 
-        $this->assertCount(1, $warnings);
-        $this->assertEquals(
+        assertThat($warnings, countOf(1));
+        assertEquals(
             'Assignment to value "foo.baz", altough nested statement for path "foo" exists at line 1.',
             $warnings[0]->getMessage()
         );
@@ -131,7 +136,7 @@ class NestingConsistencyVisitorTest extends TestCase
 
         $warnings = $this->visitor->getIssues();
 
-        $this->assertCount(0, $warnings);
+        assertThat($warnings, countOf(0));
     }
 
     private function applyVisitorOnStatements(array $statements)

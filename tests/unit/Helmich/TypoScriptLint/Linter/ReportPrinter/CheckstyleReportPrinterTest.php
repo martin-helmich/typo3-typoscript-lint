@@ -9,6 +9,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function PHPUnit\Framework\once;
+
 /**
  * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter
  * @uses   \Helmich\TypoScriptLint\Linter\Report\File
@@ -58,7 +60,7 @@ class CheckstyleReportPrinterTest extends TestCase
         $report->addFile($file1);
         $report->addFile($file2);
 
-        $this->output->expects($this->once())->method('write')->with(self::EXPECTED_XML_DOCUMENT);
+        $this->output->expects(once())->method('write')->with(self::EXPECTED_XML_DOCUMENT);
 
         $this->printer->writeReport($report);
     }

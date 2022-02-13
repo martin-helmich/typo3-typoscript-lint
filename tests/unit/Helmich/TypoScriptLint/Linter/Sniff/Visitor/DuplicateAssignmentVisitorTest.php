@@ -10,6 +10,9 @@ use Helmich\TypoScriptParser\Parser\AST\Scalar;
 use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertEquals;
+
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor
  * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
@@ -38,8 +41,8 @@ class DuplicateAssignmentVisitorTest extends TestCase
 
         $warnings = $this->visitor->getIssues();
 
-        $this->assertCount(1, $warnings);
-        $this->assertEquals('Value of object "foo" is overwritten in line 2.', $warnings[0]->getMessage());
+        assertCount(1, $warnings);
+        assertEquals('Value of object "foo" is overwritten in line 2.', $warnings[0]->getMessage());
     }
 
     public function testWarningIsGeneratedForDuplicateAssignmentOnAcrossNestedAssignments()
@@ -57,8 +60,8 @@ class DuplicateAssignmentVisitorTest extends TestCase
 
         $warnings = $this->visitor->getIssues();
 
-        $this->assertCount(1, $warnings);
-        $this->assertEquals('Value of object "foo.bar" is overwritten in line 3.', $warnings[0]->getMessage());
+        assertCount(1, $warnings);
+        assertEquals('Value of object "foo.bar" is overwritten in line 3.', $warnings[0]->getMessage());
     }
 
     public function testNoWarningIsGeneratedWhenValueIsOverwrittenInCondition()
@@ -77,7 +80,7 @@ class DuplicateAssignmentVisitorTest extends TestCase
 
         $warnings = $this->visitor->getIssues();
 
-        $this->assertCount(0, $warnings);
+        assertCount(0, $warnings);
     }
 
     private function applyVisitorOnStatements(array $statements)
