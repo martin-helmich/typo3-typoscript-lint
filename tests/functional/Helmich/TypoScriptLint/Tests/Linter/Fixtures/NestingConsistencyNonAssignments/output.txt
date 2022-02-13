@@ -1,0 +1,2 @@
+1;;Common path prefix "foo" with assignment to "foo.baz" in line 2. Consider merging them into a nested assignment.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
+2;;Common path prefix "foo" with assignment to "foo.bar" in line 1. Consider merging them into a nested assignment.;warning;Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff
