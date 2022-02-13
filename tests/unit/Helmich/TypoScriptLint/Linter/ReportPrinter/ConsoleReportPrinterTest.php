@@ -8,6 +8,8 @@ use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
+use function PHPUnit\Framework\assertEquals;
+
 /**
  * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter
  * @uses   \Helmich\TypoScriptLint\Linter\Report\File
@@ -59,6 +61,6 @@ SUMMARY
 
         $this->printer->writeReport($report);
 
-        $this->assertEquals(self::EXPECTED_XML_DOCUMENT, $this->output->fetch());
+        assertEquals(self::EXPECTED_XML_DOCUMENT, $this->output->fetch());
     }
 }

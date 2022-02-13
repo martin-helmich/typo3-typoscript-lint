@@ -8,6 +8,8 @@ use Helmich\TypoScriptLint\Logging\VerboseConsoleLogger;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\isInstanceOf;
 
 /**
  * @covers \Helmich\TypoScriptLint\Logging\LinterLoggerBuilder
@@ -25,25 +27,25 @@ class LinterLoggerBuilderTest extends TestCase
     public function testCompactLoggerCanBeBuilt()
     {
         $logger = $this->builder->createLogger('compact', new BufferedOutput(), new BufferedOutput());
-        assertThat($logger, self::isInstanceOf(CompactConsoleLogger::class));
+        assertThat($logger, isInstanceOf(CompactConsoleLogger::class));
     }
 
     public function testVerboseLoggerCanBeBuilt()
     {
         $logger = $this->builder->createLogger('text', new BufferedOutput(), new BufferedOutput());
-        assertThat($logger, self::isInstanceOf(VerboseConsoleLogger::class));
+        assertThat($logger, isInstanceOf(VerboseConsoleLogger::class));
     }
 
     public function testCheckstyleLoggerCanBeBuilt()
     {
         $logger = $this->builder->createLogger('xml', new BufferedOutput(), new BufferedOutput());
-        assertThat($logger, self::isInstanceOf(CompactConsoleLogger::class));
+        assertThat($logger, isInstanceOf(CompactConsoleLogger::class));
     }
 
     public function testGccLoggerCanBeBuilt()
     {
         $logger = $this->builder->createLogger('gcc', new BufferedOutput(), new BufferedOutput());
-        assertThat($logger, self::isInstanceOf(MinimalConsoleLogger::class));
+        assertThat($logger, isInstanceOf(MinimalConsoleLogger::class));
     }
 
     public function testUnknownFormatCausesInvalidArgumentException()

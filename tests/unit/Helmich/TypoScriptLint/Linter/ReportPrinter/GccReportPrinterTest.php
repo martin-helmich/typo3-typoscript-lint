@@ -8,6 +8,8 @@ use Helmich\TypoScriptLint\Linter\ReportPrinter\GccReportPrinter;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
+use function PHPUnit\Framework\assertEquals;
+
 /**
  * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\GccReportPrinter
  * @uses   \Helmich\TypoScriptLint\Linter\Report\File
@@ -52,6 +54,6 @@ bar.txt:412:141: error: Message #3
 
         $this->printer->writeReport($report);
 
-        $this->assertEquals(self::EXPECTED_OUTPUT, $this->output->fetch());
+        assertEquals(self::EXPECTED_OUTPUT, $this->output->fetch());
     }
 }

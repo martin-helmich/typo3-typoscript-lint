@@ -9,6 +9,9 @@ use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\equalTo;
+
 class OperatorWhitespaceSniffTest extends TestCase
 {
     /** @var OperatorWhitespaceSniff */

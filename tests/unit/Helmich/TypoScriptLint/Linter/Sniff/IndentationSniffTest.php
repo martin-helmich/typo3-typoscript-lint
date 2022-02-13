@@ -4,11 +4,13 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff;
-use Helmich\TypoScriptParser\Tokenizer\Printer\StructuredTokenPrinter;
-use Helmich\TypoScriptParser\Tokenizer\Printer\TokenPrinterInterface;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
 use PHPUnit\Framework\TestCase;
+
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\countOf;
+use function PHPUnit\Framework\equalTo;
 
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff

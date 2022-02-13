@@ -6,6 +6,8 @@ use Helmich\TypoScriptParser\Parser\ParseError;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertEquals;
+
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Report\Issue
  * @uses   \Helmich\TypoScriptParser\Parser\ParseError
@@ -23,27 +25,27 @@ class IssueTest extends TestCase
 
     public function testConstructorSetsLine()
     {
-        $this->assertEquals(200, $this->issue->getLine());
+        assertEquals(200, $this->issue->getLine());
     }
 
     public function testConstructorSetsColumn()
     {
-        $this->assertEquals(23, $this->issue->getColumn());
+        assertEquals(23, $this->issue->getColumn());
     }
 
     public function testConstructorSetsMessage()
     {
-        $this->assertEquals('Issue message', $this->issue->getMessage());
+        assertEquals('Issue message', $this->issue->getMessage());
     }
 
     public function testConstructorSetsSeverity()
     {
-        $this->assertEquals(Issue::SEVERITY_WARNING, $this->issue->getSeverity());
+        assertEquals(Issue::SEVERITY_WARNING, $this->issue->getSeverity());
     }
 
     public function testConstructorSetsSource()
     {
-        $this->assertEquals(__CLASS__, $this->issue->getSource());
+        assertEquals(__CLASS__, $this->issue->getSource());
     }
 
     public function testWarningCanBeCreatedFromParseError()
@@ -52,9 +54,9 @@ class IssueTest extends TestCase
 
         $issue = Issue::createFromParseError($parseError);
 
-        $this->assertEquals('Parse error: All is wrong!', $issue->getMessage());
-        $this->assertEquals(Issue::SEVERITY_ERROR, $issue->getSeverity());
-        $this->assertEquals(1234, $issue->getLine());
+        assertEquals('Parse error: All is wrong!', $issue->getMessage());
+        assertEquals(Issue::SEVERITY_ERROR, $issue->getSeverity());
+        assertEquals(1234, $issue->getLine());
     }
 
     public function testWarningCanBeCreatedFromTokenizerError()
@@ -63,8 +65,8 @@ class IssueTest extends TestCase
 
         $issue = Issue::createFromTokenizerError($tokenizerError);
 
-        $this->assertEquals('Tokenization error: Could not read stuff', $issue->getMessage());
-        $this->assertEquals(Issue::SEVERITY_ERROR, $issue->getSeverity());
-        $this->assertEquals(4321, $issue->getLine());
+        assertEquals('Tokenization error: Could not read stuff', $issue->getMessage());
+        assertEquals(Issue::SEVERITY_ERROR, $issue->getSeverity());
+        assertEquals(4321, $issue->getLine());
     }
 }

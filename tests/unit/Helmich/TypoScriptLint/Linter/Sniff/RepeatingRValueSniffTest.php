@@ -7,6 +7,9 @@ use Helmich\TypoScriptLint\Linter\Sniff\RepeatingRValueSniff;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\countOf;
+
 class RepeatingRValueSniffTest extends TestCase
 {
     public function testRepeatedRValuesAboveThresholdAreReportedAsIssue()

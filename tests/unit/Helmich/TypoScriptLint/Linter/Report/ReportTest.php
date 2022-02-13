@@ -6,6 +6,11 @@ use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\equalTo;
+
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Report\Report
  */
@@ -19,8 +24,8 @@ class ReportTest extends TestCase
         $report = new Report();
         $report->addFile($file);
 
-        $this->assertCount(1, $report->getFiles());
-        $this->assertSame($file, $report->getFiles()[0]);
+        assertCount(1, $report->getFiles());
+        assertSame($file, $report->getFiles()[0]);
     }
 
     public function testCanCountIssues()

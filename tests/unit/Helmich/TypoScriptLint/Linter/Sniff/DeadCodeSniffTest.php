@@ -7,6 +7,9 @@ use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertEquals;
+
 /**
  * @covers \Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff
  * @uses   \Helmich\TypoScriptLint\Linter\Report\File
@@ -38,8 +41,8 @@ class DeadCodeSniffTest extends TestCase
 
         $warnings = $file->getIssues();
 
-        $this->assertCount(1, $warnings);
-        $this->assertEquals('Found commented code (foo = test2).', $warnings[0]->getMessage());
-        $this->assertEquals(2, $warnings[0]->getLine());
+        assertCount(1, $warnings);
+        assertEquals('Found commented code (foo = test2).', $warnings[0]->getMessage());
+        assertEquals(2, $warnings[0]->getLine());
     }
 }

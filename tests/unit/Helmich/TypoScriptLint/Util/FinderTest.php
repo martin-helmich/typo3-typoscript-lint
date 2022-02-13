@@ -7,6 +7,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use org\bovigo\vfs\vfsStream;
 
+use function PHPUnit\Framework\assertThat;
+use function PHPUnit\Framework\equalTo;
+
 /**
  * @covers \Helmich\TypoScriptLint\Util\Finder
  */

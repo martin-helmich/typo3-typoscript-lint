@@ -14,10 +14,13 @@ use Helmich\TypoScriptLint\Util\Finder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+
+use function PHPUnit\Framework\any;
+use function PHPUnit\Framework\once;
 
 /**
  * Class LintCommandTest
@@ -27,6 +30,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class LintCommandTest extends TestCase
 {
+    use ProphecyTrait;
 
     /** @var LintCommand */
     private $command;
@@ -43,7 +47,7 @@ class LintCommandTest extends TestCase
     public function setUp(): void
     {
         $this->linter = $this->getMockBuilder(LinterInterface::class)->getMock();
-        $this->linter->expects(any())->method('lintFile')->willReturn(new File('foo.ts'));
+        $this->linter->expects(self::any())->method('lintFile')->willReturn(new File('foo.ts'));
 
         $this->linterConfigurationLocator = $this
             ->getMockBuilder(ConfigurationLocator::class)

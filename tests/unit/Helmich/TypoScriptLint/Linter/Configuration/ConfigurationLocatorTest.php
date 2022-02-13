@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
+use function PHPUnit\Framework\any;
+
 /**
  * Class ConfigurationLocatorTest
  *
@@ -44,8 +46,10 @@ class ConfigurationLocatorTest extends TestCase
         $configuration = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
         $configuration->expects($this->once())->method('setConfiguration')->with($mergedConfig);
 
-        $this->loader->expects($this->at(0))->method('load')->with('typoscript-lint.dist.yml')->willReturn($distConfig);
-        $this->loader->expects($this->at(1))->method('load')->with('test.yml')->willReturn($localConfig);
+        $this->loader->expects(any())->method('load')->willReturnMap([
+            ['typoscript-lint.dist.yml', null, $distConfig],
+            ['test.yml', null, $localConfig],
+        ]);
 
         $this->processor
             ->expects($this->once())
