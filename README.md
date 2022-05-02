@@ -70,6 +70,17 @@ In this case, it will be installed into the `./tools` folder of your current dir
 
     ./tools/typoscript-lint path/to/your.typoscript
 
+### Setup (using [box](https://github.com/box-project/box))
+
+You can build a stand-alone `typoscript-lint.phar` file using box:
+
+    box compile
+
+You can then make this available system wide:
+
+    sudo chmod a+x typoscript-lint.phar
+    sudo mv typoscript-lint.phar /usr/local/bin/typoscript-lint
+
 ### Usage
 
 Call typo3-typoscript-lint as follows:
