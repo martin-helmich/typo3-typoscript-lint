@@ -5,6 +5,7 @@ use Exception;
 use Helmich\TypoScriptLint\Command\LintCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -22,7 +23,7 @@ class Application extends SymfonyApplication
         parent::__construct(static::APP_NAME, static::APP_VERSION);
     }
 
-    protected function getCommandName(InputInterface $input)
+    protected function getCommandName(InputInterface $input): ?string
     {
         return 'lint';
     }
@@ -31,7 +32,7 @@ class Application extends SymfonyApplication
      * @return Command[]
      * @throws Exception
      */
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         /** @var LintCommand $lintCommand */
         $lintCommand = $this->container->get("lint_command");
@@ -42,7 +43,7 @@ class Application extends SymfonyApplication
         return $defaultCommands;
     }
 
-    public function getDefinition()
+    public function getDefinition(): InputDefinition
     {
         $inputDefinition = parent::getDefinition();
         $inputDefinition->setArguments();
@@ -57,9 +58,8 @@ class Application extends SymfonyApplication
      * will its own version from the first-best composer.lock file that it can find.
      *
      * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/35
-     * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         $current = dirname(__FILE__);
         while($current !== '/') {
@@ -84,6 +84,5 @@ class Application extends SymfonyApplication
 
         return parent::getVersion();
     }
-
 
 }
