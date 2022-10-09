@@ -1,7 +1,7 @@
 TypoScript Lint: CGL validation for TypoScript
 ==============================================
 
-[![Build Status](https://travis-ci.org/martin-helmich/typo3-typoscript-lint.svg?branch=master)](https://travis-ci.org/martin-helmich/typo3-typoscript-lint)
+![Build status](https://github.com/martin-helmich/typo3-typoscript-lint/actions/workflows/php.yml/badge.svg?branch=master)
 
 Author
 ------
