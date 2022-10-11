@@ -23,6 +23,9 @@ jobs:
             symfony-version: "^5.4"
           - php-version: "8.1"
             symfony-version: "^5.4"
+          - php-version: "8.1"
+            symfony-version: "^6.1"
+
     runs-on: ubuntu-latest
 
     steps:
