@@ -29,7 +29,7 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "mikey179/vfsstream": "^1.6",
-        "vimeo/psalm": "^3.7 || ^4.0",
+        "vimeo/psalm": "^4.28.0",
         "phpspec/prophecy-phpunit": "^2.0"
     },
     "scripts": {
