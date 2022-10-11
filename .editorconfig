@@ -27,10 +27,6 @@ indent_size = 4
 indent_style = space
 indent_size = 4
 
-[.travis.yml]
-indent_style = space
-indent_size = 2
-
 # TypoScript
 [*.ts]
 indent_style = space
