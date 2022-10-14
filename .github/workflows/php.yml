@@ -10,8 +10,19 @@ jobs:
   build:
     strategy:
       matrix:
-        php-versions: ["7.4", "8.0", "8.1"]
-        symfony-versions: ["^4.4", "^5.4"]
+        include:
+          - php-version: "7.4"
+            symfony-version: "^4.4"
+          - php-version: "8.0"
+            symfony-version: "^4.4"
+          - php-version: "8.1"
+            symfony-version: "^4.4"
+          - php-version: "7.4"
+            symfony-version: "^5.4"
+          - php-version: "8.0"
+            symfony-version: "^5.4"
+          - php-version: "8.1"
+            symfony-version: "^5.4"
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +31,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php-versions }}
+        php-version: ${{ matrix.php-version }}
         extensions: mbstring, intl, json
         coverage: pcov
 
@@ -29,13 +40,13 @@ jobs:
 
     - name: Declare required Symfony version
       run: |
-        composer require --no-update symfony/console ${{ matrix.symfony-versions }}
-        composer require --no-update symfony/dependency-injection ${{ matrix.symfony-versions }}
-        composer require --no-update symfony/config ${{ matrix.symfony-versions }}
-        composer require --no-update symfony/yaml ${{ matrix.symfony-versions }}
-        composer require --no-update symfony/finder ${{ matrix.symfony-versions }}
-        composer require --no-update symfony/filesystem ${{ matrix.symfony-versions }}
-        composer require --no-update symfony/event-dispatcher ${{ matrix.symfony-versions }}
+        composer require --no-update symfony/console ${{ matrix.symfony-version }}
+        composer require --no-update symfony/dependency-injection ${{ matrix.symfony-version }}
+        composer require --no-update symfony/config ${{ matrix.symfony-version }}
+        composer require --no-update symfony/yaml ${{ matrix.symfony-version }}
+        composer require --no-update symfony/finder ${{ matrix.symfony-version }}
+        composer require --no-update symfony/filesystem ${{ matrix.symfony-version }}
+        composer require --no-update symfony/event-dispatcher ${{ matrix.symfony-version }}
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
