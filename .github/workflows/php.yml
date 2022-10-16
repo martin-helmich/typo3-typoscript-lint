@@ -38,8 +38,8 @@ jobs:
         extensions: mbstring, intl, json
         coverage: pcov
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+    - name: Validate composer.json
+      run: composer validate --no-check-lock
 
     - name: Declare required Symfony version
       run: |
