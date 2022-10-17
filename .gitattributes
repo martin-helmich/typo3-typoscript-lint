@@ -1,10 +1,11 @@
+# Please keep the lines in this file sorted.
+.build/ export-ignore
 .codeclimate.yml export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore
+.github/ export-ignore
 .gitignore export-ignore
 composer.lock export-ignore
 phpunit.xml.dist export-ignore
-tslint.yml export-ignore
 tests/ export-ignore
-.github/ export-ignore
-.build/ export-ignore
+tslint.yml export-ignore
