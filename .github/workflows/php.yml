@@ -35,43 +35,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl, json
-        coverage: pcov
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl, json
+          coverage: pcov
 
-    - name: Fake PHP version for 8.2 to allow installing Prophecy
-      if: matrix.php-version == '8.2'
-      run: composer config platform.php 8.1.99
+      - name: Fake PHP version for 8.2 to allow installing Prophecy
+        if: matrix.php-version == '8.2'
+        run: composer config platform.php 8.1.99
 
-    - name: Validate composer.json
-      run: composer validate --no-check-lock
+      - name: Validate composer.json
+        run: composer validate --no-check-lock
 
-    - name: Declare required Symfony version
-      run: |
-        composer require --no-update symfony/console ${{ matrix.symfony-version }}
-        composer require --no-update symfony/dependency-injection ${{ matrix.symfony-version }}
-        composer require --no-update symfony/config ${{ matrix.symfony-version }}
-        composer require --no-update symfony/yaml ${{ matrix.symfony-version }}
-        composer require --no-update symfony/finder ${{ matrix.symfony-version }}
-        composer require --no-update symfony/filesystem ${{ matrix.symfony-version }}
-        composer require --no-update symfony/event-dispatcher ${{ matrix.symfony-version }}
+      - name: Declare required Symfony version
+        run: |
+          composer require --no-update symfony/console ${{ matrix.symfony-version }}
+          composer require --no-update symfony/dependency-injection ${{ matrix.symfony-version }}
+          composer require --no-update symfony/config ${{ matrix.symfony-version }}
+          composer require --no-update symfony/yaml ${{ matrix.symfony-version }}
+          composer require --no-update symfony/finder ${{ matrix.symfony-version }}
+          composer require --no-update symfony/filesystem ${{ matrix.symfony-version }}
+          composer require --no-update symfony/event-dispatcher ${{ matrix.symfony-version }}
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Run CLI tool
-      run: ./typoscript-lint
+      - name: Run CLI tool
+        run: ./typoscript-lint
 
-    - name: Run type checker
-      run: ./vendor/bin/psalm
+      - name: Run type checker
+        run: ./vendor/bin/psalm
 
-    - name: Run unit tests
-      run: ./vendor/bin/phpunit --testdox
+      - name: Run unit tests
+        run: ./vendor/bin/phpunit --testdox
 
   test-package:
     runs-on: ubuntu-latest

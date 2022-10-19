@@ -2,8 +2,8 @@ services:
   tokenize_command:
     class: Helmich\TypoScriptLint\Command\TokenizeCommand
     calls:
-      - [injectTokenizer, ['@tokenizer']]
-      - [injectTokenPrinter, ['@token_printer_structured']]
+      - [ injectTokenizer, [ '@tokenizer' ] ]
+      - [ injectTokenPrinter, [ '@token_printer_structured' ] ]
   lint_command:
     class: Helmich\TypoScriptLint\Command\LintCommand
     public: true
@@ -16,15 +16,15 @@ services:
   parse_command:
     class: Helmich\TypoScriptLint\Command\ParseCommand
     calls:
-      - [injectParser, ['@parser']]
+      - [ injectParser, [ '@parser' ] ]
   linter:
     class: Helmich\TypoScriptLint\Linter\Linter
-    arguments: ['@tokenizer', '@parser', '@sniff_locator']
+    arguments: [ '@tokenizer', '@parser', '@sniff_locator' ]
   linter_configuration:
     class: Helmich\TypoScriptLint\Linter\LinterConfiguration
   linter_configuration_locator:
     class: Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
-    arguments: ['@config_loader', '@config_processor']
+    arguments: [ '@config_loader', '@config_processor' ]
   logger_builder:
     class: Helmich\TypoScriptLint\Logging\LinterLoggerBuilder
   sniff_locator:
@@ -34,17 +34,17 @@ services:
   config_locator:
     class: Symfony\Component\Config\FileLocator
     arguments:
-      - ['%dir.cwd%', '%dir.typoscriptlint_root%']
+      - [ '%dir.cwd%', '%dir.typoscriptlint_root%' ]
   config_yaml_loader:
     class: Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader
-    arguments: ['@config_locator', '@yaml_parser', '@filesystem']
+    arguments: [ '@config_locator', '@yaml_parser', '@filesystem' ]
   config_loader_resolver:
     class: Symfony\Component\Config\Loader\LoaderResolver
     arguments:
-      - ['@config_yaml_loader']
+      - [ '@config_yaml_loader' ]
   config_loader:
     class: Symfony\Component\Config\Loader\DelegatingLoader
-    arguments: ['@config_loader_resolver']
+    arguments: [ '@config_loader_resolver' ]
   config_processor:
     class: Symfony\Component\Config\Definition\Processor
   yaml_parser:
@@ -55,7 +55,7 @@ services:
     class: Helmich\TypoScriptLint\Util\Filesystem
   finder:
     class: Helmich\TypoScriptLint\Util\Finder
-    arguments: ['@symfony_finder', '@filesystem']
+    arguments: [ '@symfony_finder', '@filesystem' ]
   symfony_finder:
     class: Symfony\Component\Finder\Finder
     shared: false

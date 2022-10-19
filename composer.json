@@ -1,55 +1,57 @@
 {
-    "name": "helmich/typo3-typoscript-lint",
-    "description": "Static code analysis for the TypoScript configuration language.",
-    "type": "library",
-    "license": "MIT",
-    "homepage": "https://github.com/martin-helmich",
-    "authors": [{
-        "name": "Martin Helmich",
-        "email": "m.helmich@mittwald.de",
-        "role": "lead"
-    }],
-    "support": {
-        "issues": "https://github.com/martin-helmich/typo3-typoscript-lint/issues"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "php": "^7.4 || ^8.0",
-        "symfony/console": "^4.4 || ^5.4 || ^6.1",
-        "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.1",
-        "symfony/config": "^4.4 || ^5.4 || ^6.1",
-        "symfony/yaml": "^4.4 || ^5.4 || ^6.1",
-        "symfony/finder": "^4.4 || ^5.4 || ^6.1",
-        "symfony/filesystem": "^4.4 || ^5.4 || ^6.1",
-        "symfony/event-dispatcher": "^4.4 || ^5.4 || ^6.1",
-        "helmich/typo3-typoscript-parser": "^2.3",
-        "ext-json": "*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9.5.25",
-        "mikey179/vfsstream": "^1.6.11",
-        "vimeo/psalm": "^4.29.0",
-        "phpspec/prophecy-phpunit": "^2.0.1"
-    },
-    "scripts": {
-        "package": "bash .build/package.sh $@"
-    },
-    "bin": [
-        "typoscript-lint"
-    ],
-    "autoload": {
-        "psr-4": {
-            "Helmich\\TypoScriptLint\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "files": [
-            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
-        ],
-        "psr-4": {
-            "Helmich\\TypoScriptLint\\Tests\\Functional\\": "tests/functional",
-            "Helmich\\TypoScriptLint\\Tests\\Unit\\": "tests/unit"
-        }
-    }
+	"name": "helmich/typo3-typoscript-lint",
+	"description": "Static code analysis for the TypoScript configuration language.",
+	"type": "library",
+	"license": "MIT",
+	"homepage": "https://github.com/martin-helmich",
+	"authors": [
+		{
+			"name": "Martin Helmich",
+			"email": "m.helmich@mittwald.de",
+			"role": "lead"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/martin-helmich/typo3-typoscript-lint/issues"
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"require": {
+		"php": "^7.4 || ^8.0",
+		"symfony/console": "^4.4 || ^5.4 || ^6.1",
+		"symfony/dependency-injection": "^4.4 || ^5.4 || ^6.1",
+		"symfony/config": "^4.4 || ^5.4 || ^6.1",
+		"symfony/yaml": "^4.4 || ^5.4 || ^6.1",
+		"symfony/finder": "^4.4 || ^5.4 || ^6.1",
+		"symfony/filesystem": "^4.4 || ^5.4 || ^6.1",
+		"symfony/event-dispatcher": "^4.4 || ^5.4 || ^6.1",
+		"helmich/typo3-typoscript-parser": "^2.3",
+		"ext-json": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^9.5.25",
+		"mikey179/vfsstream": "^1.6.11",
+		"vimeo/psalm": "^4.29.0",
+		"phpspec/prophecy-phpunit": "^2.0.1"
+	},
+	"scripts": {
+		"package": "bash .build/package.sh $@"
+	},
+	"bin": [
+		"typoscript-lint"
+	],
+	"autoload": {
+		"psr-4": {
+			"Helmich\\TypoScriptLint\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"files": [
+			"vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+		],
+		"psr-4": {
+			"Helmich\\TypoScriptLint\\Tests\\Functional\\": "tests/functional",
+			"Helmich\\TypoScriptLint\\Tests\\Unit\\": "tests/unit"
+		}
+	}
 }
