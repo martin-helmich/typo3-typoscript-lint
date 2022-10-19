@@ -26,8 +26,8 @@ class ConfigurationLocator
     /**
      * Constructs a new configuration locator.
      *
-     * @param LoaderInterface $loader    A configuration loader.
-     * @param Processor       $processor A configuration processor.
+     * @param LoaderInterface $loader A configuration loader.
+     * @param Processor $processor A configuration processor.
      */
     public function __construct(LoaderInterface $loader, Processor $processor)
     {
@@ -38,24 +38,26 @@ class ConfigurationLocator
     /**
      * Loads the linter configuration.
      *
-     * @param string[]                 $possibleConfigurationFiles A list of possible configuration files to load from. These
-     *                                                             files will be searched in the current working directory
-     *                                                             and in the typoscript-lint root directory. Contents from
-     *                                                             these files will also be merged with the
-     *                                                             typoscript-lint.dist.yml file in the typoscript-lint root
-     *                                                             directory.
-     * @param LinterConfiguration|null $configuration              The configuration on which to set the loaded configuration values.
+     * @param string[] $possibleConfigurationFiles A list of possible configuration files to load from. These files will
+     *        be searched in the current working directory and in the typoscript-lint root directory. Contents from
+     *        these files will also be merged with the typoscript-lint.dist.yml file in the typoscript-lint root
+     *        directory.
+     * @param LinterConfiguration|null $configuration The configuration on which to set the loaded configuration values.
+     *
      * @return LinterConfiguration The linter configuration from the given configuration file.
      */
-    public function loadConfiguration(array $possibleConfigurationFiles = [], ?LinterConfiguration $configuration = null): LinterConfiguration
-    {
+    public function loadConfiguration(
+        array $possibleConfigurationFiles = [],
+        ?LinterConfiguration $configuration = null
+    ): LinterConfiguration {
         $configs = [$this->loader->load('typoscript-lint.dist.yml')];
         foreach ($possibleConfigurationFiles as $configurationFile) {
             $loadedConfig = $this->loader->load($configurationFile);
 
             // Simple mechanism to detect tslint config files ("ts" as in "TypeScript", not "Typoscript")
             // and excluding them from being loaded.
-            if (isset($loadedConfig["extends"]) || isset($loadedConfig["rulesDirectory"]) || isset($loadedConfig["rules"])) {
+            if (isset($loadedConfig["extends"]) || isset($loadedConfig["rulesDirectory"])
+                || isset($loadedConfig["rules"])) {
                 continue;
             }
 

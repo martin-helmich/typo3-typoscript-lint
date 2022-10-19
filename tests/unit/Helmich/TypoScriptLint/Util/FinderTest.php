@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Util;
 
 use Helmich\TypoScriptLint\Util\Filesystem;
@@ -22,11 +23,11 @@ class FinderTest extends TestCase
             'file2.txt' => '',
             'directory' => [
                 'file3.ts' => '',
-                'file4' => ''
+                'file4' => '',
             ],
             'directory2' => [
                 'file5.typoscript' => '',
-            ]
+            ],
         ]);
     }
 
@@ -36,13 +37,14 @@ class FinderTest extends TestCase
         $filesystem = new Filesystem();
 
         $finder = new Finder($sfFinder, $filesystem);
-        $filenames = $finder->getFilenames(['vfs://root/directory', 'vfs://root/file1.typoscript', 'vfs://root/file2.txt']);
+        $filenames =
+            $finder->getFilenames(['vfs://root/directory', 'vfs://root/file1.typoscript', 'vfs://root/file2.txt']);
 
         assertThat($filenames, equalTo([
             'vfs://root/directory/file3.ts',
             'vfs://root/directory/file4',
             'vfs://root/file1.typoscript',
-            'vfs://root/file2.txt'
+            'vfs://root/file2.txt',
         ]));
     }
 

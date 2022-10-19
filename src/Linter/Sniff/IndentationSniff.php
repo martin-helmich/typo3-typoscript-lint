@@ -37,6 +37,7 @@ class IndentationSniff implements TokenStreamSniffInterface
 
     /**
      * @param array $parameters
+     *
      * @psalm-param array{useSpaces: ?bool, indentPerLevel: ?int, indentCondition: ?bool} $parameters
      * @psalm-suppress MoreSpecificImplementedParamType
      */
@@ -54,15 +55,16 @@ class IndentationSniff implements TokenStreamSniffInterface
     }
 
     /**
-     * @param TokenInterface[]    $tokens
-     * @param File                $file
+     * @param TokenInterface[] $tokens
+     * @param File $file
      * @param LinterConfiguration $configuration
+     *
      * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
-        $indentCharacter  = $this->useSpaces ? ' ' : "\t";
-        $tokensByLine     = new LineGrouper($tokens);
+        $indentCharacter = $this->useSpaces ? ' ' : "\t";
+        $tokensByLine = new LineGrouper($tokens);
         $indentationLevel = 0;
 
         /** @var TokenInterface[] $tokensInLine */
@@ -70,7 +72,7 @@ class IndentationSniff implements TokenStreamSniffInterface
             $indentationLevel = $this->reduceIndentationLevel($indentationLevel, $tokensInLine);
 
             $expectedIndentationCharacterCount = $this->indentPerLevel * $indentationLevel;
-            $expectedIndentation               = str_repeat(
+            $expectedIndentation = str_repeat(
                 $indentCharacter,
                 $expectedIndentationCharacterCount
             );
@@ -86,7 +88,8 @@ class IndentationSniff implements TokenStreamSniffInterface
 
             $line = (int)$line;
 
-            if ($indentationLevel === 0 && self::isWhitespace($tokensInLine[0]) && strlen($tokensInLine[0]->getValue())) {
+            if ($indentationLevel === 0 && self::isWhitespace($tokensInLine[0])
+                && strlen($tokensInLine[0]->getValue())) {
                 $file->addIssue($this->createIssue($line, $indentationLevel, $tokensInLine[0]->getValue()));
             } elseif ($indentationLevel > 0) {
                 if (!self::isWhitespace($tokensInLine[0])) {
@@ -104,6 +107,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      * Checks if a stream of tokens is an empty line.
      *
      * @param TokenInterface[] $tokensInLine
+     *
      * @return bool
      */
     private function isEmptyLine(array $tokensInLine): bool
@@ -131,6 +135,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      *
      * @param int $indentationLevel The current indentation level
      * @param TokenInterface[] $tokensInLine
+     *
      * @return int The new indentation level
      */
     private function reduceIndentationLevel(int $indentationLevel, array $tokensInLine): int
@@ -162,6 +167,7 @@ class IndentationSniff implements TokenStreamSniffInterface
      *
      * @param int $indentationLevel The current indentation level
      * @param TokenInterface[] $tokensInLine
+     *
      * @return int The new indentation level
      */
     private function raiseIndentationLevel(int $indentationLevel, array $tokensInLine): int
@@ -188,7 +194,7 @@ class IndentationSniff implements TokenStreamSniffInterface
 
     private function createIssue(int $line, int $expectedLevel, string $actual): Issue
     {
-        $indentCharacterCount       = ($expectedLevel * $this->indentPerLevel);
+        $indentCharacterCount = ($expectedLevel * $this->indentPerLevel);
         $indentCharacterDescription = ($this->useSpaces ? 'space' : 'tab') . (($indentCharacterCount == 1) ? '' : 's');
 
         $expectedMessage = "Expected indent of {$indentCharacterCount} {$indentCharacterDescription}.";

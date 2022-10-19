@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\Report;
@@ -35,6 +36,7 @@ class ConsoleReportPrinter implements Printer
      * Writes a report in human-readable table form.
      *
      * @param Report $report The report to print.
+     *
      * @return void
      */
     public function writeReport(Report $report): void
@@ -45,9 +47,9 @@ class ConsoleReportPrinter implements Printer
         $this->output->writeln('<comment>CHECKSTYLE REPORT</comment>');
 
         $styleMap = [
-            Issue::SEVERITY_ERROR   => 'error',
+            Issue::SEVERITY_ERROR => 'error',
             Issue::SEVERITY_WARNING => 'comment',
-            Issue::SEVERITY_INFO    => 'info',
+            Issue::SEVERITY_INFO => 'info',
         ];
 
         foreach ($report->getFiles() as $file) {

@@ -58,7 +58,7 @@ class NestingConsistencyVisitor implements SniffVisitor
      */
     private function walkStatementList(array $statements): void
     {
-        list($knownObjectPaths, $knownNestedObjectPaths) = $this->getAssignedObjectPathsFromStatementList($statements);
+        [$knownObjectPaths, $knownNestedObjectPaths] = $this->getAssignedObjectPathsFromStatementList($statements);
 
         // Step 2: Discover all plain assignments and determine whether any of them
         // can be moved within one of the nested assignments.
@@ -66,9 +66,10 @@ class NestingConsistencyVisitor implements SniffVisitor
             if (!isset($statement->object)) {
                 continue;
             }
-            
+
             $commonPrefixWarnings = [];
-            foreach ($this->getParentObjectPathsForObjectPath($statement->object->relativeName) as $possibleObjectPath) {
+            foreach ($this->getParentObjectPathsForObjectPath($statement->object->relativeName) as $possibleObjectPath)
+            {
                 if (isset($knownNestedObjectPaths[$possibleObjectPath])) {
                     $this->issues[] = new Issue(
                         $statement->sourceLine,
@@ -127,15 +128,16 @@ class NestingConsistencyVisitor implements SniffVisitor
 
     /**
      * @param string $objectPath
+     *
      * @return string[]
      */
     private function getParentObjectPathsForObjectPath(string $objectPath): array
     {
         $components = preg_split('/(?<!\\\)\./', $objectPath);
-        $paths      = [];
+        $paths = [];
         for ($i = 1; $i < count($components); $i++) {
             $possibleObjectPath = implode('.', array_slice($components, 0, $i));
-            $paths[]            = $possibleObjectPath;
+            $paths[] = $possibleObjectPath;
         }
         return $paths;
     }
@@ -147,7 +149,7 @@ class NestingConsistencyVisitor implements SniffVisitor
      */
     private function getAssignedObjectPathsFromStatementList(array $statements): array
     {
-        $knownObjectPaths       = [];
+        $knownObjectPaths = [];
         $knownNestedObjectPaths = [];
 
         // Step 1: Discover all nested object assignment statements.
@@ -155,7 +157,7 @@ class NestingConsistencyVisitor implements SniffVisitor
             if (!isset($statement->object)) {
                 continue;
             }
-            
+
             $knownObjectPaths[$statement->object->relativeName] = $statement->sourceLine;
             if ($statement instanceof NestedAssignment) {
                 if (isset($knownNestedObjectPaths[$statement->object->relativeName])) {

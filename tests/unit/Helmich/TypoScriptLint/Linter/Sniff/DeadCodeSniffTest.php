@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -32,7 +33,7 @@ class DeadCodeSniffTest extends TestCase
             new Token(Token::TYPE_OBJECT_IDENTIFIER, 'foo', 1),
             new Token(Token::TYPE_OPERATOR_ASSIGNMENT, '=', 1),
             new Token(Token::TYPE_RIGHTVALUE, 'test', 1),
-            new Token(Token::TYPE_COMMENT_ONELINE, 'foo = test2', 2)
+            new Token(Token::TYPE_COMMENT_ONELINE, 'foo = test2', 2),
         ];
 
         $file = new File('file');

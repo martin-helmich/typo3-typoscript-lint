@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Configuration;
+
 use Helmich\TypoScriptLint\Linter\Configuration\YamlConfigurationLoader;
 use Helmich\TypoScriptLint\Util\Filesystem;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -27,8 +29,8 @@ class YamlConfigurationLoaderTest extends TestCase
     public function setUp(): void
     {
         $this->fileLocator = $this->getMockBuilder(FileLocatorInterface::class)->getMock();
-        $this->yamlParser  = $this->getMockBuilder(Parser::class)->disableOriginalConstructor()->getMock();
-        $this->filesystem  = $this->getMockBuilder(Filesystem::class)->getMock();
+        $this->yamlParser = $this->getMockBuilder(Parser::class)->disableOriginalConstructor()->getMock();
+        $this->filesystem = $this->getMockBuilder(Filesystem::class)->getMock();
 
         /** @noinspection PhpParamsInspection */
         $this->loader = new YamlConfigurationLoader($this->fileLocator, $this->yamlParser, $this->filesystem);
@@ -52,7 +54,10 @@ class YamlConfigurationLoaderTest extends TestCase
             $this->markTestSkipped('requires Symfony 3.0 or newer');
         }
 
-        $this->fileLocator->expects($this->once())->method('locate')->with('foobar.yml')->willThrowException(new FileLocatorFileNotFoundException());
+        $this->fileLocator->expects($this->once())
+            ->method('locate')
+            ->with('foobar.yml')
+            ->willThrowException(new FileLocatorFileNotFoundException());
         $this->assertEquals([], $this->loader->load('foobar.yml'));
     }
 

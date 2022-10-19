@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Report;
 
 /**
@@ -42,6 +43,7 @@ class File
      * Adds a new issue for this file.
      *
      * @param Issue $issue The new issue
+     *
      * @return void
      */
     public function addIssue(Issue $issue): void
@@ -70,11 +72,12 @@ class File
      * Gets all issues for this file that have a certain severity.
      *
      * @param string $severity The severity. Should be one of the Issue class' SEVERITY_* constants
+     *
      * @return Issue[] All issues with the given severity
      */
     public function getIssuesBySeverity(string $severity): array
     {
-        return array_values(array_filter($this->getIssues(), function(Issue $i) use ($severity): bool {
+        return array_values(array_filter($this->getIssues(), function (Issue $i) use ($severity): bool {
             return $i->getSeverity() === $severity;
         }));
     }
@@ -93,6 +96,7 @@ class File
      * Merges this file report with another file report
      *
      * @param File $other The file report to merge this report with
+     *
      * @return File The merged report
      */
     public function merge(File $other): self

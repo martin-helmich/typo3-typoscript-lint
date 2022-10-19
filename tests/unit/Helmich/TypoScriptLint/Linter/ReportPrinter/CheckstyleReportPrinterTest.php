@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
@@ -40,7 +41,7 @@ class CheckstyleReportPrinterTest extends TestCase
 
     public function setUp(): void
     {
-        $this->output  = $this->getMockBuilder(OutputInterface::class)->getMock();
+        $this->output = $this->getMockBuilder(OutputInterface::class)->getMock();
         $this->printer = new CheckstyleReportPrinter($this->output);
     }
 

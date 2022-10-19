@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Sniff\EmptySectionSniff;

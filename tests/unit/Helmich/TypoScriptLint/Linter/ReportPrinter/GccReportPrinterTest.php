@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\ReportPrinter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
@@ -32,7 +33,7 @@ bar.txt:412:141: error: Message #3
 
     public function setUp(): void
     {
-        $this->output  = new BufferedOutput();
+        $this->output = new BufferedOutput();
         $this->printer = new GccReportPrinter($this->output);
     }
 

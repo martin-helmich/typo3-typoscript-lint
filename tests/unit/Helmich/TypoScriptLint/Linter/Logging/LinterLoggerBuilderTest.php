@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Logging;
 
 use Helmich\TypoScriptLint\Logging\CompactConsoleLogger;

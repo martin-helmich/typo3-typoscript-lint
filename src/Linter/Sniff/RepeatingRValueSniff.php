@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -22,6 +23,7 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
 
     /**
      * @param array $parameters
+     *
      * @psalm-param array{allowedRightValues: ?string[], valueLengthThreshold: ?int} $parameters
      * @psalm-suppress MoreSpecificImplementedParamType
      */
@@ -37,15 +39,16 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
     }
 
     /**
-     * @param TokenInterface[]    $tokens
-     * @param File                $file
+     * @param TokenInterface[] $tokens
+     * @param File $file
      * @param LinterConfiguration $configuration
+     *
      * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
         foreach ($tokens as $token) {
-            $isRValue                   = $token->getType() === TokenInterface::TYPE_RIGHTVALUE;
+            $isRValue = $token->getType() === TokenInterface::TYPE_RIGHTVALUE;
             $valueIsLongerThanThreshold = strlen($token->getValue()) >= $this->valueLengthThreshold;
 
             if (!$isRValue || !$valueIsLongerThanThreshold) {

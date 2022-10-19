@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Util;
 
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
@@ -9,6 +10,7 @@ class Filesystem extends SymfonyFilesystem
 
     /**
      * @param string $filename
+     *
      * @return SplFileInfo
      */
     public function openFile(string $filename): SplFileInfo

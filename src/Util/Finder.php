@@ -26,34 +26,41 @@ class Finder
     /**
      * Constructs a new finder instance.
      *
-     * @param SymfonyFinder $finder     A finder.
-     * @param Filesystem    $filesystem A filesystem interface.
+     * @param SymfonyFinder $finder A finder.
+     * @param Filesystem $filesystem A filesystem interface.
      */
     public function __construct(SymfonyFinder $finder, Filesystem $filesystem)
     {
-        $this->finder     = $finder;
+        $this->finder = $finder;
         $this->filesystem = $filesystem;
     }
 
     /**
      * Generates a list of file names from a list of file and directory names.
      *
-     * @param string[]            $fileOrDirectoryNames A list of file and directory names.
-     * @param string[]            $filePatterns         Glob patterns that filenames should match
-     * @param string[]            $excludePatterns      Glob patterns of files that should be excluded, even if matched
+     * @param string[] $fileOrDirectoryNames A list of file and directory names.
+     * @param string[] $filePatterns Glob patterns that filenames should match
+     * @param string[] $excludePatterns Glob patterns of files that should be excluded, even if matched
      * @param FinderObserver|null $observer
+     *
      * @return string[] A list of file names.
      */
-    public function getFilenames(array $fileOrDirectoryNames, array $filePatterns = [], array $excludePatterns = [], FinderObserver $observer = null): array
-    {
+    public function getFilenames(
+        array $fileOrDirectoryNames,
+        array $filePatterns = [],
+        array $excludePatterns = [],
+        FinderObserver $observer = null
+    ): array {
         $finder = clone $this->finder;
         $finder->files();
 
-        $observer = $observer ?: new CallbackFinderObserver(function() {});
+        $observer = $observer
+            ?: new CallbackFinderObserver(function () {
+            });
 
-        $matchesPatternList = function(array $patterns): callable {
-            return function(string $file) use ($patterns): bool {
-                foreach($patterns as $pattern) {
+        $matchesPatternList = function (array $patterns): callable {
+            return function (string $file) use ($patterns): bool {
+                foreach ($patterns as $pattern) {
                     if (fnmatch($pattern, $file)) {
                         return true;
                     }
@@ -80,7 +87,7 @@ class Finder
         $filenames = [];
         $globbedFileOrDirectoryNames = [];
 
-        foreach($fileOrDirectoryNames as $fileOrDirectoryName) {
+        foreach ($fileOrDirectoryNames as $fileOrDirectoryName) {
             if (strpos($fileOrDirectoryName, "*") !== false) {
                 $files = glob($fileOrDirectoryName);
                 if ($files === false) {
@@ -94,7 +101,7 @@ class Finder
         }
 
         foreach ($globbedFileOrDirectoryNames as $fileOrDirectoryName) {
-            $subFinder                   = clone $finder;
+            $subFinder = clone $finder;
             $resolvedFileOrDirectoryName = $fileOrDirectoryName;
 
             if ($fileOrDirectoryName[0] !== '/' && substr($fileOrDirectoryName, 0, 6) !== 'vfs://') {

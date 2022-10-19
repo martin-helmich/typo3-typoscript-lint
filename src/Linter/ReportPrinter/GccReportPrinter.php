@@ -35,6 +35,7 @@ class GccReportPrinter implements Printer
      * Writes a report in GCC format.
      *
      * @param Report $report The report to print.
+     *
      * @return void
      */
     public function writeReport(Report $report): void

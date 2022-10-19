@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -65,7 +66,7 @@ foo {
 [global]
 baz = 1
 EOF
-);
+        );
         $file = new File("file");
 
         $sniff->sniff($tokens, $file, new LinterConfiguration());
