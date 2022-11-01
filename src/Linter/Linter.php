@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
@@ -27,24 +28,29 @@ class Linter implements LinterInterface
 
     public function __construct(TokenizerInterface $tokenizer, ParserInterface $parser, SniffLocator $sniffLocator)
     {
-        $this->tokenizer    = $tokenizer;
-        $this->parser       = $parser;
+        $this->tokenizer = $tokenizer;
+        $this->parser = $parser;
         $this->sniffLocator = $sniffLocator;
     }
 
     /**
-     * @param string                $filename
-     * @param Report                $report
-     * @param LinterConfiguration   $configuration
+     * @param string $filename
+     * @param Report $report
+     * @param LinterConfiguration $configuration
      * @param LinterLoggerInterface $logger
+     *
      * @return File
      */
-    public function lintFile(string $filename, Report $report, LinterConfiguration $configuration, LinterLoggerInterface $logger): File
-    {
+    public function lintFile(
+        string $filename,
+        Report $report,
+        LinterConfiguration $configuration,
+        LinterLoggerInterface $logger
+    ): File {
         $file = new File($filename);
 
         try {
-            $tokens     = $this->tokenizer->tokenizeStream($filename);
+            $tokens = $this->tokenizer->tokenizeStream($filename);
             $statements = $this->parser->parseTokens($tokens);
 
             $file = $this->lintTokenStream($tokens, $file, $configuration, $logger);
@@ -63,10 +69,11 @@ class Linter implements LinterInterface
     }
 
     /**
-     * @param TokenInterface[]      $tokens
-     * @param File                  $file
-     * @param LinterConfiguration   $configuration
+     * @param TokenInterface[] $tokens
+     * @param File $file
+     * @param LinterConfiguration $configuration
      * @param LinterLoggerInterface $logger
+     *
      * @return File
      */
     private function lintTokenStream(
@@ -91,10 +98,11 @@ class Linter implements LinterInterface
     }
 
     /**
-     * @param Statement[]           $statements
-     * @param File                  $file
-     * @param LinterConfiguration   $configuration
+     * @param Statement[] $statements
+     * @param File $file
+     * @param LinterConfiguration $configuration
      * @param LinterLoggerInterface $logger
+     *
      * @return File
      */
     private function lintSyntaxTree(

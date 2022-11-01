@@ -1,12 +1,11 @@
 <?php declare(strict_types=1);
-namespace Helmich\TypoScriptLint\Logging;
 
+namespace Helmich\TypoScriptLint\Logging;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\Printer;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 /**
  * Verbose console logger

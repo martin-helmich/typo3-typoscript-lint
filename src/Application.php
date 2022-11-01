@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint;
 
 use Exception;
@@ -37,7 +38,7 @@ class Application extends SymfonyApplication
         /** @var LintCommand $lintCommand */
         $lintCommand = $this->container->get("lint_command");
 
-        $defaultCommands   = parent::getDefaultCommands();
+        $defaultCommands = parent::getDefaultCommands();
         $defaultCommands[] = $lintCommand;
 
         return $defaultCommands;
@@ -62,7 +63,7 @@ class Application extends SymfonyApplication
     public function getVersion(): string
     {
         $current = dirname(__FILE__);
-        while($current !== '/') {
+        while ($current !== '/') {
             if (file_exists($current . '/composer.lock')) {
                 $contents = file_get_contents($current . '/composer.lock');
                 if ($contents === false) {
@@ -70,7 +71,7 @@ class Application extends SymfonyApplication
                 }
 
                 $data = json_decode($contents);
-                $packages = array_values(array_filter($data->packages, function(\stdClass $package): bool {
+                $packages = array_values(array_filter($data->packages, function (\stdClass $package): bool {
                     return $package->name === "helmich/typo3-typoscript-lint";
                 }));
 

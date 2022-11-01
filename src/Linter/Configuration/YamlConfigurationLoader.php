@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Configuration;
 
 use Helmich\TypoScriptLint\Util\Filesystem;
@@ -29,9 +30,9 @@ class YamlConfigurationLoader extends FileLoader
     /**
      * Constructs a new YAML-based configuration loader.
      *
-     * @param FileLocatorInterface $locator    The file locator.
-     * @param YamlParser           $yamlParser The YAML parser.
-     * @param Filesystem           $filesystem A filesystem interface.
+     * @param FileLocatorInterface $locator The file locator.
+     * @param YamlParser $yamlParser The YAML parser.
+     * @param Filesystem $filesystem A filesystem interface.
      */
     public function __construct(FileLocatorInterface $locator, YamlParser $yamlParser, Filesystem $filesystem)
     {
@@ -44,8 +45,9 @@ class YamlConfigurationLoader extends FileLoader
     /**
      * Loads a resource.
      *
-     * @param mixed  $resource The resource
-     * @param string $type     The resource type
+     * @param mixed $resource The resource
+     * @param string $type The resource type
+     *
      * @return array
      *
      * @psalm-suppress MethodSignatureMismatch
@@ -66,15 +68,16 @@ class YamlConfigurationLoader extends FileLoader
     /**
      * Returns true if this class supports the given resource.
      *
-     * @param mixed  $resource A resource
-     * @param string $type     The resource type
+     * @param mixed $resource A resource
+     * @param string $type The resource type
+     *
      * @return bool    true if this class supports the given resource, false otherwise
      *
      * @psalm-suppress MethodSignatureMismatch
      */
     public function supports($resource, $type = null): bool
     {
-        return is_string($resource) &&
-            in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml', 'yaml']);
+        return is_string($resource)
+            && in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml', 'yaml']);
     }
 }

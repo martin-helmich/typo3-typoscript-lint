@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -65,7 +66,7 @@ class LinterConfiguration implements ConfigurationInterface
             $class = class_exists($class) ? $class : 'Helmich\\TypoScriptLint\\Linter\\Sniff\\' . $class . 'Sniff';
 
             $configuration['class'] = $class;
-            $sniffs[]               = $configuration;
+            $sniffs[] = $configuration;
         }
         return $sniffs;
     }
@@ -96,25 +97,25 @@ class LinterConfiguration implements ConfigurationInterface
         /** @psalm-suppress PossiblyUndefinedMethod */
         $root
             ->children()
-                ->arrayNode('paths')
-                    ->prototype('scalar')->end()
-                ->end()
-                ->arrayNode('filePatterns')
-                    ->prototype('scalar')->end()
-                ->end()
-                ->arrayNode('excludePatterns')
-                    ->prototype('scalar')->end()
-                ->end()
-                ->arrayNode('sniffs')
-                    ->isRequired()
-                    ->useAttributeAsKey('class')
-                    ->prototype('array')
-                    ->children()
-                        ->scalarNode('class')->end()
-                        ->variableNode('parameters')->end()
-                        ->booleanNode('disabled')->defaultValue(false)->end()
-                    ->end()
-                ->end()
+            ->arrayNode('paths')
+            ->prototype('scalar')->end()
+            ->end()
+            ->arrayNode('filePatterns')
+            ->prototype('scalar')->end()
+            ->end()
+            ->arrayNode('excludePatterns')
+            ->prototype('scalar')->end()
+            ->end()
+            ->arrayNode('sniffs')
+            ->isRequired()
+            ->useAttributeAsKey('class')
+            ->prototype('array')
+            ->children()
+            ->scalarNode('class')->end()
+            ->variableNode('parameters')->end()
+            ->booleanNode('disabled')->defaultValue(false)->end()
+            ->end()
+            ->end()
             ->end();
 
         return $treeBuilder;

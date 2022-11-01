@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -20,9 +21,10 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
     }
 
     /**
-     * @param TokenInterface[]    $tokens
-     * @param File                $file
+     * @param TokenInterface[] $tokens
+     * @param File $file
      * @param LinterConfiguration $configuration
+     *
      * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
@@ -33,7 +35,9 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
         foreach ($tokensByLine->getLines() as $line => $tokensInLine) {
             $count = count($tokensInLine);
             for ($i = 0; $i < $count; $i++) {
-                if (!($tokensInLine[$i]->getType() === TokenInterface::TYPE_OBJECT_IDENTIFIER && isset($tokensInLine[$i + 1]))) {
+                if (!($tokensInLine[$i]->getType() === TokenInterface::TYPE_OBJECT_IDENTIFIER
+                    && isset($tokensInLine[$i + 1]))
+                ) {
                     continue;
                 }
 
@@ -56,9 +60,12 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                 }
 
                 // Scan forward until we find the actual operator
-                for ($j = 0; $j < $count && !self::isOperator($tokensInLine[$j]); $j ++);
+                for ($j = 0; $j < $count && !self::isOperator($tokensInLine[$j]); $j++) {
+                    ;
+                }
 
-                if (isset($tokensInLine[$j + 1]) && isset($tokensInLine[$j + 2]) && self::isBinaryOperator($tokensInLine[$j])) {
+                if (isset($tokensInLine[$j + 1]) && isset($tokensInLine[$j + 2])
+                    && self::isBinaryOperator($tokensInLine[$j])) {
                     if (!self::isWhitespace($tokensInLine[$j + 1])) {
                         $file->addIssue(new Issue(
                             $tokensInLine[$j]->getLine(),

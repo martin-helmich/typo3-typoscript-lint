@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -9,9 +10,10 @@ interface TokenStreamSniffInterface extends SniffInterface
 {
 
     /**
-     * @param TokenInterface[]    $tokens
-     * @param File                $file
+     * @param TokenInterface[] $tokens
+     * @param File $file
      * @param LinterConfiguration $configuration
+     *
      * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void;

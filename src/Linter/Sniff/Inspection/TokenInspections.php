@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff\Inspection;
 
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
@@ -15,6 +16,7 @@ trait TokenInspections
      * Tests whether a token is an operator
      *
      * @param TokenInterface $token
+     *
      * @return bool
      */
     private static function isOperator(TokenInterface $token): bool
@@ -26,6 +28,7 @@ trait TokenInspections
      * Tests whether a token is a unary operator
      *
      * @param TokenInterface $token
+     *
      * @return bool
      */
     private static function isUnaryOperator(TokenInterface $token): bool
@@ -37,6 +40,7 @@ trait TokenInspections
      * Tests whether a token is a binary operator
      *
      * @param TokenInterface $token
+     *
      * @return bool
      */
     private static function isBinaryOperator(TokenInterface $token): bool
@@ -53,6 +57,7 @@ trait TokenInspections
      * Tests whether a token is a whitespace
      *
      * @param TokenInterface $token
+     *
      * @return bool
      */
     private static function isWhitespace(TokenInterface $token): bool
@@ -64,7 +69,8 @@ trait TokenInspections
      * Tests whether a token is a whitespace of a given length
      *
      * @param TokenInterface $token
-     * @param int            $length
+     * @param int $length
+     *
      * @return bool
      */
     private static function isWhitespaceOfLength(TokenInterface $token, int $length): bool
@@ -76,10 +82,12 @@ trait TokenInspections
      * Tests whether a token is a condition
      *
      * @param TokenInterface $token
+     *
      * @return bool
      */
     private static function isCondition(TokenInterface $token): bool
     {
-        return $token->getType() === TokenInterface::TYPE_CONDITION || $token->getType() === TokenInterface::TYPE_CONDITION_ELSE;
+        return $token->getType() === TokenInterface::TYPE_CONDITION
+            || $token->getType() === TokenInterface::TYPE_CONDITION_ELSE;
     }
 }

@@ -1,10 +1,9 @@
 <?php declare(strict_types=1);
-namespace Helmich\TypoScriptLint\Logging;
 
+namespace Helmich\TypoScriptLint\Logging;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
-
 
 /**
  * Special logger that does literally nothing

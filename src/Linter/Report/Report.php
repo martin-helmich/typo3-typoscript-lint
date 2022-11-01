@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Report;
 
 /**
@@ -19,6 +20,7 @@ class Report
      * Adds a sub-report for a specific file.
      *
      * @param File $file The file sub-report.
+     *
      * @return void
      */
     public function addFile(File $file): void
@@ -54,6 +56,7 @@ class Report
      * Returns the number of issues with a given severity for the entire report
      *
      * @param string $severity The severity. Should be one of the Issue class' SEVERITY_* constants
+     *
      * @return int The number of issues for the entire report.
      */
     public function countIssuesBySeverity(string $severity): int

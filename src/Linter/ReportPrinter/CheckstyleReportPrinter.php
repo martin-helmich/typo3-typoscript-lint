@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
 use DOMDocument;
@@ -38,6 +39,7 @@ class CheckstyleReportPrinter implements Printer
      * Writes a report in checkstyle XML format.
      *
      * @param Report $report The report to print.
+     *
      * @return void
      */
     public function writeReport(Report $report): void
@@ -53,7 +55,7 @@ class CheckstyleReportPrinter implements Printer
 
             foreach ($file->getIssues() as $issue) {
                 $xmlWarning = $xml->createElement('error');
-                $xmlWarning->setAttribute('line', $issue->getLine() ? ((string) $issue->getLine()) : "");
+                $xmlWarning->setAttribute('line', $issue->getLine() ? ((string)$issue->getLine()) : "");
                 $xmlWarning->setAttribute('severity', $issue->getSeverity());
                 $xmlWarning->setAttribute('message', $issue->getMessage());
                 $xmlWarning->setAttribute('source', $issue->getSource());

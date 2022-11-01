@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor;
@@ -51,9 +52,9 @@ class DuplicateAssignmentVisitorTest extends TestCase
             new Assignment(new ObjectPath('foo.bar', 'foo.bar'), new Scalar('bar'), 1),
             new NestedAssignment(
                 new ObjectPath('foo', 'foo'), [
-                new Assignment(new ObjectPath('foo.bar', 'bar'), new Scalar('baz'), 3)
+                new Assignment(new ObjectPath('foo.bar', 'bar'), new Scalar('baz'), 3),
             ], 2
-            )
+            ),
         ];
 
         $this->applyVisitorOnStatements($statements);
@@ -73,7 +74,7 @@ class DuplicateAssignmentVisitorTest extends TestCase
                 [new Assignment(new ObjectPath('foo.bar', 'foo.bar'), new Scalar('baz'), 3)],
                 [],
                 2
-            )
+            ),
         ];
 
         $this->applyVisitorOnStatements($statements);

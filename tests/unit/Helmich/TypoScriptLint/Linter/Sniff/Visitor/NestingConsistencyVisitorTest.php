@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor;
@@ -128,7 +129,7 @@ class NestingConsistencyVisitorTest extends TestCase
                 [new Assignment(new ObjectPath('foo.baz', 'foo.baz'), new Scalar('blub'), 3)],
                 [],
                 3
-            )
+            ),
         ];
 
         $this->applyVisitorOnStatements($statements);

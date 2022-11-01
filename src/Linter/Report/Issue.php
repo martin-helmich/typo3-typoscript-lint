@@ -39,6 +39,7 @@ class Issue
      * Creates a new warning from a parse error.
      *
      * @param ParseError $parseError The parse error to convert into a warning.
+     *
      * @return Issue The converted warning.
      */
     public static function createFromParseError(ParseError $parseError): self
@@ -56,6 +57,7 @@ class Issue
      * Creates a new warning from a tokenizer error.
      *
      * @param TokenizerException $tokenizerException The tokenizer error to convert into a warning.
+     *
      * @return Issue The converted warning.
      */
     public static function createFromTokenizerError(TokenizerException $tokenizerException): self
@@ -72,19 +74,19 @@ class Issue
     /**
      * Constructs a new warning.
      *
-     * @param int|null $line     The original source line the warning belongs to.
-     * @param int|null $column   The source column.
-     * @param string   $message  The warning message.
-     * @param string   $severity The warning severity (see Issue::SEVERITY_* constants).
-     * @param string   $source   An arbitrary identifier for the generator of this warning.
+     * @param int|null $line The original source line the warning belongs to.
+     * @param int|null $column The source column.
+     * @param string $message The warning message.
+     * @param string $severity The warning severity (see Issue::SEVERITY_* constants).
+     * @param string $source An arbitrary identifier for the generator of this warning.
      */
     public function __construct(?int $line, ?int $column, string $message, string $severity, string $source)
     {
-        $this->line     = $line;
-        $this->column   = $column;
-        $this->message  = $message;
+        $this->line = $line;
+        $this->column = $column;
+        $this->message = $message;
         $this->severity = $severity;
-        $this->source   = $source;
+        $this->source = $source;
     }
 
     /**

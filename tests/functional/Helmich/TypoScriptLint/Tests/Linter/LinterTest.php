@@ -23,8 +23,8 @@ class LinterTest extends TestCase
     public function setUp(): void
     {
         $tokenizer = new Tokenizer();
-        $parser    = new Parser($tokenizer);
-        $locator   = new SniffLocator();
+        $parser = new Parser($tokenizer);
+        $locator = new SniffLocator();
 
         $this->linter = new Linter(
             $tokenizer,
@@ -35,13 +35,14 @@ class LinterTest extends TestCase
 
     /**
      * @dataProvider getFunctionalTestFixtures
+     *
      * @param string $typoscriptFile
-     * @param array  $expectedWarnings
+     * @param array $expectedWarnings
      */
     public function testLinterCreatesExpectedOutput(string $typoscriptFile, array $expectedWarnings)
     {
         $localConfigFilename = dirname($typoscriptFile) . '/tslint.yml';
-        $localConfigData     = [];
+        $localConfigData = [];
         if (file_exists($localConfigFilename)) {
             $localConfigData = Yaml::parse(file_get_contents($localConfigFilename));
         }
@@ -65,7 +66,7 @@ class LinterTest extends TestCase
 
         $printActualWarnings = function () use ($report) {
             $actualWarnings = $report->getFiles()[0]->getIssues();
-            $content        = "";
+            $content = "";
             foreach ($actualWarnings as $warning) {
                 $content .= $warning->getLine() . ";" . $warning->getColumn() . ";" . $warning->getMessage() . ";" .
                     $warning->getSeverity() . ";" . $warning->getSource() . "\n";
@@ -98,7 +99,7 @@ class LinterTest extends TestCase
         $testCases = [];
 
         foreach ($files as $file) {
-            $output      = dirname($file) . '/output.txt';
+            $output = dirname($file) . '/output.txt';
             $outputLines = explode("\n", file_get_contents($output));
             $outputLines = array_filter($outputLines, 'strlen');
 

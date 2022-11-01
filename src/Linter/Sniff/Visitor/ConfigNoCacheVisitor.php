@@ -26,26 +26,26 @@ class ConfigNoCacheVisitor implements SniffVisitor
 
     public function enterNode(Statement $statement): void
     {
-         if (!$statement instanceof Assignment) {
-             return;
-         }
-         if ($statement->object->relativeName !== 'no_cache'
-             && substr($statement->object->relativeName, -9) !== '.no_cache') {
-             return;
-         }
-         if ($statement->value->value !== '0') {
-             $this->issues[] = new Issue(
+        if (!$statement instanceof Assignment) {
+            return;
+        }
+        if ($statement->object->relativeName !== 'no_cache'
+            && substr($statement->object->relativeName, -9) !== '.no_cache') {
+            return;
+        }
+        if ($statement->value->value !== '0') {
+            $this->issues[] = new Issue(
                 $statement->sourceLine,
                 null,
                 sprintf(
                     'Setting config.no_cache = 1 is discouraged as it is bad for performance. '
-                        . 'Consider using USER_INT object instead. Found in path: %s',
+                    . 'Consider using USER_INT object instead. Found in path: %s',
                     $statement->object->absoluteName
                 ),
                 Issue::SEVERITY_WARNING,
                 ConfigNoCacheSniff::class
             );
-         }
+        }
     }
 
     public function exitNode(Statement $statement): void

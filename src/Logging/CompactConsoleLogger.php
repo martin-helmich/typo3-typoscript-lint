@@ -1,13 +1,12 @@
 <?php declare(strict_types=1);
-namespace Helmich\TypoScriptLint\Logging;
 
+namespace Helmich\TypoScriptLint\Logging;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\Printer;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 /**
  * Compact console logger
@@ -94,7 +93,8 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
     private function printProgress(): void
     {
-        $this->output->writeln(sprintf($this->progressFormatString, $this->fileCompletedCount, $this->fileCount, $this->fileCompletedCount / $this->fileCount * 100));
+        $this->output->writeln(sprintf($this->progressFormatString, $this->fileCompletedCount, $this->fileCount,
+            $this->fileCompletedCount / $this->fileCount * 100));
     }
 
     public function notifyRunComplete(Report $report): void

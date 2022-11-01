@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -20,10 +21,12 @@ class LinterConfigurationTest extends TestCase
         $config = new LinterConfiguration();
 
         $processor = new Processor();
-        $processedConfig = $processor->processConfiguration($config, [[
-            'paths' => ['./foo', './bar', './baz'],
-            'sniffs' => []
-        ]]);
+        $processedConfig = $processor->processConfiguration($config, [
+            [
+                'paths' => ['./foo', './bar', './baz'],
+                'sniffs' => [],
+            ],
+        ]);
 
         $config->setConfiguration($processedConfig);
 
@@ -35,9 +38,11 @@ class LinterConfigurationTest extends TestCase
         $config = new LinterConfiguration();
 
         $processor = new Processor();
-        $processedConfig = $processor->processConfiguration($config, [[
-            'sniffs' => []
-        ]]);
+        $processedConfig = $processor->processConfiguration($config, [
+            [
+                'sniffs' => [],
+            ],
+        ]);
 
         $config->setConfiguration($processedConfig);
 
@@ -49,13 +54,15 @@ class LinterConfigurationTest extends TestCase
         $config = new LinterConfiguration();
 
         $processor = new Processor();
-        $processedConfig = $processor->processConfiguration($config, [[
-            'filePatterns' => [
-                '*.ts',
-                '*.typoscript'
+        $processedConfig = $processor->processConfiguration($config, [
+            [
+                'filePatterns' => [
+                    '*.ts',
+                    '*.typoscript',
+                ],
+                'sniffs' => [],
             ],
-            'sniffs' => []
-        ]]);
+        ]);
 
         $config->setConfiguration($processedConfig);
 

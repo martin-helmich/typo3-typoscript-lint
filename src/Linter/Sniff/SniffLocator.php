@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Exception;
@@ -12,6 +13,7 @@ class SniffLocator
 
     /**
      * @param LinterConfiguration $configuration
+     *
      * @return SniffInterface[]
      * @throws Exception
      *
@@ -43,6 +45,7 @@ class SniffLocator
 
     /**
      * @param LinterConfiguration $configuration
+     *
      * @return TokenStreamSniffInterface[]
      * @throws Exception
      */
@@ -61,6 +64,7 @@ class SniffLocator
 
     /**
      * @param LinterConfiguration $configuration
+     *
      * @return SyntaxTreeSniffInterface[]
      * @throws Exception
      */

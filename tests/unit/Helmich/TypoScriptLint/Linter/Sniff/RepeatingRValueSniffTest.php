@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -18,7 +19,7 @@ class RepeatingRValueSniffTest extends TestCase
 foo = foobarbaz
 baz = foobarbaz
 EOF
-);
+        );
         $sniff = new RepeatingRValueSniff([]);
         $file = new File("file");
         $sniff->sniff($tokens, $file, new LinterConfiguration());

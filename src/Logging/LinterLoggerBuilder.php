@@ -1,13 +1,12 @@
 <?php declare(strict_types=1);
-namespace Helmich\TypoScriptLint\Logging;
 
+namespace Helmich\TypoScriptLint\Logging;
 
 use Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\GccReportPrinter;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 /**
  * Helper class responsible for building a logger based on given input parameters
@@ -23,13 +22,17 @@ class LinterLoggerBuilder
     /**
      * Builds a suitable logger for logging lint progress and results.
      *
-     * @param string          $outputFormat  The desired output format, as specified by the user, e.g. via command-line parameter
-     * @param OutputInterface $reportOutput  Output stream for the result report (usually STDOUT or a file)
+     * @param string $outputFormat The desired output format, as specified by the user, e.g. via command-line parameter
+     * @param OutputInterface $reportOutput Output stream for the result report (usually STDOUT or a file)
      * @param OutputInterface $consoleOutput Output stream for console data (usually STDOUT)
+     *
      * @return LinterLoggerInterface The printer matching the user's specifications.
      */
-    public function createLogger(string $outputFormat, OutputInterface $reportOutput, OutputInterface $consoleOutput): LinterLoggerInterface
-    {
+    public function createLogger(
+        string $outputFormat,
+        OutputInterface $reportOutput,
+        OutputInterface $consoleOutput
+    ): LinterLoggerInterface {
         $errorOutput = ($consoleOutput instanceof ConsoleOutputInterface)
             ? $consoleOutput->getErrorOutput()
             : $consoleOutput;

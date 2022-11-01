@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Linter\Sniff;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
@@ -21,9 +22,10 @@ class DeadCodeSniff implements TokenStreamSniffInterface
     }
 
     /**
-     * @param TokenInterface[]    $tokens
-     * @param File                $file
+     * @param TokenInterface[] $tokens
+     * @param File $file
      * @param LinterConfiguration $configuration
+     *
      * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
@@ -38,20 +40,22 @@ class DeadCodeSniff implements TokenStreamSniffInterface
 
             if (preg_match(static::ANNOTATION_COMMENT, $commentContent)) {
                 continue;
-            } else if (preg_match(Tokenizer::TOKEN_OPERATOR_LINE, $commentContent, $matches)) {
-                try {
-                    $parser = new Parser(new Tokenizer());
-                    $parser->parseString($commentContent);
+            } else {
+                if (preg_match(Tokenizer::TOKEN_OPERATOR_LINE, $commentContent, $matches)) {
+                    try {
+                        $parser = new Parser(new Tokenizer());
+                        $parser->parseString($commentContent);
 
-                    $file->addIssue(new Issue(
-                        $token->getLine(),
-                        0,
-                        'Found commented code (' . $matches[0] . ').',
-                        Issue::SEVERITY_INFO,
-                        __CLASS__
-                    ));
-                } catch (\Exception $e) {
-                    // pass
+                        $file->addIssue(new Issue(
+                            $token->getLine(),
+                            0,
+                            'Found commented code (' . $matches[0] . ').',
+                            Issue::SEVERITY_INFO,
+                            __CLASS__
+                        ));
+                    } catch (\Exception $e) {
+                        // pass
+                    }
                 }
             }
         }

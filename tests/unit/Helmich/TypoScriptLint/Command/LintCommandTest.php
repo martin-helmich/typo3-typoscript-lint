@@ -123,7 +123,9 @@ class LintCommandTest extends TestCase
             ->with(['config.yml'])
             ->willReturn($config);
 
-        $this->loggerBuilder->createLogger('txt', Argument::exact($out), Argument::exact($out))->shouldBeCalled()->willReturn($logger);
+        $this->loggerBuilder->createLogger('txt', Argument::exact($out), Argument::exact($out))
+            ->shouldBeCalled()
+            ->willReturn($logger);
         $this->finder->expects($this->once())->method('getFilenames')->willReturnArgument(0);
 
         $this->runCommand($in, $out);

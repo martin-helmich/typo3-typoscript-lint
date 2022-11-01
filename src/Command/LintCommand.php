@@ -52,15 +52,14 @@ class LintCommand extends Command
         LinterLoggerBuilder $loggerBuilder,
         Finder $finder,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         parent::__construct();
 
-        $this->linter                     = $linter;
+        $this->linter = $linter;
         $this->linterConfigurationLocator = $configurationLocator;
-        $this->loggerBuilder              = $loggerBuilder;
-        $this->finder                     = $finder;
-        $this->eventDispatcher            = $eventDispatcher;
+        $this->loggerBuilder = $loggerBuilder;
+        $this->finder = $finder;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -76,13 +75,26 @@ class LintCommand extends Command
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file to use', 'typoscript-lint.yml')
             ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format', 'compact')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output file ("-" for stdout)', '-')
-            ->addOption('exit-code', 'e', InputOption::VALUE_NONE, '(DEPRECATED) Set this flag to exit with a non-zero exit code when there are warnings')
-            ->addOption('fail-on-warnings', null, InputOption::VALUE_NONE, 'Set this flag to exit with a non-zero exit code when there are warnings')
-            ->addArgument('paths', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present');
+            ->addOption(
+                'exit-code',
+                'e',
+                InputOption::VALUE_NONE,
+                '(DEPRECATED) Set this flag to exit with a non-zero exit code when there are warnings')
+            ->addOption(
+                'fail-on-warnings',
+                null,
+                InputOption::VALUE_NONE,
+                'Set this flag to exit with a non-zero exit code when there are warnings')
+            ->addArgument(
+                'paths',
+                InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+                'File or directory names. If omitted, the "paths" option from the configuration file will be used, if present'
+            );
     }
 
     /**
      * @param string $fileName
+     *
      * @return string[]
      */
     private function getPossibleConfigFiles(string $fileName): array
@@ -97,8 +109,9 @@ class LintCommand extends Command
     /**
      * Executes this command.
      *
-     * @param InputInterface  $input  Input options.
+     * @param InputInterface $input Input options.
      * @param OutputInterface $output Output stream.
+     *
      * @return int
      *
      * @throws BadOutputFileException
@@ -112,11 +125,11 @@ class LintCommand extends Command
         /** @var string $formatOption */
         $formatOption = $input->getOption('format');
 
-        $configFiles   = $this->getPossibleConfigFiles($configFilesOption);
+        $configFiles = $this->getPossibleConfigFiles($configFilesOption);
         $configuration = $this->linterConfigurationLocator->loadConfiguration($configFiles);
         /** @var string[] $paths */
-        $paths            = $input->getArgument('paths') ?: $configuration->getPaths();
-        $outputTarget     = $input->getOption('output');
+        $paths = $input->getArgument('paths') ?: $configuration->getPaths();
+        $outputTarget = $input->getOption('output');
         $exitWithExitCode = $input->getOption('exit-code') || $input->getOption('fail-on-warnings');
 
         if (false == $outputTarget) {
@@ -136,10 +149,10 @@ class LintCommand extends Command
 
         $logger = $this->loggerBuilder->createLogger($formatOption, $reportOutput, $output);
 
-        $report          = new Report();
-        $filePatterns    = $configuration->getFilePatterns();
+        $report = new Report();
+        $filePatterns = $configuration->getFilePatterns();
         $excludePatterns = $configuration->getExcludePatterns();
-        $observer        = new CallbackFinderObserver(function (string $name) use ($logger): void {
+        $observer = new CallbackFinderObserver(function (string $name) use ($logger): void {
             $logger->notifyFileNotFound($name);
         });
 

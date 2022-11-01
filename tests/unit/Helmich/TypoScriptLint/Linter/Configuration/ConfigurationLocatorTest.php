@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Configuration;
 
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
@@ -27,7 +28,7 @@ class ConfigurationLocatorTest extends TestCase
 
     public function setUp(): void
     {
-        $this->loader    = $this->getMockBuilder(LoaderInterface::class)->getMock();
+        $this->loader = $this->getMockBuilder(LoaderInterface::class)->getMock();
         $this->processor = $this->getMockBuilder(Processor::class)->getMock();
 
         /** @noinspection PhpParamsInspection */
@@ -39,8 +40,8 @@ class ConfigurationLocatorTest extends TestCase
 
     public function testConfigurationIsLoadedAndProcessed()
     {
-        $distConfig   = ['foo' => 'bar'];
-        $localConfig  = ['bar' => 'baz'];
+        $distConfig = ['foo' => 'bar'];
+        $localConfig = ['bar' => 'baz'];
         $mergedConfig = ['foo' => 'bar', 'bar' => 'baz'];
 
         $configuration = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
@@ -64,13 +65,16 @@ class ConfigurationLocatorTest extends TestCase
 
     public function testConfigurationIsLoadedAndProcessedWithDefaultConfigFile()
     {
-        $distConfig   = ['foo' => 'bar'];
+        $distConfig = ['foo' => 'bar'];
         $mergedConfig = $distConfig;
 
         $configuration = $this->getMockBuilder(LinterConfiguration::class)->disableOriginalConstructor()->getMock();
         $configuration->expects($this->once())->method('setConfiguration')->with($mergedConfig);
 
-        $this->loader->expects($this->once())->method('load')->with('typoscript-lint.dist.yml')->willReturn($distConfig);
+        $this->loader->expects($this->once())
+            ->method('load')
+            ->with('typoscript-lint.dist.yml')
+            ->willReturn($distConfig);
 
         $this->processor
             ->expects($this->once())
