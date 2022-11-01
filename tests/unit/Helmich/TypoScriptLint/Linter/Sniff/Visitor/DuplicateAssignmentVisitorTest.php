@@ -23,15 +23,14 @@ use function PHPUnit\Framework\assertEquals;
 class DuplicateAssignmentVisitorTest extends TestCase
 {
 
-    /** @var DuplicateAssignmentVisitor */
-    private $visitor;
+    private DuplicateAssignmentVisitor $visitor;
 
     public function setUp(): void
     {
         $this->visitor = new DuplicateAssignmentVisitor();
     }
 
-    public function testWarningIsGeneratedForDuplicateAssignmentOnSameHierarchy()
+    public function testWarningIsGeneratedForDuplicateAssignmentOnSameHierarchy(): void
     {
         $statements = [
             new Assignment(new ObjectPath('foo', 'foo'), new Scalar('bar'), 1),
@@ -46,7 +45,7 @@ class DuplicateAssignmentVisitorTest extends TestCase
         assertEquals('Value of object "foo" is overwritten in line 2.', $warnings[0]->getMessage());
     }
 
-    public function testWarningIsGeneratedForDuplicateAssignmentOnAcrossNestedAssignments()
+    public function testWarningIsGeneratedForDuplicateAssignmentOnAcrossNestedAssignments(): void
     {
         $statements = [
             new Assignment(new ObjectPath('foo.bar', 'foo.bar'), new Scalar('bar'), 1),
@@ -65,7 +64,7 @@ class DuplicateAssignmentVisitorTest extends TestCase
         assertEquals('Value of object "foo.bar" is overwritten in line 3.', $warnings[0]->getMessage());
     }
 
-    public function testNoWarningIsGeneratedWhenValueIsOverwrittenInCondition()
+    public function testNoWarningIsGeneratedWhenValueIsOverwrittenInCondition(): void
     {
         $statements = [
             new Assignment(new ObjectPath('foo.bar', 'foo.bar'), new Scalar('bar'), 1),
@@ -84,7 +83,7 @@ class DuplicateAssignmentVisitorTest extends TestCase
         assertCount(0, $warnings);
     }
 
-    private function applyVisitorOnStatements(array $statements)
+    private function applyVisitorOnStatements(array $statements): void
     {
         $traverser = new Traverser($statements);
         $traverser->addVisitor($this->visitor);

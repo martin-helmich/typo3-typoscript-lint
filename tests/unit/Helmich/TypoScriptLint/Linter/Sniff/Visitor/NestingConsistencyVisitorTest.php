@@ -25,15 +25,14 @@ use function PHPUnit\Framework\countOf;
 class NestingConsistencyVisitorTest extends TestCase
 {
 
-    /** @var DuplicateAssignmentVisitor */
-    private $visitor;
+    private NestingConsistencyVisitor $visitor;
 
     public function setUp(): void
     {
         $this->visitor = new NestingConsistencyVisitor();
     }
 
-    public function testWarningIsGeneratedForDuplicateNestingStatements()
+    public function testWarningIsGeneratedForDuplicateNestingStatements(): void
     {
         $statements = [
             new NestedAssignment(
@@ -59,7 +58,7 @@ class NestingConsistencyVisitorTest extends TestCase
         );
     }
 
-    public function testWarningIsGeneratedForMultipleAssignmentsWithCommonPrefix()
+    public function testWarningIsGeneratedForMultipleAssignmentsWithCommonPrefix(): void
     {
         $statements = [
             new Assignment(new ObjectPath('foo.bar', 'foo.bar'), new Scalar('test1'), 1),
@@ -81,7 +80,7 @@ class NestingConsistencyVisitorTest extends TestCase
         );
     }
 
-    public function testThresholdForCommonPrefixWarningIsConfigurable()
+    public function testThresholdForCommonPrefixWarningIsConfigurable(): void
     {
         $statements = [
             new Assignment(new ObjectPath('foo.bar', 'foo.bar'), new Scalar('test1'), 1),
@@ -98,7 +97,7 @@ class NestingConsistencyVisitorTest extends TestCase
         assertThat($warnings, countOf(0));
     }
 
-    public function testWarningIsGeneratedForAssignmentWhenNestedAssignmentWithCommonPrefixExists()
+    public function testWarningIsGeneratedForAssignmentWhenNestedAssignmentWithCommonPrefixExists(): void
     {
         $statements = [
             new NestedAssignment(
@@ -120,7 +119,7 @@ class NestingConsistencyVisitorTest extends TestCase
         );
     }
 
-    public function testConditionalStatementsDoNotRaiseWarnings()
+    public function testConditionalStatementsDoNotRaiseWarnings(): void
     {
         $statements = [
             new Assignment(new ObjectPath('foo.bar', 'foo.bar'), new Scalar('test'), 1),
@@ -139,7 +138,7 @@ class NestingConsistencyVisitorTest extends TestCase
         assertThat($warnings, countOf(0));
     }
 
-    private function applyVisitorOnStatements(array $statements)
+    private function applyVisitorOnStatements(array $statements): void
     {
         $traverser = new Traverser($statements);
         $traverser->addVisitor($this->visitor);

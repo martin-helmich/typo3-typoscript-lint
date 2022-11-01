@@ -16,40 +16,39 @@ use function PHPUnit\Framework\assertEquals;
 class IssueTest extends TestCase
 {
 
-    /** @var Issue */
-    private $issue;
+    private Issue $issue;
 
     public function setUp(): void
     {
-        $this->issue = new Issue(200, 23, 'Issue message', Issue::SEVERITY_WARNING, __CLASS__);
+        $this->issue = new Issue(200, 23, 'Issue message', Issue::SEVERITY_WARNING, self::class);
     }
 
-    public function testConstructorSetsLine()
+    public function testConstructorSetsLine(): void
     {
         assertEquals(200, $this->issue->getLine());
     }
 
-    public function testConstructorSetsColumn()
+    public function testConstructorSetsColumn(): void
     {
         assertEquals(23, $this->issue->getColumn());
     }
 
-    public function testConstructorSetsMessage()
+    public function testConstructorSetsMessage(): void
     {
         assertEquals('Issue message', $this->issue->getMessage());
     }
 
-    public function testConstructorSetsSeverity()
+    public function testConstructorSetsSeverity(): void
     {
         assertEquals(Issue::SEVERITY_WARNING, $this->issue->getSeverity());
     }
 
-    public function testConstructorSetsSource()
+    public function testConstructorSetsSource(): void
     {
-        assertEquals(__CLASS__, $this->issue->getSource());
+        assertEquals(self::class, $this->issue->getSource());
     }
 
-    public function testWarningCanBeCreatedFromParseError()
+    public function testWarningCanBeCreatedFromParseError(): void
     {
         $parseError = new ParseError('All is wrong!', 0, 1234);
 
@@ -60,7 +59,7 @@ class IssueTest extends TestCase
         assertEquals(1234, $issue->getLine());
     }
 
-    public function testWarningCanBeCreatedFromTokenizerError()
+    public function testWarningCanBeCreatedFromTokenizerError(): void
     {
         $tokenizerError = new TokenizerException('Could not read stuff', 0, null, 4321);
 

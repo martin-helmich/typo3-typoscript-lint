@@ -23,8 +23,7 @@ class YamlConfigurationLoaderTest extends TestCase
         $yamlParser,
         $filesystem;
 
-    /** @var YamlConfigurationLoader */
-    private $loader;
+    private YamlConfigurationLoader $loader;
 
     public function setUp(): void
     {
@@ -36,7 +35,7 @@ class YamlConfigurationLoaderTest extends TestCase
         $this->loader = new YamlConfigurationLoader($this->fileLocator, $this->yamlParser, $this->filesystem);
     }
 
-    public function testLoadLocatesReadsAndParsesFile()
+    public function testLoadLocatesReadsAndParsesFile(): void
     {
         $file = $this->getMockBuilder(SplFileInfo::class)->setConstructorArgs(['php://memory', '', ''])->getMock();
         $file->expects($this->once())->method('getContents')->willReturn('foo: bar');
@@ -48,7 +47,7 @@ class YamlConfigurationLoaderTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $this->loader->load('foobar.yml'));
     }
 
-    public function testLoadReturnsEmptyWhenFileIsNotFound()
+    public function testLoadReturnsEmptyWhenFileIsNotFound(): void
     {
         if (!class_exists(FileLocatorFileNotFoundException::class)) {
             $this->markTestSkipped('requires Symfony 3.0 or newer');
@@ -61,17 +60,17 @@ class YamlConfigurationLoaderTest extends TestCase
         $this->assertEquals([], $this->loader->load('foobar.yml'));
     }
 
-    public function testSupportReturnsTrueForYamlFilenamesWithYmlExtension()
+    public function testSupportReturnsTrueForYamlFilenamesWithYmlExtension(): void
     {
         $this->assertTrue($this->loader->supports('foobar.yml'));
     }
 
-    public function testSupportReturnsTrueForYamlFilenamesWithYamlExtension()
+    public function testSupportReturnsTrueForYamlFilenamesWithYamlExtension(): void
     {
         $this->assertTrue($this->loader->supports('foobar.yaml'));
     }
 
-    public function testSupportReturnsFalseForNoneYamlFilenames()
+    public function testSupportReturnsFalseForNoneYamlFilenames(): void
     {
         $this->assertFalse($this->loader->supports('foobar.xml'));
     }

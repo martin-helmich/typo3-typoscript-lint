@@ -17,39 +17,38 @@ use function PHPUnit\Framework\isInstanceOf;
  */
 class LinterLoggerBuilderTest extends TestCase
 {
-    /** @var LinterLoggerBuilder */
-    private $builder;
+    private LinterLoggerBuilder $builder;
 
     public function setUp(): void
     {
         $this->builder = new LinterLoggerBuilder();
     }
 
-    public function testCompactLoggerCanBeBuilt()
+    public function testCompactLoggerCanBeBuilt(): void
     {
         $logger = $this->builder->createLogger('compact', new BufferedOutput(), new BufferedOutput());
         assertThat($logger, isInstanceOf(CompactConsoleLogger::class));
     }
 
-    public function testVerboseLoggerCanBeBuilt()
+    public function testVerboseLoggerCanBeBuilt(): void
     {
         $logger = $this->builder->createLogger('text', new BufferedOutput(), new BufferedOutput());
         assertThat($logger, isInstanceOf(VerboseConsoleLogger::class));
     }
 
-    public function testCheckstyleLoggerCanBeBuilt()
+    public function testCheckstyleLoggerCanBeBuilt(): void
     {
         $logger = $this->builder->createLogger('xml', new BufferedOutput(), new BufferedOutput());
         assertThat($logger, isInstanceOf(CompactConsoleLogger::class));
     }
 
-    public function testGccLoggerCanBeBuilt()
+    public function testGccLoggerCanBeBuilt(): void
     {
         $logger = $this->builder->createLogger('gcc', new BufferedOutput(), new BufferedOutput());
         assertThat($logger, isInstanceOf(MinimalConsoleLogger::class));
     }
 
-    public function testUnknownFormatCausesInvalidArgumentException()
+    public function testUnknownFormatCausesInvalidArgumentException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->builder->createLogger('unknown', new BufferedOutput(), new BufferedOutput());

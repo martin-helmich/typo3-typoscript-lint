@@ -15,15 +15,14 @@ use function PHPUnit\Framework\equalTo;
 
 class OperatorWhitespaceSniffTest extends TestCase
 {
-    /** @var OperatorWhitespaceSniff */
-    private $sniff;
+    private OperatorWhitespaceSniff $sniff;
 
     public function setUp(): void
     {
         $this->sniff = new OperatorWhitespaceSniff([]);
     }
 
-    public function getValidTokenSequences()
+    public function getValidTokenSequences(): \Generator
     {
         yield [
             [
@@ -39,13 +38,10 @@ class OperatorWhitespaceSniffTest extends TestCase
     }
 
     /**
-     * @param array $tokens
-     * @param array $warnings
      *
-     * @return void
      * @dataProvider getValidTokenSequences
      */
-    public function testTokenSequenceGeneratesExpectedWarnings(array $tokens, array $warnings)
+    public function testTokenSequenceGeneratesExpectedWarnings(array $tokens, array $warnings): void
     {
         $file = new File("sample.ts");
         $conf = new LinterConfiguration();
