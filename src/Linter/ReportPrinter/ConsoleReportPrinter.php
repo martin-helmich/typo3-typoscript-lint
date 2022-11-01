@@ -19,8 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsoleReportPrinter implements Printer
 {
 
-    /** @var OutputInterface */
-    private $output;
+    private OutputInterface $output;
 
     /**
      * Constructs a new console report printer.

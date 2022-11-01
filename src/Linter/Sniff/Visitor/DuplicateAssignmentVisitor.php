@@ -12,13 +12,12 @@ class DuplicateAssignmentVisitor implements SniffVisitor
 {
 
     /** @var Assignment[] */
-    private $assignments = [];
+    private array $assignments = [];
 
     /** @var Issue[] */
-    private $issues = [];
+    private array $issues = [];
 
-    /** @var bool */
-    private $inCondition = false;
+    private bool $inCondition = false;
 
     /**
      * @return Issue[]

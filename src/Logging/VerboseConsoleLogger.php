@@ -23,11 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class VerboseConsoleLogger implements LinterLoggerInterface
 {
-    /** @var OutputInterface */
-    private $output;
+    private OutputInterface $output;
 
-    /** @var Printer */
-    private $printer;
+    private Printer $printer;
 
     public function __construct(Printer $printer, OutputInterface $output)
     {

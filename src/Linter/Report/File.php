@@ -13,11 +13,10 @@ namespace Helmich\TypoScriptLint\Linter\Report;
 class File
 {
 
-    /** @var string */
-    private $filename;
+    private string $filename;
 
     /** @var Issue[] */
-    private $issues = [];
+    private array $issues = [];
 
     /**
      * Constructs a new file report.
@@ -61,9 +60,7 @@ class File
     {
         usort(
             $this->issues,
-            function (Issue $a, Issue $b): int {
-                return ($a->getLine() ?? 0) - ($b->getLine() ?? 0);
-            }
+            fn(Issue $a, Issue $b): int => ($a->getLine() ?? 0) - ($b->getLine() ?? 0)
         );
         return $this->issues;
     }
@@ -77,9 +74,7 @@ class File
      */
     public function getIssuesBySeverity(string $severity): array
     {
-        return array_values(array_filter($this->getIssues(), function (Issue $i) use ($severity): bool {
-            return $i->getSeverity() === $severity;
-        }));
+        return array_values(array_filter($this->getIssues(), fn(Issue $i): bool => $i->getSeverity() === $severity));
     }
 
     /**

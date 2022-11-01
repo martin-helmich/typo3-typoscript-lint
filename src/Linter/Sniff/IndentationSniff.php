@@ -15,25 +15,19 @@ class IndentationSniff implements TokenStreamSniffInterface
 {
     use TokenInspections;
 
-    /** @var bool */
-    private $useSpaces = true;
+    private bool $useSpaces = true;
 
-    /** @var int */
-    private $indentPerLevel = 4;
+    private int $indentPerLevel = 4;
 
     /**
      * Defines whether code inside conditions should be indented by one level.
-     *
-     * @var bool
      */
-    private $indentConditions = false;
+    private bool $indentConditions = false;
 
     /**
      * Track whether we are inside a condition.
-     *
-     * @var bool
      */
-    private $insideCondition = false;
+    private bool $insideCondition = false;
 
     /**
      * @param array $parameters
@@ -77,9 +71,12 @@ class IndentationSniff implements TokenStreamSniffInterface
                 $expectedIndentationCharacterCount
             );
 
-            $tokensInLine = array_values(array_filter($tokensInLine, function (TokenInterface $token): bool {
-                return $token->getType() !== TokenInterface::TYPE_RIGHTVALUE_MULTILINE;
-            }));
+            $tokensInLine = array_values(
+                array_filter(
+                    $tokensInLine,
+                    fn(TokenInterface $token): bool => $token->getType() !== TokenInterface::TYPE_RIGHTVALUE_MULTILINE
+                )
+            );
 
             // Skip empty lines and conditions inside conditions.
             if ($this->isEmptyLine($tokensInLine) || ($this->insideCondition && self::isCondition($tokensInLine[0]))) {
@@ -112,9 +109,12 @@ class IndentationSniff implements TokenStreamSniffInterface
      */
     private function isEmptyLine(array $tokensInLine): bool
     {
-        $tokensInLine = array_values(array_filter($tokensInLine, function (TokenInterface $t): bool {
-            return $t->getType() !== TokenInterface::TYPE_EMPTY_LINE;
-        }));
+        $tokensInLine = array_values(
+            array_filter(
+                $tokensInLine,
+                fn(TokenInterface $t): bool => $t->getType() !== TokenInterface::TYPE_EMPTY_LINE
+            )
+        );
 
         if (count($tokensInLine) === 0) {
             return true;
@@ -199,6 +199,6 @@ class IndentationSniff implements TokenStreamSniffInterface
 
         $expectedMessage = "Expected indent of {$indentCharacterCount} {$indentCharacterDescription}.";
 
-        return new Issue($line, strlen($actual), $expectedMessage, Issue::SEVERITY_WARNING, __CLASS__);
+        return new Issue($line, strlen($actual), $expectedMessage, Issue::SEVERITY_WARNING, self::class);
     }
 }

@@ -8,9 +8,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class LinterConfiguration implements ConfigurationInterface
 {
 
-    /** @var array */
-    private $configuration = [];
+    private array $configuration = [];
 
+    /**
+     * @param mixed[] $configuration
+     */
     public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;

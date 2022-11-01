@@ -17,14 +17,11 @@ use Helmich\TypoScriptParser\Tokenizer\TokenizerInterface;
 class Linter implements LinterInterface
 {
 
-    /** @var TokenizerInterface */
-    private $tokenizer;
+    private TokenizerInterface $tokenizer;
 
-    /** @var ParserInterface */
-    private $parser;
+    private ParserInterface $parser;
 
-    /** @var SniffLocator */
-    private $sniffLocator;
+    private SniffLocator $sniffLocator;
 
     public function __construct(TokenizerInterface $tokenizer, ParserInterface $parser, SniffLocator $sniffLocator)
     {

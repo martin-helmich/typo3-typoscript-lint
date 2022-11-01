@@ -22,8 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckstyleReportPrinter implements Printer
 {
 
-    /** @var OutputInterface */
-    private $output;
+    private OutputInterface $output;
 
     /**
      * Constructs a new checkstyle report printer.

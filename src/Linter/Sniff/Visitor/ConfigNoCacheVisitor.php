@@ -10,7 +10,7 @@ use Helmich\TypoScriptParser\Parser\AST\Statement;
 class ConfigNoCacheVisitor implements SniffVisitor
 {
     /** @var Issue[] */
-    private $issues = [];
+    private array $issues = [];
 
     /**
      * @return Issue[]

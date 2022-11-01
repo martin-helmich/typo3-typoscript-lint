@@ -10,7 +10,7 @@ use Helmich\TypoScriptParser\Parser\AST\Statement;
 class EmptySectionVisitor implements SniffVisitor
 {
     /** @var Issue[] */
-    private $issues = [];
+    private array $issues = [];
 
     /**
      * @return Issue[]
@@ -26,11 +26,12 @@ class EmptySectionVisitor implements SniffVisitor
 
     public function enterNode(Statement $statement): void
     {
+        $statement = null;
         if (!($statement instanceof NestedAssignment)) {
             return;
         }
 
-        if (count($statement->statements) === 0) {
+        if ((is_countable($statement->statements) ? count($statement->statements) : 0) === 0) {
             $this->issues[] = new Issue(
                 $statement->sourceLine,
                 null,

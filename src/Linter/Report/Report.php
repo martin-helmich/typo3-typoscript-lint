@@ -14,7 +14,7 @@ class Report
 {
 
     /** @var File[] */
-    private $files = [];
+    private array $files = [];
 
     /**
      * Adds a sub-report for a specific file.

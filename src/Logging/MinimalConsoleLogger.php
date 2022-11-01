@@ -19,11 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MinimalConsoleLogger implements LinterLoggerInterface
 {
-    /** @var Printer */
-    private $printer;
+    private Printer $printer;
 
-    /** @var OutputInterface */
-    private $output;
+    private OutputInterface $output;
 
     public function __construct(Printer $printer, OutputInterface $output)
     {
