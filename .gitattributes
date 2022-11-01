@@ -5,7 +5,10 @@
 .gitattributes export-ignore
 .github/ export-ignore
 .gitignore export-ignore
+.phan/ export-ignore
+Makefile export-ignore
 composer.lock export-ignore
 phpunit.xml.dist export-ignore
+psalm.xml export-ignore
 tests/ export-ignore
 tslint.yml export-ignore
