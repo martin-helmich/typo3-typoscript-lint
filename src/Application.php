@@ -15,8 +15,7 @@ class Application extends SymfonyApplication
     public const APP_NAME = 'typoscript-lint';
     public const APP_VERSION = 'dev';
 
-    /** @var Container */
-    private $container;
+    private Container $container;
 
     public function __construct(Container $container)
     {
@@ -62,7 +61,7 @@ class Application extends SymfonyApplication
      */
     public function getVersion(): string
     {
-        $current = dirname(__FILE__);
+        $current = __DIR__;
         while ($current !== '/') {
             if (file_exists($current . '/composer.lock')) {
                 $contents = file_get_contents($current . '/composer.lock');
@@ -70,10 +69,13 @@ class Application extends SymfonyApplication
                     continue;
                 }
 
-                $data = json_decode($contents);
-                $packages = array_values(array_filter($data->packages, function (\stdClass $package): bool {
-                    return $package->name === "helmich/typo3-typoscript-lint";
-                }));
+                $data = json_decode($contents, null, 512, JSON_THROW_ON_ERROR);
+                $packages = array_values(
+                    array_filter(
+                        $data->packages,
+                        fn(\stdClass $package): bool => $package->name === "helmich/typo3-typoscript-lint"
+                    )
+                );
 
                 if (count($packages) > 0) {
                     return $packages[0]->version;
