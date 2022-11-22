@@ -17,8 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 class LinterTest extends TestCase
 {
 
-    /** @var  Linter */
-    private $linter;
+    private Linter $linter;
 
     public function setUp(): void
     {
@@ -39,7 +38,7 @@ class LinterTest extends TestCase
      * @param string $typoscriptFile
      * @param array $expectedWarnings
      */
-    public function testLinterCreatesExpectedOutput(string $typoscriptFile, array $expectedWarnings)
+    public function testLinterCreatesExpectedOutput(string $typoscriptFile, array $expectedWarnings): void
     {
         $localConfigFilename = dirname($typoscriptFile) . '/tslint.yml';
         $localConfigData = [];
@@ -64,7 +63,7 @@ class LinterTest extends TestCase
             new NullLogger()
         );
 
-        $printActualWarnings = function () use ($report) {
+        $printActualWarnings = function () use ($report): string {
             $actualWarnings = $report->getFiles()[0]->getIssues();
             $content = "";
             foreach ($actualWarnings as $warning) {
@@ -93,7 +92,10 @@ class LinterTest extends TestCase
         }
     }
 
-    public function getFunctionalTestFixtures()
+    /**
+     * @return array<string, mixed[]>
+     */
+    public function getFunctionalTestFixtures(): array
     {
         $files = glob(__DIR__ . '/Fixtures/*/*.typoscript');
         $testCases = [];
@@ -104,7 +106,7 @@ class LinterTest extends TestCase
             $outputLines = array_filter($outputLines, 'strlen');
 
             $reports = array_map(
-                function ($line) {
+                function (string $line): Issue {
                     $values = str_getcsv($line, ';');
                     return new Issue(
                         (int)$values[0],

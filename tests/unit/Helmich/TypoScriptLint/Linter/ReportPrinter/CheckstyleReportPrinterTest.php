@@ -21,7 +21,7 @@ use function PHPUnit\Framework\once;
 class CheckstyleReportPrinterTest extends TestCase
 {
 
-    const EXPECTED_XML_DOCUMENT = '<?xml version="1.0" encoding="UTF-8"?>
+    public const EXPECTED_XML_DOCUMENT = '<?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="typoscript-lint-dev">
   <file name="foobar.tys">
     <error line="123" severity="info" message="Message #1" source="foobar" column="12"/>
@@ -33,11 +33,10 @@ class CheckstyleReportPrinterTest extends TestCase
 </checkstyle>
 ';
 
-    /** @var MockObject */
-    private $output;
+    /** @var OutputInterface&MockObject */
+    private OutputInterface $output;
 
-    /** @var CheckstyleReportPrinter */
-    private $printer;
+    private CheckstyleReportPrinter $printer;
 
     public function setUp(): void
     {
@@ -48,7 +47,7 @@ class CheckstyleReportPrinterTest extends TestCase
     /**
      * @medium
      */
-    public function testXmlReportIsCorrectlyGenerated()
+    public function testXmlReportIsCorrectlyGenerated(): void
     {
         $file1 = new File('foobar.tys');
         $file1->addIssue(new Issue(123, 12, 'Message #1', Issue::SEVERITY_INFO, 'foobar'));

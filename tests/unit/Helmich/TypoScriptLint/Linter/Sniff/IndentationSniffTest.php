@@ -21,15 +21,14 @@ use function PHPUnit\Framework\equalTo;
 class IndentationSniffTest extends TestCase
 {
 
-    /** @var  IndentationSniff */
-    private $sniff;
+    private IndentationSniff $sniff;
 
     public function setUp(): void
     {
         $this->sniff = new IndentationSniff([]);
     }
 
-    public function testNoWarningIsGeneratedForNestedConditions()
+    public function testNoWarningIsGeneratedForNestedConditions(): void
     {
         $tokens = [
             new Token(Token::TYPE_CONDITION, '[page|uid = 0] ', 0),
@@ -56,7 +55,7 @@ class IndentationSniffTest extends TestCase
     /**
      * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/79
      */
-    public function testNoNegativeIndentationLevelsForSuperflousClosingToken()
+    public function testNoNegativeIndentationLevelsForSuperflousClosingToken(): void
     {
         $sniff = new IndentationSniff(["indentConditions" => true]);
         $tokens = (new Tokenizer())->tokenizeString(<<<EOF
@@ -78,7 +77,7 @@ EOF
     /**
      * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/88
      */
-    public function testNoNegativeIndentationLevels()
+    public function testNoNegativeIndentationLevels(): void
     {
         $code = <<<EOF
 plugin.tx_solr {
@@ -104,7 +103,7 @@ EOF;
     /**
      * @see https://github.com/martin-helmich/typo3-typoscript-lint/issues/101
      */
-    public function testWarningIsGeneratedForNotIndentedLinesInConditions()
+    public function testWarningIsGeneratedForNotIndentedLinesInConditions(): void
     {
         $code = <<<EOF
 [globalString = GP:foo = 1]

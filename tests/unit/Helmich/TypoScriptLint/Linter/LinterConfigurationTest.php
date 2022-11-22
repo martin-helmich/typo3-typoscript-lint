@@ -16,7 +16,7 @@ use function PHPUnit\Framework\equalTo;
  */
 class LinterConfigurationTest extends TestCase
 {
-    public function testPathsAreCorrectlyMapped()
+    public function testPathsAreCorrectlyMapped(): void
     {
         $config = new LinterConfiguration();
 
@@ -33,7 +33,7 @@ class LinterConfigurationTest extends TestCase
         assertThat($config->getPaths(), equalTo(['./foo', './bar', './baz']));
     }
 
-    public function testFileExtensionsAreEmptyByDefault()
+    public function testFileExtensionsAreEmptyByDefault(): void
     {
         $config = new LinterConfiguration();
 
@@ -49,7 +49,7 @@ class LinterConfigurationTest extends TestCase
         assertThat($config->getFilePatterns(), equalTo([]));
     }
 
-    public function testFileExtensionsFromInputfileAreCorrectlyMapped()
+    public function testFileExtensionsFromInputfileAreCorrectlyMapped(): void
     {
         $config = new LinterConfiguration();
 
@@ -69,7 +69,7 @@ class LinterConfigurationTest extends TestCase
         assertThat($config->getFilePatterns(), equalTo(['*.ts', '*.typoscript']));
     }
 
-    public function testGetSniffConfigurationsReturnsFQCNs()
+    public function testGetSniffConfigurationsReturnsFQCNs(): void
     {
         $configArray = [
             'sniffs' => [
@@ -90,7 +90,7 @@ class LinterConfigurationTest extends TestCase
         $this->assertEquals('bar', $sniffConfigs[0]['foo']);
     }
 
-    public function testDisabledSniffsAreSkipped()
+    public function testDisabledSniffsAreSkipped(): void
     {
         $configArray = [
             'sniffs' => [

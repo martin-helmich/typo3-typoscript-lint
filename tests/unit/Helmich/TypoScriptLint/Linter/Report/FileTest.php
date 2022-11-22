@@ -22,20 +22,19 @@ use function PHPUnit\Framework\any;
 class FileTest extends TestCase
 {
 
-    /** @var File */
-    private $file;
+    private File $file;
 
     public function setUp(): void
     {
         $this->file = new File('test.tys');
     }
 
-    public function testConstructorSetsFilename()
+    public function testConstructorSetsFilename(): void
     {
         $this->assertEquals('test.tys', $this->file->getFilename());
     }
 
-    public function testWarningsCanBeAdded()
+    public function testWarningsCanBeAdded(): void
     {
         $warning = $this->getMockBuilder(Issue::class)->disableOriginalConstructor()->getMock();
         $this->file->addIssue($warning);
@@ -47,7 +46,7 @@ class FileTest extends TestCase
     /**
      * @depends testWarningsCanBeAdded
      */
-    public function testWarningsAreSortedByLineNumber()
+    public function testWarningsAreSortedByLineNumber(): void
     {
         $warningBuilder = $this->getMockBuilder(Issue::class)->disableOriginalConstructor();
 
@@ -63,10 +62,10 @@ class FileTest extends TestCase
         assertSame($warning1, $this->file->getIssues()[1]);
     }
 
-    public function testIssuesCanBeFilteredBySeverity()
+    public function testIssuesCanBeFilteredBySeverity(): void
     {
-        $notice = new Issue(1, 1, "some notice", Issue::SEVERITY_INFO, __CLASS__);
-        $warning = new Issue(1, 1, "some warning", Issue::SEVERITY_WARNING, __CLASS__);
+        $notice = new Issue(1, 1, "some notice", Issue::SEVERITY_INFO, self::class);
+        $warning = new Issue(1, 1, "some warning", Issue::SEVERITY_WARNING, self::class);
 
         $this->file->addIssue($notice);
         $this->file->addIssue($warning);

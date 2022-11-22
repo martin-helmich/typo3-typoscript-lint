@@ -18,7 +18,7 @@ use function PHPUnit\Framework\equalTo;
 class ReportTest extends TestCase
 {
 
-    public function testFilesCanBeAddedToReport()
+    public function testFilesCanBeAddedToReport(): void
     {
         $file = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
 
@@ -29,29 +29,26 @@ class ReportTest extends TestCase
         assertSame($file, $report->getFiles()[0]);
     }
 
-    public function testCanCountIssues()
+    public function testCanCountIssues(): void
     {
         $report = $this->buildSampleReport();
         assertThat($report->countIssues(), equalTo(3));
     }
 
-    public function testCanCountIssuesBySeverity()
+    public function testCanCountIssuesBySeverity(): void
     {
         $report = $this->buildSampleReport();
         assertThat($report->countIssuesBySeverity(Issue::SEVERITY_WARNING), equalTo(2));
     }
 
-    /**
-     * @return Report
-     */
-    private function buildSampleReport()
+    private function buildSampleReport(): Report
     {
         $file1 = new File("foo");
-        $file1->addIssue(new Issue(1, 1, "foo", Issue::SEVERITY_WARNING, __CLASS__));
+        $file1->addIssue(new Issue(1, 1, "foo", Issue::SEVERITY_WARNING, self::class));
 
         $file2 = new File("bar");
-        $file2->addIssue(new Issue(1, 1, "foo", Issue::SEVERITY_WARNING, __CLASS__));
-        $file2->addIssue(new Issue(1, 1, "foo", Issue::SEVERITY_INFO, __CLASS__));
+        $file2->addIssue(new Issue(1, 1, "foo", Issue::SEVERITY_WARNING, self::class));
+        $file2->addIssue(new Issue(1, 1, "foo", Issue::SEVERITY_INFO, self::class));
 
         $report = new Report();
         $report->addFile($file1);

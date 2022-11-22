@@ -31,7 +31,7 @@ class FinderTest extends TestCase
         ]);
     }
 
-    public function testFilenameListIsGenerated()
+    public function testFilenameListIsGenerated(): void
     {
         $sfFinder = new SymfonyFinder();
         $filesystem = new Filesystem();
@@ -48,7 +48,7 @@ class FinderTest extends TestCase
         ]));
     }
 
-    public function testDirectoriesAreNotSearchedTwice()
+    public function testDirectoriesAreNotSearchedTwice(): void
     {
         $sfFinder = new SymfonyFinder();
         $filesystem = new Filesystem();
@@ -63,7 +63,7 @@ class FinderTest extends TestCase
         ]));
     }
 
-    public function testFilenamesAreFilteredByPatterns()
+    public function testFilenamesAreFilteredByPatterns(): void
     {
         $sfFinder = new SymfonyFinder();
         $filesystem = new Filesystem();
@@ -74,7 +74,7 @@ class FinderTest extends TestCase
         assertThat($filenames, self::equalTo(['vfs://root/directory/file3.ts']));
     }
 
-    public function testNonExistingRelativeDirnameWillNotResultInInvalidArgumentException()
+    public function testNonExistingRelativeDirnameWillNotResultInInvalidArgumentException(): void
     {
         $sfFinder = new SymfonyFinder();
         $filesystem = new Filesystem();

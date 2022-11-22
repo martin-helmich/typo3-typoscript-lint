@@ -32,8 +32,7 @@ class LintCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var LintCommand */
-    private $command;
+    private LintCommand $command;
 
     /** @var MockObject */
     private
@@ -70,7 +69,7 @@ class LintCommandTest extends TestCase
         );
     }
 
-    private function runCommand(InputInterface $in, OutputInterface $out)
+    private function runCommand(InputInterface $in, OutputInterface $out): void
     {
         $class = new \ReflectionClass($this->command);
 
@@ -79,7 +78,7 @@ class LintCommandTest extends TestCase
         $method->invoke($this->command, $in, $out);
     }
 
-    public function testCommandThrowsExceptionWhenBadOutputFileIsGiven()
+    public function testCommandThrowsExceptionWhenBadOutputFileIsGiven(): void
     {
         $this->expectException(BadOutputFileException::class);
 
@@ -98,7 +97,7 @@ class LintCommandTest extends TestCase
         $this->runCommand($in, $out);
     }
 
-    public function testCommandCallsLinterWithCorrectDependencies()
+    public function testCommandCallsLinterWithCorrectDependencies(): void
     {
         $in = $this->createMock(InputInterface::class);
         $in->expects($this->any())->method('getArgument')->with('paths')->willReturn(['foo.ts']);

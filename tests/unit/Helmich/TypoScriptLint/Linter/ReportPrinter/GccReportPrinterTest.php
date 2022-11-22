@@ -20,16 +20,14 @@ use function PHPUnit\Framework\assertEquals;
 class GccReportPrinterTest extends TestCase
 {
 
-    const EXPECTED_OUTPUT = 'foobar.tys:123:12: info: Message #1
+    public const EXPECTED_OUTPUT = 'foobar.tys:123:12: info: Message #1
 foobar.tys:124:0: warning: Message #2
 bar.txt:412:141: error: Message #3
 ';
 
-    /** @var BufferedOutput */
-    private $output;
+    private BufferedOutput $output;
 
-    /** @var ConsoleReportPrinter */
-    private $printer;
+    private GccReportPrinter $printer;
 
     public function setUp(): void
     {
@@ -40,7 +38,7 @@ bar.txt:412:141: error: Message #3
     /**
      * @medium
      */
-    public function testGccReportIsCorrectlyGenerated()
+    public function testGccReportIsCorrectlyGenerated(): void
     {
         $file1 = new File('foobar.tys');
         $file1->addIssue(new Issue(123, 12, 'Message #1', Issue::SEVERITY_INFO, 'foobar'));

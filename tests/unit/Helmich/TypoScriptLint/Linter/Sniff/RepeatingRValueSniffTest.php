@@ -13,7 +13,7 @@ use function PHPUnit\Framework\countOf;
 
 class RepeatingRValueSniffTest extends TestCase
 {
-    public function testRepeatedRValuesAboveThresholdAreReportedAsIssue()
+    public function testRepeatedRValuesAboveThresholdAreReportedAsIssue(): void
     {
         $tokens = (new Tokenizer())->tokenizeString(<<<EOF
 foo = foobarbaz
@@ -30,7 +30,7 @@ EOF
     /**
      * @depends testRepeatedRValuesAboveThresholdAreReportedAsIssue
      */
-    public function testRepeatingRValuesCanBeAllowedByWhitelist()
+    public function testRepeatingRValuesCanBeAllowedByWhitelist(): void
     {
         $tokens = (new Tokenizer())->tokenizeString(<<<EOF
 foo = foobarbaz

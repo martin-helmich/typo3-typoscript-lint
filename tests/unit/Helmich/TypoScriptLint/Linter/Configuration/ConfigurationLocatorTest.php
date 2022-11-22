@@ -23,8 +23,7 @@ class ConfigurationLocatorTest extends TestCase
     /** @var MockObject */
     private $loader, $processor;
 
-    /** @var ConfigurationLocator */
-    private $locator;
+    private ConfigurationLocator $locator;
 
     public function setUp(): void
     {
@@ -38,7 +37,7 @@ class ConfigurationLocatorTest extends TestCase
         );
     }
 
-    public function testConfigurationIsLoadedAndProcessed()
+    public function testConfigurationIsLoadedAndProcessed(): void
     {
         $distConfig = ['foo' => 'bar'];
         $localConfig = ['bar' => 'baz'];
@@ -63,7 +62,7 @@ class ConfigurationLocatorTest extends TestCase
         $this->assertSame($loadedConfiguration, $configuration);
     }
 
-    public function testConfigurationIsLoadedAndProcessedWithDefaultConfigFile()
+    public function testConfigurationIsLoadedAndProcessedWithDefaultConfigFile(): void
     {
         $distConfig = ['foo' => 'bar'];
         $mergedConfig = $distConfig;

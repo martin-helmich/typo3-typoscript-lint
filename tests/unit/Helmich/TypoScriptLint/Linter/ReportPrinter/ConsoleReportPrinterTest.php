@@ -20,7 +20,7 @@ use function PHPUnit\Framework\assertEquals;
 class ConsoleReportPrinterTest extends TestCase
 {
 
-    const EXPECTED_XML_DOCUMENT = '
+    public const EXPECTED_XML_DOCUMENT = '
 CHECKSTYLE REPORT
 => foobar.tys.
  123 Message #1
@@ -32,11 +32,9 @@ SUMMARY
 3 issues in total. (1 errors, 1 warnings, 1 infos)
 ';
 
-    /** @var BufferedOutput */
-    private $output;
+    private BufferedOutput $output;
 
-    /** @var ConsoleReportPrinter */
-    private $printer;
+    private ConsoleReportPrinter $printer;
 
     public function setUp(): void
     {
@@ -47,7 +45,7 @@ SUMMARY
     /**
      * @medium
      */
-    public function testPlaintextReportIsCorrectlyGenerated()
+    public function testPlaintextReportIsCorrectlyGenerated(): void
     {
         $file1 = new File('foobar.tys');
         $file1->addIssue(new Issue(123, 12, 'Message #1', Issue::SEVERITY_INFO, 'foobar'));

@@ -19,15 +19,14 @@ use function PHPUnit\Framework\assertEquals;
 class DeadCodeSniffTest extends TestCase
 {
 
-    /** @var  DeadCodeSniff */
-    private $sniff;
+    private DeadCodeSniff $sniff;
 
     public function setUp(): void
     {
         $this->sniff = new DeadCodeSniff([]);
     }
 
-    public function testWarningIsGeneratedForCommentsThatLookLikeCode()
+    public function testWarningIsGeneratedForCommentsThatLookLikeCode(): void
     {
         $tokens = [
             new Token(Token::TYPE_OBJECT_IDENTIFIER, 'foo', 1),
