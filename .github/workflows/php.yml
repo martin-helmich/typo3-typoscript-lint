@@ -28,9 +28,9 @@ jobs:
           - php-version: "8.2"
             symfony-version: "^5.4"
           - php-version: "8.1"
-            symfony-version: "^6.1"
+            symfony-version: "^6.2"
           - php-version: "8.2"
-            symfony-version: "^6.1"
+            symfony-version: "^6.2"
 
     runs-on: ubuntu-latest
 
