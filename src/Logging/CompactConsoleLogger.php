@@ -48,7 +48,7 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
     public function notifyFileNotFound(string $file): void
     {
-        $this->output->writeln("<error>WARNING: Input file ${file} does not seem to exist.</error>");
+        $this->output->writeln("<error>WARNING: Input file {$file} does not seem to exist.</error>");
     }
 
     public function notifyFiles(array $files): void
