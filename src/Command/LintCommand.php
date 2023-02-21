@@ -141,7 +141,7 @@ class LintCommand extends Command
         } else {
             $fileHandle = fopen($outputOption, 'w');
             if ($fileHandle === false) {
-                throw new \Exception("could not open file '${outputOption}' for writing");
+                throw new \Exception("could not open file '{$outputOption}' for writing");
             }
 
             $reportOutput = new StreamOutput($fileHandle);
