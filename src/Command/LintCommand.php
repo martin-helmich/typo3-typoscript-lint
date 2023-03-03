@@ -31,20 +31,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class LintCommand extends Command
 {
 
-    /** @var LinterInterface */
-    private $linter;
+    private LinterInterface $linter;
 
-    /** @var ConfigurationLocator */
-    private $linterConfigurationLocator;
+    private ConfigurationLocator $linterConfigurationLocator;
 
-    /** @var LinterLoggerBuilder */
-    private $loggerBuilder;
+    private LinterLoggerBuilder $loggerBuilder;
 
-    /** @var Finder */
-    private $finder;
+    private Finder $finder;
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         LinterInterface $linter,
@@ -176,7 +171,7 @@ class LintCommand extends Command
 
         $this->eventDispatcher->addListener(
             ConsoleEvents::TERMINATE,
-            function (ConsoleTerminateEvent $event) use ($exitCode) {
+            function (ConsoleTerminateEvent $event) use ($exitCode): void {
                 $event->setExitCode($exitCode);
             }
         );
