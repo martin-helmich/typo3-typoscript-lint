@@ -38,7 +38,7 @@ class IndentationSniff implements TokenStreamSniffInterface
     /**
      * @param array $parameters
      *
-     * @psalm-param array{useSpaces: ?bool, indentPerLevel: ?int, indentCondition: ?bool} $parameters
+     * @psalm-param array{useSpaces: ?bool, indentPerLevel: ?int, indentConditions: ?bool} $parameters
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function __construct(array $parameters)
