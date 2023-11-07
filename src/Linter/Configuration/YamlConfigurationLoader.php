@@ -21,11 +21,9 @@ use Symfony\Component\Yaml\Parser as YamlParser;
 class YamlConfigurationLoader extends FileLoader
 {
 
-    /** @var YamlParser */
-    private $yamlParser;
+    private YamlParser $yamlParser;
 
-    /** @var Filesystem */
-    private $filesystem;
+    private Filesystem $filesystem;
 
     /**
      * Constructs a new YAML-based configuration loader.

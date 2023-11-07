@@ -17,11 +17,9 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class ConfigurationLocator
 {
 
-    /** @var LoaderInterface */
-    private $loader;
+    private LoaderInterface $loader;
 
-    /** @var Processor */
-    private $processor;
+    private Processor $processor;
 
     /**
      * Constructs a new configuration locator.
@@ -64,7 +62,7 @@ class ConfigurationLocator
             $configs[] = $loadedConfig;
         }
 
-        $configuration = $configuration ?? new LinterConfiguration();
+        $configuration ??= new LinterConfiguration();
 
         $processedConfiguration = $this->processor->processConfiguration(
             $configuration,
