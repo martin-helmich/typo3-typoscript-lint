@@ -26,7 +26,6 @@ class EmptySectionVisitor implements SniffVisitor
 
     public function enterNode(Statement $statement): void
     {
-        $statement = null;
         if (!($statement instanceof NestedAssignment)) {
             return;
         }
