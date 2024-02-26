@@ -11,10 +11,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - php-version: "7.4"
-            symfony-version: "^5.4"
-          - php-version: "8.0"
-            symfony-version: "^5.4"
           - php-version: "8.1"
             symfony-version: "^5.4"
           - php-version: "8.2"
