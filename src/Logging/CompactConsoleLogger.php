@@ -20,25 +20,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CompactConsoleLogger implements LinterLoggerInterface
 {
-    const OUTPUT_WIDTH = 50;
+    public const OUTPUT_WIDTH = 50;
 
-    /** @var int */
-    private $fileCount = 0;
+    private int $fileCount = 0;
 
-    /** @var int */
-    private $issueCount = 0;
+    private int $issueCount = 0;
 
-    /** @var int */
-    private $fileCompletedCount = 0;
+    private int $fileCompletedCount = 0;
 
-    /** @var OutputInterface */
-    private $output;
+    private OutputInterface $output;
 
-    /** @var string */
-    private $progressFormatString = "   [%3d / %-3d, %3d%%]";
+    private string $progressFormatString = "   [%3d / %-3d, %3d%%]";
 
-    /** @var Printer */
-    private $printer;
+    private Printer $printer;
 
     public function __construct(Printer $printer, OutputInterface $output)
     {

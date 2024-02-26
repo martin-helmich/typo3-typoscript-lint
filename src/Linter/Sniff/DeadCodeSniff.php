@@ -12,11 +12,8 @@ use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
 class DeadCodeSniff implements TokenStreamSniffInterface
 {
 
-    const ANNOTATION_COMMENT = '/^\s*([a-z0-9]+=(.*?))(;\s*[a-z0-9]+=(.*?))*\s*$/';
+    public const ANNOTATION_COMMENT = '/^\s*([a-z0-9]+=(.*?))(;\s*[a-z0-9]+=(.*?))*\s*$/';
 
-    /**
-     * @param array $parameters
-     */
     public function __construct(array $parameters)
     {
     }
@@ -51,7 +48,7 @@ class DeadCodeSniff implements TokenStreamSniffInterface
                             0,
                             'Found commented code (' . $matches[0] . ').',
                             Issue::SEVERITY_INFO,
-                            __CLASS__
+                            self::class
                         ));
                     } catch (\Exception $e) {
                         // pass

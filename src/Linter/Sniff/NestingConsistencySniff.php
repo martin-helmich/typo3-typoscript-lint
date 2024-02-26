@@ -11,14 +11,13 @@ class NestingConsistencySniff extends AbstractSyntaxTreeSniff
 
     public function __construct(array $parameters)
     {
+        parent::__construct($parameters);
+
         if (array_key_exists('commonPathPrefixThreshold', $parameters)) {
             $this->commonPathPrefixThreshold = $parameters['commonPathPrefixThreshold'];
         }
     }
 
-    /**
-     * @return SniffVisitor
-     */
     protected function buildVisitor(): SniffVisitor
     {
         return new NestingConsistencyVisitor($this->commonPathPrefixThreshold);

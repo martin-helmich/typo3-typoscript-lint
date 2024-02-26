@@ -16,24 +16,19 @@ use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
 class Issue
 {
 
-    const SEVERITY_INFO = "info";
-    const SEVERITY_WARNING = "warning";
-    const SEVERITY_ERROR = "error";
+    public const SEVERITY_INFO = "info";
+    public const SEVERITY_WARNING = "warning";
+    public const SEVERITY_ERROR = "error";
 
-    /** @var int|null */
-    private $line;
+    private ?int $line = null;
 
-    /** @var int|null */
-    private $column;
+    private ?int $column = null;
 
-    /** @var string */
-    private $message;
+    private string $message;
 
-    /** @var string */
-    private $severity;
+    private string $severity;
 
-    /** @var string */
-    private $source;
+    private string $source;
 
     /**
      * Creates a new warning from a parse error.

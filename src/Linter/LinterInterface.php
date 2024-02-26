@@ -8,15 +8,6 @@ use Helmich\TypoScriptLint\Logging\LinterLoggerInterface;
 
 interface LinterInterface
 {
-
-    /**
-     * @param string $filename
-     * @param Report $report
-     * @param LinterConfiguration $configuration
-     * @param LinterLoggerInterface $logger
-     *
-     * @return File
-     */
     public function lintFile(
         string $filename,
         Report $report,

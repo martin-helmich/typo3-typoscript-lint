@@ -13,9 +13,6 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
 {
     use TokenInspections;
 
-    /**
-     * @param array $parameters
-     */
     public function __construct(array $parameters)
     {
     }
@@ -31,7 +28,6 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
     {
         $tokensByLine = new LineGrouper($tokens);
 
-        /** @var TokenInterface[] $tokensInLine */
         foreach ($tokensByLine->getLines() as $line => $tokensInLine) {
             $count = count($tokensInLine);
             for ($i = 0; $i < $count; $i++) {
@@ -47,7 +43,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                         null,
                         'No whitespace after object accessor.',
                         Issue::SEVERITY_WARNING,
-                        __CLASS__
+                        self::class
                     ));
                 } elseif (!self::isWhitespaceOfLength($tokensInLine[$i + 1], 1)) {
                     $file->addIssue(new Issue(
@@ -55,7 +51,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                         null,
                         'Accessor should be followed by single space.',
                         Issue::SEVERITY_WARNING,
-                        __CLASS__
+                        self::class
                     ));
                 }
 
@@ -72,7 +68,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                             null,
                             'No whitespace after operator.',
                             Issue::SEVERITY_WARNING,
-                            __CLASS__
+                            self::class
                         ));
                     } elseif (!self::isWhitespaceOfLength($tokensInLine[$j + 1], 1)) {
                         $file->addIssue(new Issue(
@@ -80,7 +76,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
                             null,
                             'Operator should be followed by single space.',
                             Issue::SEVERITY_WARNING,
-                            __CLASS__
+                            self::class
                         ));
                     }
                 }

@@ -9,7 +9,7 @@ class SniffLocator
 {
 
     /** @var SniffInterface[]|null */
-    private $sniffs = null;
+    private ?array $sniffs = null;
 
     /**
      * @param LinterConfiguration $configuration
@@ -29,11 +29,11 @@ class SniffLocator
         foreach ($configuration->getSniffConfigurations() as $sniffConfiguration) {
             if (!class_exists($sniffConfiguration['class'])) {
                 throw new Exception(
-                    'Class "' . $sniffConfiguration['class'] . '" could not be loaded!', 1402948667
+                    'Class "' . $sniffConfiguration['class'] . '" could not be loaded!', 1_402_948_667
                 );
             }
 
-            $parameters = isset($sniffConfiguration['parameters']) ? $sniffConfiguration['parameters'] : [];
+            $parameters = $sniffConfiguration['parameters'] ?? [];
 
             /** @var SniffInterface $sniff */
             $sniff = new $sniffConfiguration['class']($parameters);

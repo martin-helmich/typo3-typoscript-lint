@@ -17,11 +17,9 @@ use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 class Finder
 {
 
-    /** @var SymfonyFinder */
-    private $finder;
+    private SymfonyFinder $finder;
 
-    /** @var Filesystem */
-    private $filesystem;
+    private Filesystem $filesystem;
 
     /**
      * Constructs a new finder instance.
@@ -55,25 +53,23 @@ class Finder
         $finder->files();
 
         $observer = $observer
-            ?: new CallbackFinderObserver(function () {
+            ?: new CallbackFinderObserver(function (): void {
             });
 
-        $matchesPatternList = function (array $patterns): callable {
-            return function (string $file) use ($patterns): bool {
-                foreach ($patterns as $pattern) {
-                    if (fnmatch($pattern, $file)) {
-                        return true;
-                    }
+        $matchesPatternList = fn(array $patterns): callable => function (string $file) use ($patterns): bool {
+            foreach ($patterns as $pattern) {
+                if (fnmatch($pattern, $file)) {
+                    return true;
                 }
-                return false;
-            };
+            }
+            return false;
         };
 
         $matchesFilePattern = $matchesPatternList($filePatterns);
         $matchesExcludePattern = $matchesPatternList($excludePatterns);
 
         if (count($filePatterns) > 0) {
-            $finder->filter(function (SplFileInfo $fileInfo) use ($matchesFilePattern, $matchesExcludePattern) {
+            $finder->filter(function (SplFileInfo $fileInfo) use ($matchesFilePattern, $matchesExcludePattern): bool {
                 if ($fileInfo->isDir()) {
                     return true;
                 }
@@ -94,7 +90,7 @@ class Finder
                     continue;
                 }
 
-                $globbedFileOrDirectoryNames = array_merge($globbedFileOrDirectoryNames, $files);
+                $globbedFileOrDirectoryNames = [...$globbedFileOrDirectoryNames, ...$files];
             } else {
                 $globbedFileOrDirectoryNames[] = $fileOrDirectoryName;
             }

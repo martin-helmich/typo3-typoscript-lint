@@ -135,7 +135,7 @@ class NestingConsistencyVisitor implements SniffVisitor
     {
         $components = preg_split('/(?<!\\\)\./', $objectPath);
         $paths = [];
-        for ($i = 1; $i < count($components); $i++) {
+        for ($i = 1; $i < (is_countable($components) ? count($components) : 0); $i++) {
             $possibleObjectPath = implode('.', array_slice($components, 0, $i));
             $paths[] = $possibleObjectPath;
         }

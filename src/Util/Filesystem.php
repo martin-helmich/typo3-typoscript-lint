@@ -7,12 +7,6 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class Filesystem extends SymfonyFilesystem
 {
-
-    /**
-     * @param string $filename
-     *
-     * @return SplFileInfo
-     */
     public function openFile(string $filename): SplFileInfo
     {
         $start = getcwd() ?: "/";

@@ -18,8 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class GccReportPrinter implements Printer
 {
 
-    /** @var OutputInterface */
-    private $output;
+    private OutputInterface $output;
 
     /**
      * Constructs a new GCC report printer.

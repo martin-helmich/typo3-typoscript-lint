@@ -10,20 +10,17 @@ use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 class RepeatingRValueSniff implements TokenStreamSniffInterface
 {
 
-    const CONSTANT_EXPRESSION = ',\{\$[a-zA-Z0-9_\.]+\},';
+    public const CONSTANT_EXPRESSION = ',\{\$[a-zA-Z0-9_\.]+\},';
 
     /** @var array<string, int> */
-    private $knownRightValues = [];
+    private array $knownRightValues = [];
 
     /** @var string[] */
-    private $allowedRightValues = [];
+    private array $allowedRightValues = [];
 
-    /** @var int */
-    private $valueLengthThreshold = 8;
+    private int $valueLengthThreshold = 8;
 
     /**
-     * @param array $parameters
-     *
      * @psalm-param array{allowedRightValues: ?string[], valueLengthThreshold: ?int} $parameters
      * @psalm-suppress MoreSpecificImplementedParamType
      */
@@ -75,7 +72,7 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
                     null,
                     'Duplicated value "' . $token->getValue() . '". Consider extracting it into a constant.',
                     Issue::SEVERITY_WARNING,
-                    __CLASS__
+                    self::class
                 ));
             }
         }
