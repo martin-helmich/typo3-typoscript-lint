@@ -61,7 +61,6 @@ class IndentationSniff implements TokenStreamSniffInterface
         $tokensByLine = new LineGrouper($tokens);
         $indentationLevel = 0;
 
-        /** @var TokenInterface[] $tokensInLine */
         foreach ($tokensByLine->getLines() as $line => $tokensInLine) {
             $indentationLevel = $this->reduceIndentationLevel($indentationLevel, $tokensInLine);
 

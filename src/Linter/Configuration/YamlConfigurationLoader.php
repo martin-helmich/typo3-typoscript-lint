@@ -44,13 +44,13 @@ class YamlConfigurationLoader extends FileLoader
      * Loads a resource.
      *
      * @param mixed $resource The resource
-     * @param string $type The resource type
+     * @param string|null $type The resource type
      *
      * @return array
      *
      * @psalm-suppress MethodSignatureMismatch
      */
-    public function load($resource, $type = null): array
+    public function load(mixed $resource, ?string $type = null): array
     {
         try {
             /** @var string $path */
@@ -67,13 +67,13 @@ class YamlConfigurationLoader extends FileLoader
      * Returns true if this class supports the given resource.
      *
      * @param mixed $resource A resource
-     * @param string $type The resource type
+     * @param string|null $type The resource type
      *
      * @return bool    true if this class supports the given resource, false otherwise
      *
      * @psalm-suppress MethodSignatureMismatch
      */
-    public function supports($resource, $type = null): bool
+    public function supports(mixed $resource, string $type = null): bool
     {
         return is_string($resource)
             && in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml', 'yaml']);

@@ -17,9 +17,6 @@ use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
 abstract class AbstractSyntaxTreeSniff implements SyntaxTreeSniffInterface
 {
 
-    /**
-     * @param array $parameters
-     */
     public function __construct(array $parameters)
     {
     }
@@ -44,8 +41,5 @@ abstract class AbstractSyntaxTreeSniff implements SyntaxTreeSniffInterface
         }
     }
 
-    /**
-     * @return SniffVisitor
-     */
     abstract protected function buildVisitor(): SniffVisitor;
 }

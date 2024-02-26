@@ -13,9 +13,6 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
 {
     use TokenInspections;
 
-    /**
-     * @param array $parameters
-     */
     public function __construct(array $parameters)
     {
     }
@@ -31,7 +28,6 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
     {
         $tokensByLine = new LineGrouper($tokens);
 
-        /** @var TokenInterface[] $tokensInLine */
         foreach ($tokensByLine->getLines() as $line => $tokensInLine) {
             $count = count($tokensInLine);
             for ($i = 0; $i < $count; $i++) {

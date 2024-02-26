@@ -18,21 +18,11 @@ class File
     /** @var Issue[] */
     private array $issues = [];
 
-    /**
-     * Constructs a new file report.
-     *
-     * @param string $filename The filename.
-     */
     public function __construct(string $filename)
     {
         $this->filename = $filename;
     }
 
-    /**
-     * Gets the filename.
-     *
-     * @return string The filename.
-     */
     public function getFilename(): string
     {
         return $this->filename;

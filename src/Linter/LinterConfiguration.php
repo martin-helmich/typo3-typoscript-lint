@@ -10,9 +10,6 @@ class LinterConfiguration implements ConfigurationInterface
 
     private array $configuration = [];
 
-    /**
-     * @param mixed[] $configuration
-     */
     public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;

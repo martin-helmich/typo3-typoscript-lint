@@ -21,8 +21,6 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
     private int $valueLengthThreshold = 8;
 
     /**
-     * @param array $parameters
-     *
      * @psalm-param array{allowedRightValues: ?string[], valueLengthThreshold: ?int} $parameters
      * @psalm-suppress MoreSpecificImplementedParamType
      */
