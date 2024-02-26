@@ -16,13 +16,11 @@ jobs:
           - php-version: "8.2"
             symfony-version: "^5.4"
           - php-version: "8.1"
-            symfony-version: "^6.2"
+            symfony-version: "^6.4"
           - php-version: "8.2"
-            symfony-version: "^6.2"
-          - php-version: "8.1"
-            symfony-version: "^6.3"
+            symfony-version: "^6.4"
           - php-version: "8.2"
-            symfony-version: "^6.3"
+            symfony-version: "^7.0"
 
     runs-on: ubuntu-latest
 
@@ -35,10 +33,6 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, intl, json
           coverage: pcov
-
-      - name: Fake PHP version for 8.2 to allow installing Prophecy
-        if: matrix.php-version == '8.2'
-        run: composer config platform.php 8.1.99
 
       - name: Validate composer.json
         run: composer validate --no-check-lock
