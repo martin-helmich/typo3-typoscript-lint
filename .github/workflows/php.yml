@@ -12,14 +12,6 @@ jobs:
       matrix:
         include:
           - php-version: "7.4"
-            symfony-version: "^4.4"
-          - php-version: "8.0"
-            symfony-version: "^4.4"
-          - php-version: "8.1"
-            symfony-version: "^4.4"
-          - php-version: "8.2"
-            symfony-version: "^4.4"
-          - php-version: "7.4"
             symfony-version: "^5.4"
           - php-version: "8.0"
             symfony-version: "^5.4"
