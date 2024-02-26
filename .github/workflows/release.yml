@@ -22,6 +22,7 @@ jobs:
         run: composer run-script package ${{ steps.tagName.outputs.tag }}
         env:
           signing_key: ${{ secrets.pharSigningKey }}
+          signing_key_fingerprint: ${{ secrets.PHAR_SIGNING_KEY_FINGERPRINT }}
 
       - name: Release
         uses: softprops/action-gh-release@v1

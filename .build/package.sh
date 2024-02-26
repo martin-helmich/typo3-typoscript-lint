@@ -30,5 +30,6 @@ chmod +x phar-composer-${phar_composer_version}.phar
 if [ -n "${signing_key}" ] ; then
   echo "${signing_key}" | gpg --import
 
-  gpg --detach-sign --output "${phar_name}.asc" "${phar_name}"
+  gpg --list-keys
+  gpg --detach-sign -u "${signing_key_fingerprint}" --output "${phar_name}.asc" "${phar_name}"
 fi
