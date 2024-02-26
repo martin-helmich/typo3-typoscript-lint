@@ -44,8 +44,8 @@ class GccReportPrinter implements Printer
                 $this->output->writeLn(sprintf(
                     "%s:%d:%d: %s: %s",
                     $file->getFilename(),
-                    $issue->getLine() ?: 0,
-                    $issue->getColumn() ?: 0,
+                    $issue->getLine() ?? 0,
+                    $issue->getColumn() ?? 0,
                     $issue->getSeverity(),
                     $issue->getMessage()
                 ));

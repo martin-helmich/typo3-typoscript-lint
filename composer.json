@@ -17,22 +17,22 @@
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"require": {
-		"php": "^7.4 || ^8.0",
-		"symfony/console": "^4.4 || ^5.4 || ^6.2",
-		"symfony/dependency-injection": "^4.4 || ^5.4 || ^6.2",
-		"symfony/config": "^4.4 || ^5.4 || ^6.2",
-		"symfony/yaml": "^4.4 || ^5.4 || ^6.2",
-		"symfony/finder": "^4.4 || ^5.4 || ^6.2",
-		"symfony/filesystem": "^4.4 || ^5.4 || ^6.2",
-		"symfony/event-dispatcher": "^4.4 || ^5.4 || ^6.2",
+		"php": "^8.1",
+		"symfony/console": "^5.4 || ^6.4 || ^7.0",
+		"symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0",
+		"symfony/config": "^5.4 || ^6.4 || ^7.0",
+		"symfony/yaml": "^5.4 || ^6.4 || ^7.0",
+		"symfony/finder": "^5.4 || ^6.4 || ^7.0",
+		"symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
+		"symfony/event-dispatcher": "^5.4 || ^6.4 || ^7.0",
 		"helmich/typo3-typoscript-parser": "^2.3",
 		"ext-json": "*"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^9.5.25",
+		"phpunit/phpunit": "^9.6.8",
 		"mikey179/vfsstream": "^1.6.11",
-		"vimeo/psalm": "^4.29.0",
-		"phpspec/prophecy-phpunit": "^2.0.1"
+		"vimeo/psalm": "^5.22.2",
+		"phpspec/prophecy-phpunit": "^2.0.2"
 	},
 	"scripts": {
 		"package": "bash .build/package.sh $@"

@@ -2,7 +2,7 @@
 
 VERSION="${1#v}"
 
-phar_composer_version="1.2.0"
+phar_composer_version="1.4.0"
 build_dir=".build/workspace"
 
 if [ -z "${VERSION}" ] ; then
@@ -15,7 +15,7 @@ set -e
 rm -rf "${build_dir}"
 mkdir -p "${build_dir}"
 
-cp -a typoscript-lint typoscript-lint.dist.yml services.yml src vendor composer.json composer.lock LICENSE "${build_dir}/" 
+cp -a typoscript-lint typoscript-lint.dist.yml services.yml src vendor composer.json composer.lock LICENSE "${build_dir}/"
 cd "${build_dir}/vendor" && rm -rf */*/tests/ */*/src/tests/ */*/docs/ */*/*.md */*/composer.* */*/phpunit.* */*/.gitignore */*/.*.yml */*/*.xml && cd - >/dev/null
 
 if [ ! -f phar-composer-${phar_composer_version}.phar ] ; then
@@ -29,6 +29,7 @@ chmod +x phar-composer-${phar_composer_version}.phar
 
 if [ -n "${signing_key}" ] ; then
   echo "${signing_key}" | gpg --import
-  
-  gpg --detach-sign --output "${phar_name}.asc" "${phar_name}"
+
+  gpg --list-keys
+  gpg --detach-sign -u "${signing_key_fingerprint}" --output "${phar_name}.asc" "${phar_name}"
 fi
