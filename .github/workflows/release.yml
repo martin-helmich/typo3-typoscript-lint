@@ -31,4 +31,4 @@ jobs:
             typoscript-lint-*.phar
             typoscript-lint-*.phar.asc
         env:
-          GITHUB_TOKEN: ${{ secrets.githubToken }}
+          GITHUB_TOKEN: ${{ github.token }}
