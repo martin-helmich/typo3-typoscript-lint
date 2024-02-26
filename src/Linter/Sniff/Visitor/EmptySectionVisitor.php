@@ -31,7 +31,7 @@ class EmptySectionVisitor implements SniffVisitor
             return;
         }
 
-        if ((is_countable($statement->statements) ? count($statement->statements) : 0) === 0) {
+        if (count($statement->statements) === 0) {
             $this->issues[] = new Issue(
                 $statement->sourceLine,
                 null,
