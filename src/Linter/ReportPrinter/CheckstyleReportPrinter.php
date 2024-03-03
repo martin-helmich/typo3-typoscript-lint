@@ -3,7 +3,11 @@
 namespace Helmich\TypoScriptLint\Linter\ReportPrinter;
 
 use DOMDocument;
+use DOMElement;
+use DOMException;
 use Helmich\TypoScriptLint\Application;
+use Helmich\TypoScriptLint\Linter\Report\File;
+use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,10 +42,23 @@ class CheckstyleReportPrinter implements Printer
      * Writes a report in checkstyle XML format.
      *
      * @param Report $report The report to print.
-     *
      * @return void
+     * @throws PrinterException
      */
     public function writeReport(Report $report): void
+    {
+        try {
+            $xml = $this->buildReportXMLDocument($report);
+            $this->output->write($xml->saveXML());
+        } catch (DOMException $error) {
+            throw new PrinterException('Could not generate checkstyle report: ' . $error->getMessage(),  $error);
+        }
+    }
+
+    /**
+     * @throws DOMException
+     */
+    private function buildReportXMLDocument(Report $report): DOMDocument
     {
         $xml = new DOMDocument('1.0', 'UTF-8');
 
@@ -49,30 +66,45 @@ class CheckstyleReportPrinter implements Printer
         $root->setAttribute('version', Application::APP_NAME . '-' . Application::APP_VERSION);
 
         foreach ($report->getFiles() as $file) {
-            $xmlFile = $xml->createElement('file');
-            $xmlFile->setAttribute('name', $file->getFilename());
-
-            foreach ($file->getIssues() as $issue) {
-                $xmlWarning = $xml->createElement('error');
-                $xmlWarning->setAttribute('line', $issue->getLine() !== null ? ((string)$issue->getLine()) : "");
-                $xmlWarning->setAttribute('severity', $issue->getSeverity());
-                $xmlWarning->setAttribute('message', $issue->getMessage());
-                $xmlWarning->setAttribute('source', $issue->getSource());
-
-                $column = $issue->getColumn();
-                if ($column !== null) {
-                    $xmlWarning->setAttribute('column', "" . $column);
-                }
-
-                $xmlFile->appendChild($xmlWarning);
-            }
-
-            $root->appendChild($xmlFile);
+            $root->appendChild($this->buildElementForFile($xml, $file));
         }
 
         $xml->appendChild($root);
         $xml->formatOutput = true;
 
-        $this->output->write($xml->saveXML());
+        return $xml;
+    }
+
+    /**
+     * @throws DOMException
+     */
+    public function buildElementForIssue(DOMDocument $xml, Issue $issue): DOMElement
+    {
+        $xmlWarning = $xml->createElement('error');
+        $xmlWarning->setAttribute('line', $issue->getLine() !== null ? ((string)$issue->getLine()) : "");
+        $xmlWarning->setAttribute('severity', $issue->getSeverity());
+        $xmlWarning->setAttribute('message', $issue->getMessage());
+        $xmlWarning->setAttribute('source', $issue->getSource());
+
+        $column = $issue->getColumn();
+        if ($column !== null) {
+            $xmlWarning->setAttribute('column', "" . $column);
+        }
+        return $xmlWarning;
+    }
+
+    /**
+     * @throws DOMException
+     */
+    public function buildElementForFile(DOMDocument $xml, File $file): DOMElement
+    {
+        $xmlFile = $xml->createElement('file');
+        $xmlFile->setAttribute('name', $file->getFilename());
+
+        foreach ($file->getIssues() as $issue) {
+            $xmlFile->appendChild($this->buildElementForIssue($xml, $issue));
+        }
+
+        return $xmlFile;
     }
 }

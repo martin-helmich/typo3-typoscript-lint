@@ -40,6 +40,10 @@ class ConsoleReportPrinter implements Printer
      */
     public function writeReport(Report $report): void
     {
+        if (!$report->hasIssues()) {
+            return;
+        }
+
         $count = 0;
 
         $this->output->writeln('');
