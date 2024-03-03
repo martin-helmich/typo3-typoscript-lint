@@ -1,12 +1,8 @@
 <?xml version="1.0"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
-    backupGlobals="true"
-    bootstrap="vendor/autoload.php"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true">
-
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         backupGlobals="true"
+         bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="Unit tests">
             <directory>tests/unit</directory>
@@ -15,10 +11,9 @@
             <directory>tests/functional</directory>
         </testsuite>
     </testsuites>
-
-    <coverage processUncoveredFiles="true">
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
-    </coverage>
+    </source>
 </phpunit>
