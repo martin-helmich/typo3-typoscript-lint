@@ -26,8 +26,9 @@
 		"symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
 		"symfony/event-dispatcher": "^5.4 || ^6.4 || ^7.0",
 		"helmich/typo3-typoscript-parser": "^2.3",
-		"ext-json": "*"
-	},
+		"ext-json": "*",
+      	"ext-dom": "*"
+    },
 	"require-dev": {
 		"phpunit/phpunit": "^9.6.8",
 		"mikey179/vfsstream": "^1.6.11",
