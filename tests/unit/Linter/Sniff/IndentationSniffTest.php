@@ -7,17 +7,14 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertThat;
 use function PHPUnit\Framework\countOf;
 use function PHPUnit\Framework\equalTo;
 
-/**
- * @covers \Helmich\TypoScriptLint\Linter\Sniff\IndentationSniff
- * @uses   \Helmich\TypoScriptLint\Linter\Report\File
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
- */
+#[CoversClass(IndentationSniff::class)]
 class IndentationSniffTest extends TestCase
 {
 

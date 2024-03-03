@@ -11,10 +11,12 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Helmich\TypoScriptLint\Util\Finder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -22,26 +24,19 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use function PHPUnit\Framework\any;
 use function PHPUnit\Framework\once;
 
-/**
- * Class LintCommandTest
- *
- * @package Helmich\TypoScriptLint\Command
- * @covers  \Helmich\TypoScriptLint\Command\LintCommand
- */
+#[CoversClass(LintCommand::class)]
 class LintCommandTest extends TestCase
 {
     use ProphecyTrait;
 
     private LintCommand $command;
 
-    /** @var MockObject */
-    private
+    private MockObject
         $linter,
         $linterConfigurationLocator,
         $finder;
 
-    /** @var ObjectProphecy */
-    private $loggerBuilder, $eventDispatcher;
+    private ObjectProphecy $loggerBuilder, $eventDispatcher;
 
     public function setUp(): void
     {

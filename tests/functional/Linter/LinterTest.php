@@ -10,6 +10,7 @@ use Helmich\TypoScriptLint\Linter\Sniff\SniffLocator;
 use Helmich\TypoScriptLint\Logging\NullLogger;
 use Helmich\TypoScriptParser\Parser\Parser;
 use Helmich\TypoScriptParser\Tokenizer\Tokenizer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
@@ -32,12 +33,7 @@ class LinterTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider getFunctionalTestFixtures
-     *
-     * @param string $typoscriptFile
-     * @param array $expectedWarnings
-     */
+    #[DataProvider('getFunctionalTestFixtures')]
     public function testLinterCreatesExpectedOutput(string $typoscriptFile, array $expectedWarnings): void
     {
         $localConfigFilename = dirname($typoscriptFile) . '/tslint.yml';
@@ -95,7 +91,7 @@ class LinterTest extends TestCase
     /**
      * @return array<string, mixed[]>
      */
-    public function getFunctionalTestFixtures(): array
+    public static function getFunctionalTestFixtures(): array
     {
         $files = glob(__DIR__ . '/Fixtures/*/*.typoscript');
         $testCases = [];

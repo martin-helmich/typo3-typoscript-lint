@@ -6,16 +6,13 @@ use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertEquals;
 
-/**
- * @covers \Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff
- * @uses   \Helmich\TypoScriptLint\Linter\Report\File
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
- */
+#[CoversClass(DeadCodeSniff::class)]
 class DeadCodeSniffTest extends TestCase
 {
 

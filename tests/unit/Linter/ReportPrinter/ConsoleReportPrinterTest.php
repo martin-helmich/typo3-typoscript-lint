@@ -6,17 +6,13 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 use function PHPUnit\Framework\assertEquals;
 
-/**
- * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\ConsoleReportPrinter
- * @uses   \Helmich\TypoScriptLint\Linter\Report\File
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Report
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
- */
+#[CoversClass(ConsoleReportPrinter::class)]
 class ConsoleReportPrinterTest extends TestCase
 {
 

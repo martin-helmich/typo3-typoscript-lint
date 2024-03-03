@@ -6,18 +6,14 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
 use Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function PHPUnit\Framework\once;
 
-/**
- * @covers \Helmich\TypoScriptLint\Linter\ReportPrinter\CheckstyleReportPrinter
- * @uses   \Helmich\TypoScriptLint\Linter\Report\File
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Report
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
- */
+#[CoversClass(CheckstyleReportPrinter::class)]
 class CheckstyleReportPrinterTest extends TestCase
 {
 

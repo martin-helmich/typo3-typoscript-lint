@@ -4,6 +4,7 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Util;
 
 use Helmich\TypoScriptLint\Util\Filesystem;
 use Helmich\TypoScriptLint\Util\Finder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use org\bovigo\vfs\vfsStream;
@@ -11,9 +12,7 @@ use org\bovigo\vfs\vfsStream;
 use function PHPUnit\Framework\assertThat;
 use function PHPUnit\Framework\equalTo;
 
-/**
- * @covers \Helmich\TypoScriptLint\Util\Finder
- */
+#[CoversClass(Finder::class)]
 class FinderTest extends TestCase
 {
     public function setUp(): void

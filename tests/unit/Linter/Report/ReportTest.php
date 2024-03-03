@@ -5,6 +5,7 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Report\Report;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertThat;
@@ -12,9 +13,7 @@ use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertSame;
 use function PHPUnit\Framework\equalTo;
 
-/**
- * @covers \Helmich\TypoScriptLint\Linter\Report\Report
- */
+#[CoversClass(Report::class)]
 class ReportTest extends TestCase
 {
 

@@ -8,12 +8,14 @@ use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\OperatorWhitespaceSniff;
 use Helmich\TypoScriptParser\Tokenizer\Token;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertThat;
 use function PHPUnit\Framework\equalTo;
 
+#[CoversClass(OperatorWhitespaceSniff::class)]
 class OperatorWhitespaceSniffTest extends TestCase
 {
     private OperatorWhitespaceSniff $sniff;
