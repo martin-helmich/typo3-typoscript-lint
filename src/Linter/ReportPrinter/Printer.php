@@ -13,5 +13,10 @@ use Helmich\TypoScriptLint\Linter\Report\Report;
 interface Printer
 {
 
+    /**
+     * @param Report $report
+     * @return void
+     * @throws PrinterException
+     */
     public function writeReport(Report $report): void;
 }
