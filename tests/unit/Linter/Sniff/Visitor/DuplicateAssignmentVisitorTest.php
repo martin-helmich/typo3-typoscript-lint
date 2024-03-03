@@ -9,17 +9,13 @@ use Helmich\TypoScriptParser\Parser\AST\ObjectPath;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Scalar;
 use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertEquals;
 
-/**
- * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\DuplicateAssignmentVisitor
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
- *
- * @medium
- */
+#[CoversClass(DuplicateAssignmentVisitor::class)]
 class DuplicateAssignmentVisitorTest extends TestCase
 {
 

@@ -1,20 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace Helmich\TypoScriptLint\Tests\Unit\Logging;
+namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Logging;
 
 use Helmich\TypoScriptLint\Logging\CompactConsoleLogger;
 use Helmich\TypoScriptLint\Logging\LinterLoggerBuilder;
 use Helmich\TypoScriptLint\Logging\MinimalConsoleLogger;
 use Helmich\TypoScriptLint\Logging\VerboseConsoleLogger;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 use function PHPUnit\Framework\assertThat;
 use function PHPUnit\Framework\isInstanceOf;
 
-/**
- * @covers \Helmich\TypoScriptLint\Logging\LinterLoggerBuilder
- */
+#[CoversClass(LinterLoggerBuilder::class)]
 class LinterLoggerBuilderTest extends TestCase
 {
     private LinterLoggerBuilder $builder;

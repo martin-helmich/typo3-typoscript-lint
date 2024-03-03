@@ -5,14 +5,12 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptParser\Parser\ParseError;
 use Helmich\TypoScriptParser\Tokenizer\TokenizerException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 
-/**
- * @covers \Helmich\TypoScriptLint\Linter\Report\Issue
- * @uses   \Helmich\TypoScriptParser\Parser\ParseError
- */
+#[CoversClass(Issue::class)]
 class IssueTest extends TestCase
 {
 

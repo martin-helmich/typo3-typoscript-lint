@@ -10,18 +10,14 @@ use Helmich\TypoScriptParser\Parser\AST\ObjectPath;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Scalar;
 use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertThat;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\countOf;
 
-/**
- * @covers \Helmich\TypoScriptLint\Linter\Sniff\Visitor\NestingConsistencyVisitor
- * @uses   \Helmich\TypoScriptLint\Linter\Report\Issue
- *
- * @medium
- */
+#[CoversClass(NestingConsistencyVisitor::class)]
 class NestingConsistencyVisitorTest extends TestCase
 {
 

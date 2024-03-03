@@ -4,16 +4,14 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter;
 
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
 use Helmich\TypoScriptLint\Linter\Sniff\DeadCodeSniff;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
 use function PHPUnit\Framework\assertThat;
 use function PHPUnit\Framework\equalTo;
 
-/**
- * @package Helmich\TypoScriptLint\Linter
- * @covers  \Helmich\TypoScriptLint\Linter\LinterConfiguration
- */
+#[CoversClass(LinterConfiguration::class)]
 class LinterConfigurationTest extends TestCase
 {
     public function testPathsAreCorrectlyMapped(): void

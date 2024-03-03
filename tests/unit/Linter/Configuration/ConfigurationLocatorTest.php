@@ -4,6 +4,7 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Configuration;
 
 use Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator;
 use Helmich\TypoScriptLint\Linter\LinterConfiguration;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
@@ -11,17 +12,11 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 use function PHPUnit\Framework\any;
 
-/**
- * Class ConfigurationLocatorTest
- *
- * @package \Helmich\TypoScriptLint\Linter\Configuration
- * @covers  \Helmich\TypoScriptLint\Linter\Configuration\ConfigurationLocator
- */
+#[CoversClass(ConfigurationLocator::class)]
 class ConfigurationLocatorTest extends TestCase
 {
 
-    /** @var MockObject */
-    private $loader, $processor;
+    private MockObject $loader, $processor;
 
     private ConfigurationLocator $locator;
 
@@ -30,7 +25,6 @@ class ConfigurationLocatorTest extends TestCase
         $this->loader = $this->getMockBuilder(LoaderInterface::class)->getMock();
         $this->processor = $this->getMockBuilder(Processor::class)->getMock();
 
-        /** @noinspection PhpParamsInspection */
         $this->locator = new ConfigurationLocator(
             $this->loader,
             $this->processor
@@ -57,7 +51,6 @@ class ConfigurationLocatorTest extends TestCase
             ->with($this->isInstanceOf(LinterConfiguration::class), [$distConfig, $localConfig])
             ->willReturn($mergedConfig);
 
-        /** @noinspection PhpParamsInspection */
         $loadedConfiguration = $this->locator->loadConfiguration(['test.yml'], $configuration);
         $this->assertSame($loadedConfiguration, $configuration);
     }
@@ -81,7 +74,6 @@ class ConfigurationLocatorTest extends TestCase
             ->with($this->isInstanceOf(LinterConfiguration::class), [$distConfig])
             ->willReturn($mergedConfig);
 
-        /** @noinspection PhpParamsInspection */
         $loadedConfiguration = $this->locator->loadConfiguration([], $configuration);
         $this->assertSame($loadedConfiguration, $configuration);
     }

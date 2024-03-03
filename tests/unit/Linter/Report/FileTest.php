@@ -4,6 +4,7 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertThat;
@@ -13,12 +14,7 @@ use function PHPUnit\Framework\equalTo;
 use function PHPUnit\Framework\identicalTo;
 use function PHPUnit\Framework\any;
 
-/**
- * Class FileTest
- *
- * @package Helmich\TypoScriptLint\Linter\Report
- * @covers  \Helmich\TypoScriptLint\Linter\Report\File
- */
+#[CoversClass(File::class)]
 class FileTest extends TestCase
 {
 
@@ -36,7 +32,7 @@ class FileTest extends TestCase
 
     public function testWarningsCanBeAdded(): void
     {
-        $warning = $this->getMockBuilder(Issue::class)->disableOriginalConstructor()->getMock();
+        $warning = new Issue(1, 1, "some warning", Issue::SEVERITY_WARNING, self::class);
         $this->file->addIssue($warning);
 
         assertCount(1, $this->file->getIssues());
@@ -48,12 +44,8 @@ class FileTest extends TestCase
      */
     public function testWarningsAreSortedByLineNumber(): void
     {
-        $warningBuilder = $this->getMockBuilder(Issue::class)->disableOriginalConstructor();
-
-        $warning1 = $warningBuilder->getMock();
-        $warning1->expects(any())->method('getLine')->willReturn(10);
-        $warning2 = $warningBuilder->getMock();
-        $warning2->expects(any())->method('getLine')->willReturn(1);
+        $warning1 = new Issue(10, 1, "some warning", Issue::SEVERITY_WARNING, self::class);
+        $warning2 = new Issue(1, 1, "some warning", Issue::SEVERITY_WARNING, self::class);
 
         $this->file->addIssue($warning1);
         $this->file->addIssue($warning2);
