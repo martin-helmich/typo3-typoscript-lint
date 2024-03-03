@@ -103,10 +103,10 @@ class CompactConsoleLogger implements LinterLoggerInterface
 
         if ($this->issueCount > 0) {
             $this->output->writeln("Completed with <comment>{$this->issueCount} issues</comment>");
-
-            $this->printer->writeReport($report);
         } else {
             $this->output->writeln("Complete <info>without warnings</info>");
         }
+
+        $this->printer->writeReport($report);
     }
 }

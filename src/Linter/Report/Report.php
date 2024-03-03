@@ -52,6 +52,11 @@ class Report
         return $count;
     }
 
+    public function hasIssues(): bool
+    {
+        return $this->countIssues() > 0;
+    }
+
     /**
      * Returns the number of issues with a given severity for the entire report
      *
