@@ -21,7 +21,7 @@ trait TokenInspections
      */
     private static function isOperator(TokenInterface $token): bool
     {
-        return static::isUnaryOperator($token) || static::isBinaryOperator($token);
+        return self::isUnaryOperator($token) || self::isBinaryOperator($token);
     }
 
     /**
@@ -75,7 +75,7 @@ trait TokenInspections
      */
     private static function isWhitespaceOfLength(TokenInterface $token, int $length): bool
     {
-        return static::isWhitespace($token) && strlen(trim($token->getValue(), "\n")) == $length;
+        return self::isWhitespace($token) && strlen(trim($token->getValue(), "\n")) == $length;
     }
 
     /**

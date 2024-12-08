@@ -46,7 +46,7 @@ class YamlConfigurationLoader extends FileLoader
      * @param mixed $resource The resource
      * @param string|null $type The resource type
      *
-     * @return array
+     * @return mixed[]
      *
      * @psalm-suppress MethodSignatureMismatch
      */

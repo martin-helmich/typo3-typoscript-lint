@@ -14,6 +14,10 @@ class DeadCodeSniff implements TokenStreamSniffInterface
 
     public const ANNOTATION_COMMENT = '/^\s*([a-z0-9]+=(.*?))(;\s*[a-z0-9]+=(.*?))*\s*$/';
 
+    /**
+     * @param array<mixed, mixed> $parameters
+     * @phpstan-ignore constructor.unusedParameter (defined in interface)
+     */
     public function __construct(array $parameters)
     {
     }

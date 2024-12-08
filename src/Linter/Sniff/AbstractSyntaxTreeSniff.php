@@ -17,6 +17,10 @@ use Helmich\TypoScriptParser\Parser\Traverser\Traverser;
 abstract class AbstractSyntaxTreeSniff implements SyntaxTreeSniffInterface
 {
 
+    /**
+     * @param array<mixed, mixed> $parameters
+     * @phpstan-ignore constructor.unusedParameter (is defined in interface)
+     */
     public function __construct(array $parameters)
     {
     }
