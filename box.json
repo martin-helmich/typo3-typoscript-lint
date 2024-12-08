@@ -1,0 +1,17 @@
+{
+	"directories": [
+		"src",
+		"vendor"
+	],
+	"files": [
+		"psalm.xml",
+		"services.yml",
+		"typoscript-lint.yml",
+		"LICENSE"
+	],
+	"main": "typoscript-lint",
+	"output": "typoscript-lint.phar",
+	"compression": "GZ",
+	"chmod": "0775",
+	"stub": true
+}
