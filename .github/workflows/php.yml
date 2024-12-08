@@ -17,16 +17,22 @@ jobs:
             symfony-version: "^5.4"
           - php-version: "8.3"
             symfony-version: "^5.4"
+          - php-version: "8.4"
+            symfony-version: "^5.4"
           - php-version: "8.1"
             symfony-version: "^6.4"
           - php-version: "8.2"
             symfony-version: "^6.4"
           - php-version: "8.3"
             symfony-version: "^6.4"
+          - php-version: "8.4"
+            symfony-version: "^6.4"
           - php-version: "8.2"
-            symfony-version: "^7.0"
+            symfony-version: "^7.2"
           - php-version: "8.3"
-            symfony-version: "^7.0"
+            symfony-version: "^7.2"
+          - php-version: "8.4"
+            symfony-version: "^7.2"
 
     runs-on: ubuntu-latest
 
@@ -60,7 +66,7 @@ jobs:
         run: ./typoscript-lint
 
       - name: Run type checker
-        run: ./vendor/bin/psalm
+        run: ./vendor/bin/phpstan analyse
 
       - name: Run unit tests
         run: ./vendor/bin/phpunit --testdox

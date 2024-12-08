@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Parser as YamlParser;
  * @package    Helmich\TypoScriptLint
  * @subpackage Linter\Configuration
  *
- * @psalm-suppress MethodSignatureMismatch
+ * @property FileLocatorInterface $locator
  */
 class YamlConfigurationLoader extends FileLoader
 {
@@ -46,18 +46,21 @@ class YamlConfigurationLoader extends FileLoader
      * @param mixed $resource The resource
      * @param string|null $type The resource type
      *
-     * @return array
+     * @return array<string, mixed>
      *
      * @psalm-suppress MethodSignatureMismatch
      */
     public function load(mixed $resource, ?string $type = null): array
     {
+        assert(is_string($resource));
         try {
             /** @var string $path */
             $path = $this->locator->locate($resource);
             $file = $this->filesystem->openFile($path);
 
-            return $this->yamlParser->parse($file->getContents());
+            /** @var array<string, mixed> $out */
+            $out = $this->yamlParser->parse($file->getContents());
+            return $out;
         } catch (FileLocatorFileNotFoundException $error) {
             return [];
         }
@@ -73,7 +76,7 @@ class YamlConfigurationLoader extends FileLoader
      *
      * @psalm-suppress MethodSignatureMismatch
      */
-    public function supports(mixed $resource, string $type = null): bool
+    public function supports(mixed $resource, ?string $type = null): bool
     {
         return is_string($resource)
             && in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml', 'yaml']);

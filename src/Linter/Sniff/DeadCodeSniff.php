@@ -14,6 +14,10 @@ class DeadCodeSniff implements TokenStreamSniffInterface
 
     public const ANNOTATION_COMMENT = '/^\s*([a-z0-9]+=(.*?))(;\s*[a-z0-9]+=(.*?))*\s*$/';
 
+    /**
+     * @param array<mixed, mixed> $parameters
+     * @phpstan-ignore constructor.unusedParameter (defined in interface)
+     */
     public function __construct(array $parameters)
     {
     }
@@ -27,6 +31,8 @@ class DeadCodeSniff implements TokenStreamSniffInterface
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
+        assert(is_string(static::ANNOTATION_COMMENT));
+
         foreach ($tokens as $token) {
             if (!($token->getType() === TokenInterface::TYPE_COMMENT_ONELINE
                 || $token->getType() === TokenInterface::TYPE_COMMENT_MULTILINE)) {
@@ -34,6 +40,7 @@ class DeadCodeSniff implements TokenStreamSniffInterface
             }
 
             $commentContent = preg_replace(',^\s*(#|/\*|/)\s*,', '', $token->getValue());
+            assert($commentContent !== null);
 
             if (preg_match(static::ANNOTATION_COMMENT, $commentContent)) {
                 continue;

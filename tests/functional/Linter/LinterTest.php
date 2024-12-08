@@ -103,7 +103,7 @@ class LinterTest extends TestCase
 
             $reports = array_map(
                 function (string $line): Issue {
-                    $values = str_getcsv($line, ';');
+                    $values = str_getcsv($line, ';', escape: "\\");
                     return new Issue(
                         (int)$values[0],
                         (int)$values[1],

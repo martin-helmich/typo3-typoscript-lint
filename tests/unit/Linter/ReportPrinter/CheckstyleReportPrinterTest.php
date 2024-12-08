@@ -29,8 +29,7 @@ class CheckstyleReportPrinterTest extends TestCase
 </checkstyle>
 ';
 
-    /** @var OutputInterface&MockObject */
-    private OutputInterface $output;
+    private OutputInterface&MockObject $output;
 
     private CheckstyleReportPrinter $printer;
 
@@ -40,9 +39,6 @@ class CheckstyleReportPrinterTest extends TestCase
         $this->printer = new CheckstyleReportPrinter($this->output);
     }
 
-    /**
-     * @medium
-     */
     public function testXmlReportIsCorrectlyGenerated(): void
     {
         $file1 = new File('foobar.tys');

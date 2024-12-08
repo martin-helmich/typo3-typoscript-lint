@@ -13,7 +13,7 @@ class NestingConsistencySniff extends AbstractSyntaxTreeSniff
     {
         parent::__construct($parameters);
 
-        if (array_key_exists('commonPathPrefixThreshold', $parameters)) {
+        if (array_key_exists('commonPathPrefixThreshold', $parameters) && is_int($parameters['commonPathPrefixThreshold'])) {
             $this->commonPathPrefixThreshold = $parameters['commonPathPrefixThreshold'];
         }
     }

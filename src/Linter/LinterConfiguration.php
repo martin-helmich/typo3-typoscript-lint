@@ -5,11 +5,34 @@ namespace Helmich\TypoScriptLint\Linter;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * @phpstan-type LinterSniffConfigurationArray array{
+ *     disabled?: bool,
+ *     parameters?: mixed,
+ * }
+ * @phpstan-type LinterConfigurationArray array{
+ *     paths?: string[],
+ *     filePatterns?: string[],
+ *     excludePatterns?: string[],
+ *     sniffs: array<string, LinterSniffConfigurationArray>
+ * }
+ * @phpstan-type SniffConfigurationArray array{
+ *     class: class-string,
+ *     parameters?: mixed,
+ * }
+ */
 class LinterConfiguration implements ConfigurationInterface
 {
 
-    private array $configuration = [];
+    /**
+     * @var LinterConfigurationArray
+     */
+    private array $configuration = ['sniffs' => []];
 
+    /**
+     * @param LinterConfigurationArray $configuration
+     * @return void
+     */
     public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
@@ -38,7 +61,7 @@ class LinterConfiguration implements ConfigurationInterface
      */
     public function getFilePatterns(): array
     {
-        return $this->configuration['filePatterns'] ?: [];
+        return $this->configuration['filePatterns'] ?? [];
     }
 
     /**
@@ -48,11 +71,11 @@ class LinterConfiguration implements ConfigurationInterface
      */
     public function getExcludePatterns(): array
     {
-        return $this->configuration['excludePatterns'] ?: [];
+        return $this->configuration['excludePatterns'] ?? [];
     }
 
     /**
-     * @return array
+     * @return SniffConfigurationArray[]
      */
     public function getSniffConfigurations(): array
     {
@@ -62,6 +85,7 @@ class LinterConfiguration implements ConfigurationInterface
                 continue;
             }
 
+            /** @var class-string $class */
             $class = class_exists($class) ? $class : 'Helmich\\TypoScriptLint\\Linter\\Sniff\\' . $class . 'Sniff';
 
             $configuration['class'] = $class;
@@ -76,24 +100,22 @@ class LinterConfiguration implements ConfigurationInterface
      * @return TreeBuilder The tree builder
      * @codeCoverageIgnore FU, I'm not going to test this one!
      *
-     * @psalm-suppress     TooManyArguments
-     * @psalm-suppress     TooFewArguments
-     * @psalm-suppress     UndefinedMethod
-     * @psalm-suppress     DeprecatedMethod
      * @noinspection       PhpUndefinedMethodInspection
      * @noinspection       PhpParamsInspection
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
+        // @phpstan-ignore-next-line
         if (method_exists(TreeBuilder::class, 'getRootNode')) {
             $treeBuilder = new TreeBuilder('typoscript-lint');
             $root = $treeBuilder->getRootNode();
         } else {
-            $treeBuilder = new TreeBuilder();
-            $root = $treeBuilder->root('typoscript-lint');
+            $treeBuilder = new TreeBuilder(); // @phpstan-ignore-line
+            $root = $treeBuilder->root('typoscript-lint'); // @phpstan-ignore-line
         }
 
-        /** @psalm-suppress PossiblyUndefinedMethod */
+        // This is a mess; I won't bother teaching PHPStan how to interpret this
+        // @phpstan-ignore-next-line
         $root
             ->children()
             ->arrayNode('paths')
