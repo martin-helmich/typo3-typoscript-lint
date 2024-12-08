@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Parser as YamlParser;
  * @package    Helmich\TypoScriptLint
  * @subpackage Linter\Configuration
  *
- * @psalm-suppress MethodSignatureMismatch
+ * @property FileLocatorInterface $locator
  */
 class YamlConfigurationLoader extends FileLoader
 {
