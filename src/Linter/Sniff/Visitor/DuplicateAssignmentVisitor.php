@@ -39,7 +39,6 @@ class DuplicateAssignmentVisitor implements SniffVisitor
 
         if ($statement instanceof Assignment && false === $this->inCondition) {
             if (isset($this->assignments[$statement->object->absoluteName])) {
-                /** @var Statement $lastAssignment */
                 $lastAssignment = $this->assignments[$statement->object->absoluteName];
                 $this->issues[] = new Issue(
                     $lastAssignment->sourceLine,

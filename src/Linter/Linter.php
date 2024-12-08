@@ -58,7 +58,7 @@ class Linter implements LinterInterface
     }
 
     /**
-     * @psalm-param TokenInterface[] $tokens
+     * @param TokenInterface[] $tokens
      */
     private function lintTokenStream(
         array $tokens,
@@ -82,7 +82,7 @@ class Linter implements LinterInterface
     }
 
     /**
-     * @psalm-param Statement[] $statements
+     * @param Statement[] $statements
      */
     private function lintSyntaxTree(
         array $statements,

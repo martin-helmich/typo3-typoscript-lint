@@ -47,8 +47,6 @@ class YamlConfigurationLoader extends FileLoader
      * @param string|null $type The resource type
      *
      * @return array<string, mixed>
-     *
-     * @psalm-suppress MethodSignatureMismatch
      */
     public function load(mixed $resource, ?string $type = null): array
     {
@@ -73,8 +71,6 @@ class YamlConfigurationLoader extends FileLoader
      * @param string|null $type The resource type
      *
      * @return bool    true if this class supports the given resource, false otherwise
-     *
-     * @psalm-suppress MethodSignatureMismatch
      */
     public function supports(mixed $resource, ?string $type = null): bool
     {

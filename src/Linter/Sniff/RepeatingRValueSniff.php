@@ -7,6 +7,12 @@ use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
+/**
+ * @phpstan-type RepeatingRValueSniffParams array{
+ *     allowedRightValues: ?string[],
+ *     valueLengthThreshold: ?int,
+ * }
+ */
 class RepeatingRValueSniff implements TokenStreamSniffInterface
 {
 
@@ -21,8 +27,7 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
     private int $valueLengthThreshold = 8;
 
     /**
-     * @psalm-param array{allowedRightValues: ?string[], valueLengthThreshold: ?int} $parameters
-     * @psalm-suppress MoreSpecificImplementedParamType
+     * @param RepeatingRValueSniffParams $parameters
      */
     public function __construct(array $parameters)
     {
@@ -37,10 +42,6 @@ class RepeatingRValueSniff implements TokenStreamSniffInterface
 
     /**
      * @param TokenInterface[] $tokens
-     * @param File $file
-     * @param LinterConfiguration $configuration
-     *
-     * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
