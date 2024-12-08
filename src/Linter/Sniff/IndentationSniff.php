@@ -11,6 +11,13 @@ use Helmich\TypoScriptLint\Linter\Sniff\Inspection\TokenInspections;
 use Helmich\TypoScriptParser\Tokenizer\LineGrouper;
 use Helmich\TypoScriptParser\Tokenizer\TokenInterface;
 
+/**
+ * @phpstan-type IndentationSniffParams array{
+ *      useSpaces: ?bool,
+ *      indentPerLevel: ?int,
+ *      indentConditions: ?bool,
+ *  }
+ */
 class IndentationSniff implements TokenStreamSniffInterface
 {
     use TokenInspections;
@@ -30,10 +37,8 @@ class IndentationSniff implements TokenStreamSniffInterface
     private bool $insideCondition = false;
 
     /**
-     * @param array $parameters
      *
-     * @psalm-param array{useSpaces: ?bool, indentPerLevel: ?int, indentConditions: ?bool} $parameters
-     * @psalm-suppress MoreSpecificImplementedParamType
+     * @param IndentationSniffParams $parameters
      */
     public function __construct(array $parameters)
     {
@@ -50,10 +55,6 @@ class IndentationSniff implements TokenStreamSniffInterface
 
     /**
      * @param TokenInterface[] $tokens
-     * @param File $file
-     * @param LinterConfiguration $configuration
-     *
-     * @return void
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
@@ -103,8 +104,6 @@ class IndentationSniff implements TokenStreamSniffInterface
      * Checks if a stream of tokens is an empty line.
      *
      * @param TokenInterface[] $tokensInLine
-     *
-     * @return bool
      */
     private function isEmptyLine(array $tokensInLine): bool
     {

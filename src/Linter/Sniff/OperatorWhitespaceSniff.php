@@ -14,7 +14,7 @@ class OperatorWhitespaceSniff implements TokenStreamSniffInterface
     use TokenInspections;
 
     /**
-     * @param array<mixed, mixed> $parameters
+     * @param array{} $parameters
      * @phpstan-ignore constructor.unusedParameter (defined in interface)
      */
     public function __construct(array $parameters)
