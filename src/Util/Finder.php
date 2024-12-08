@@ -47,7 +47,7 @@ class Finder
         array $fileOrDirectoryNames,
         array $filePatterns = [],
         array $excludePatterns = [],
-        FinderObserver $observer = null
+        ?FinderObserver $observer = null
     ): array {
         $finder = clone $this->finder;
         $finder->files();

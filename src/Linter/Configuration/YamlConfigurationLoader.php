@@ -73,7 +73,7 @@ class YamlConfigurationLoader extends FileLoader
      *
      * @psalm-suppress MethodSignatureMismatch
      */
-    public function supports(mixed $resource, string $type = null): bool
+    public function supports(mixed $resource, ?string $type = null): bool
     {
         return is_string($resource)
             && in_array(pathinfo($resource, PATHINFO_EXTENSION), ['yml', 'yaml']);
