@@ -58,6 +58,7 @@ class Finder
 
         $matchesPatternList = fn(array $patterns): callable => function (string $file) use ($patterns): bool {
             foreach ($patterns as $pattern) {
+                assert(is_string($pattern));
                 if (fnmatch($pattern, $file)) {
                     return true;
                 }

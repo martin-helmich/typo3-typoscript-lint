@@ -114,6 +114,8 @@ class LinterConfiguration implements ConfigurationInterface
             $root = $treeBuilder->root('typoscript-lint'); // @phpstan-ignore-line
         }
 
+        // This is a mess; I won't bother teaching PHPStan how to interpret this
+        // @phpstan-ignore-next-line
         $root
             ->children()
             ->arrayNode('paths')

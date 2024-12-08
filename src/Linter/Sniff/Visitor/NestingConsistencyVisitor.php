@@ -6,6 +6,7 @@ use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\NestingConsistencySniff;
 use Helmich\TypoScriptParser\Parser\AST\ConditionalStatement;
 use Helmich\TypoScriptParser\Parser\AST\NestedAssignment;
+use Helmich\TypoScriptParser\Parser\AST\ObjectPath;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
 
@@ -63,7 +64,7 @@ class NestingConsistencyVisitor implements SniffVisitor
         // Step 2: Discover all plain assignments and determine whether any of them
         // can be moved within one of the nested assignments.
         foreach ($statements as $statement) {
-            if (!isset($statement->object)) {
+            if (!isset($statement->object) || !($statement->object instanceof ObjectPath)) {
                 continue;
             }
 
@@ -158,7 +159,7 @@ class NestingConsistencyVisitor implements SniffVisitor
 
         // Step 1: Discover all nested object assignment statements.
         foreach ($statements as $statement) {
-            if (!isset($statement->object)) {
+            if (!isset($statement->object) || !($statement->object instanceof ObjectPath)) {
                 continue;
             }
 

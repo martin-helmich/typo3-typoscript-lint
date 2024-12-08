@@ -31,6 +31,8 @@ class DeadCodeSniff implements TokenStreamSniffInterface
      */
     public function sniff(array $tokens, File $file, LinterConfiguration $configuration): void
     {
+        assert(is_string(static::ANNOTATION_COMMENT));
+
         foreach ($tokens as $token) {
             if (!($token->getType() === TokenInterface::TYPE_COMMENT_ONELINE
                 || $token->getType() === TokenInterface::TYPE_COMMENT_MULTILINE)) {

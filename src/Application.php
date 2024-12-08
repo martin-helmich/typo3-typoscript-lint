@@ -19,6 +19,10 @@ class Application extends SymfonyApplication
 
     public function __construct(Container $container)
     {
+        // TODO: Drop these and declare const type once we move to PHP 8.3
+        assert(is_string(static::APP_NAME));
+        assert(is_string(static::APP_VERSION));
+
         $this->container = $container;
         parent::__construct(static::APP_NAME, static::APP_VERSION);
     }

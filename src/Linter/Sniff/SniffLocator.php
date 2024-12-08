@@ -16,8 +16,6 @@ class SniffLocator
      *
      * @return SniffInterface[]
      * @throws Exception
-     *
-     * @psalm-return array<int, SniffInterface>
      */
     private function loadSniffs(LinterConfiguration $configuration): array
     {
