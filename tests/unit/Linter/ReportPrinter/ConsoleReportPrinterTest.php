@@ -38,9 +38,6 @@ SUMMARY
         $this->printer = new ConsoleReportPrinter($this->output);
     }
 
-    /**
-     * @medium
-     */
     public function testPlaintextReportIsCorrectlyGenerated(): void
     {
         $file1 = new File('foobar.tys');

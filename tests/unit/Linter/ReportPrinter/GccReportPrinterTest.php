@@ -31,9 +31,6 @@ bar.txt:412:141: error: Message #3
         $this->printer = new GccReportPrinter($this->output);
     }
 
-    /**
-     * @medium
-     */
     public function testGccReportIsCorrectlyGenerated(): void
     {
         $file1 = new File('foobar.tys');

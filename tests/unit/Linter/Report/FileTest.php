@@ -5,6 +5,7 @@ namespace Helmich\TypoScriptLint\Tests\Unit\Linter\Report;
 use Helmich\TypoScriptLint\Linter\Report\File;
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertThat;
@@ -39,9 +40,7 @@ class FileTest extends TestCase
         assertSame($warning, $this->file->getIssues()[0]);
     }
 
-    /**
-     * @depends testWarningsCanBeAdded
-     */
+    #[Depends("testWarningsCanBeAdded")]
     public function testWarningsAreSortedByLineNumber(): void
     {
         $warning1 = new Issue(10, 1, "some warning", Issue::SEVERITY_WARNING, self::class);
