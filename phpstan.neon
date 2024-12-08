@@ -1,5 +1,5 @@
 parameters:
-	level: 8
-	reportUnmatchedIgnoredErrors: false
-	paths:
-		- src
+  level: 9
+  reportUnmatchedIgnoredErrors: false
+  paths:
+    - src

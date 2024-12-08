@@ -46,18 +46,21 @@ class YamlConfigurationLoader extends FileLoader
      * @param mixed $resource The resource
      * @param string|null $type The resource type
      *
-     * @return mixed[]
+     * @return array<string, mixed>
      *
      * @psalm-suppress MethodSignatureMismatch
      */
     public function load(mixed $resource, ?string $type = null): array
     {
+        assert(is_string($resource));
         try {
             /** @var string $path */
             $path = $this->locator->locate($resource);
             $file = $this->filesystem->openFile($path);
 
-            return $this->yamlParser->parse($file->getContents());
+            /** @var array<string, mixed> $out */
+            $out = $this->yamlParser->parse($file->getContents());
+            return $out;
         } catch (FileLocatorFileNotFoundException $error) {
             return [];
         }

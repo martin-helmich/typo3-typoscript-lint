@@ -13,6 +13,8 @@ use Symfony\Component\Config\Loader\LoaderInterface;
  * @license    MIT
  * @package    Helmich\TypoScriptLint
  * @subpackage Linter\Configuration
+ *
+ * @phpstan-import-type LinterConfigurationArray from LinterConfiguration
  */
 class ConfigurationLocator
 {
@@ -50,6 +52,7 @@ class ConfigurationLocator
     ): LinterConfiguration {
         $configs = [$this->loader->load('typoscript-lint.dist.yml')];
         foreach ($possibleConfigurationFiles as $configurationFile) {
+            /** @var array<string, mixed> $loadedConfig */
             $loadedConfig = $this->loader->load($configurationFile);
 
             // Simple mechanism to detect tslint config files ("ts" as in "TypeScript", not "Typoscript")
@@ -64,6 +67,7 @@ class ConfigurationLocator
 
         $configuration ??= new LinterConfiguration();
 
+        /** @var LinterConfigurationArray $processedConfiguration */
         $processedConfiguration = $this->processor->processConfiguration(
             $configuration,
             $configs

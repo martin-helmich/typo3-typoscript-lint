@@ -5,16 +5,32 @@ namespace Helmich\TypoScriptLint\Linter;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * @phpstan-type LinterSniffConfigurationArray array{
+ *     disabled?: bool,
+ *     parameters?: mixed,
+ * }
+ * @phpstan-type LinterConfigurationArray array{
+ *     paths?: string[],
+ *     filePatterns?: string[],
+ *     excludePatterns?: string[],
+ *     sniffs: array<string, LinterSniffConfigurationArray>
+ * }
+ * @phpstan-type SniffConfigurationArray array{
+ *     class: class-string,
+ *     parameters?: mixed,
+ * }
+ */
 class LinterConfiguration implements ConfigurationInterface
 {
 
     /**
-     * @var mixed[]
+     * @var LinterConfigurationArray
      */
-    private array $configuration = [];
+    private array $configuration = ['sniffs' => []];
 
     /**
-     * @param mixed[] $configuration
+     * @param LinterConfigurationArray $configuration
      * @return void
      */
     public function setConfiguration(array $configuration): void
@@ -45,7 +61,7 @@ class LinterConfiguration implements ConfigurationInterface
      */
     public function getFilePatterns(): array
     {
-        return $this->configuration['filePatterns'] ?: [];
+        return $this->configuration['filePatterns'] ?? [];
     }
 
     /**
@@ -55,11 +71,11 @@ class LinterConfiguration implements ConfigurationInterface
      */
     public function getExcludePatterns(): array
     {
-        return $this->configuration['excludePatterns'] ?: [];
+        return $this->configuration['excludePatterns'] ?? [];
     }
 
     /**
-     * @return mixed[]
+     * @return SniffConfigurationArray[]
      */
     public function getSniffConfigurations(): array
     {
@@ -69,6 +85,7 @@ class LinterConfiguration implements ConfigurationInterface
                 continue;
             }
 
+            /** @var class-string $class */
             $class = class_exists($class) ? $class : 'Helmich\\TypoScriptLint\\Linter\\Sniff\\' . $class . 'Sniff';
 
             $configuration['class'] = $class;

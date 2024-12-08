@@ -69,11 +69,12 @@ class Application extends SymfonyApplication
                     continue;
                 }
 
+                /** @var object{packages: object{name: string, version: string}[]} $data */
                 $data = json_decode($contents, null, 512, JSON_THROW_ON_ERROR);
                 $packages = array_values(
                     array_filter(
                         $data->packages,
-                        fn(\stdClass $package): bool => $package->name === "helmich/typo3-typoscript-lint"
+                        fn(object $package): bool => $package->name === "helmich/typo3-typoscript-lint"
                     )
                 );
 
