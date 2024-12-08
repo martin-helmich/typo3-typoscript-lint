@@ -48,8 +48,14 @@ class CheckstyleReportPrinter implements Printer
     public function writeReport(Report $report): void
     {
         try {
-            $xml = $this->buildReportXMLDocument($report);
-            $this->output->write($xml->saveXML());
+            $xmlDocument = $this->buildReportXMLDocument($report);
+            $xmlOutput = $xmlDocument->saveXML();
+
+            if ($xmlOutput === false) {
+                throw new PrinterException('error while rendering XML output');
+            }
+
+            $this->output->write($xmlOutput);
         } catch (DOMException $error) {
             throw new PrinterException('Could not generate checkstyle report: ' . $error->getMessage(),  $error);
         }

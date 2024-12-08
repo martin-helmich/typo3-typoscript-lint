@@ -38,6 +38,7 @@ class DeadCodeSniff implements TokenStreamSniffInterface
             }
 
             $commentContent = preg_replace(',^\s*(#|/\*|/)\s*,', '', $token->getValue());
+            assert($commentContent !== null);
 
             if (preg_match(static::ANNOTATION_COMMENT, $commentContent)) {
                 continue;
