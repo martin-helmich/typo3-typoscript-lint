@@ -4,6 +4,7 @@ namespace Helmich\TypoScriptLint\Linter\Sniff\Visitor;
 
 use Helmich\TypoScriptLint\Linter\Report\Issue;
 use Helmich\TypoScriptLint\Linter\Sniff\ConfigNoCacheSniff;
+use Helmich\TypoScriptParser\Parser\AST\NestedAssignment;
 use Helmich\TypoScriptParser\Parser\AST\Operator\Assignment;
 use Helmich\TypoScriptParser\Parser\AST\Statement;
 
@@ -11,6 +12,15 @@ class ConfigNoCacheVisitor implements SniffVisitor
 {
     /** @var Issue[] */
     private array $issues = [];
+
+    private bool $inConfigBlock = false;
+
+    private bool $allowNoCacheForPages = false;
+
+    public function __construct(bool $allowNoCacheForPages)
+    {
+        $this->allowNoCacheForPages = $allowNoCacheForPages;
+    }
 
     /**
      * @return Issue[]
@@ -26,13 +36,26 @@ class ConfigNoCacheVisitor implements SniffVisitor
 
     public function enterNode(Statement $statement): void
     {
+        if ($statement instanceof NestedAssignment && $statement->object->absoluteName === "config") {
+            $this->inConfigBlock = true;
+            return;
+        }
+
         if (!$statement instanceof Assignment) {
             return;
         }
-        if ($statement->object->relativeName !== 'no_cache'
-            && substr($statement->object->relativeName, -9) !== '.no_cache') {
+
+        $isNoCache = $statement->object->relativeName === "no_cache" || str_ends_with($statement->object->absoluteName, ".no_cache");
+        if (!$isNoCache) {
             return;
         }
+
+        $isAssignmentInConfigBlock = $this->inConfigBlock && $statement->object->relativeName === "no_cache";
+        $isAbsoluteConfigAssignment = $statement->object->relativeName === "config.no_cache";
+        if ($this->allowNoCacheForPages && !$isAssignmentInConfigBlock && !$isAbsoluteConfigAssignment) {
+            return;
+        }
+
         if ($statement->value->value !== '0') {
             $this->issues[] = new Issue(
                 $statement->sourceLine,

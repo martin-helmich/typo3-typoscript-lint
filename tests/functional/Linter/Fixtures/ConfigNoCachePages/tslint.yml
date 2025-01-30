@@ -1,0 +1,4 @@
+sniffs:
+  - class: ConfigNoCache
+    parameters:
+      allowNoCacheForPages: true
