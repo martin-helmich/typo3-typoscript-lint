@@ -80,6 +80,11 @@ class LintCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Set this flag to exit with a non-zero exit code when there are warnings')
+            ->addOption(
+                'fail-on-all',
+                null,
+                InputOption::VALUE_NONE,
+                'Set this flag to exit with a non-zero exit code when there are any messages')
             ->addArgument(
                 'paths',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
@@ -165,7 +170,9 @@ class LintCommand extends Command
         $exitCode = 0;
         if ($report->countIssuesBySeverity(Issue::SEVERITY_ERROR) > 0) {
             $exitCode = 2;
-        } elseif ($exitWithExitCode && $report->countIssues() > 0) {
+        } elseif ($exitWithExitCode && $report->countIssuesBySeverity(Issue::SEVERITY_WARNING) > 0) {
+            $exitCode = 2;
+        } elseif ($input->getOption('fail-on-all') && $report->countIssues() > 0) {
             $exitCode = 2;
         }
 
