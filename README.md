@@ -65,7 +65,7 @@ Of course, this works best if your TYPO3 project is also Composer-based. If it i
 Alternatively, you can also install typo3-typoscript-lint with Phive:
 
     phive install martin-helmich/typo3-typoscript-lint
-    
+
 In this case, it will be installed into the `./tools` folder of your current directory:
 
     ./tools/typoscript-lint path/to/your.typoscript
@@ -220,7 +220,7 @@ idea of what you can configure (granted, not much yet):
 
 **Note**: Previous versions of this tool used the filename `tslint.yml` for their
 configuration files. This conflicted with the [same-named tool for linting TypeScript](https://palantir.github.io/tslint/),
-and is thus considered deprecated (although the old file names are still supported). 
+and is thus considered deprecated (although the old file names are still supported).
 
 * The paths to lint can be set under the `paths` key:
 
@@ -229,9 +229,9 @@ and is thus considered deprecated (although the old file names are still support
     - directory/with/typoscript
     - ...
   ```
-  
+
   You can also use the `*` character to match multiple files or directories:
-  
+
   ```yaml
   paths:
     - typo3conf/ext/yourprefix_*/Configuration/TypoScript
@@ -257,16 +257,16 @@ and is thus considered deprecated (although the old file names are still support
   `filePatterns` key. This key may contain a list of glob patterns that inspected files
   need to match. This is especially relevant when you're running `typoscript-lint`
   on entire directory trees:
-  
+
   ```yaml
   filePatterns:
     - "*.typoscript"
     - "setup.txt"
     - # ...
   ```
-  
+
   If you have certain files you want to explicitly *exclude* from linting even if they match the `filePatterns` above, you can specify additional `excludePatterns`:
-  
+
   ```yaml
   filePatterns:
     - "*.typoscript"
