@@ -274,6 +274,13 @@ and is thus considered deprecated (although the old file names are still support
     - "Constants.typoscript"
   ```
 
+  You can also exclude whole directories from linting:
+
+  ```yaml
+  excludePatterns:
+    - "*/vendor/*"
+  ```
+
 Articles
 --------
 
