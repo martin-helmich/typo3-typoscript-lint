@@ -76,8 +76,9 @@ class Finder
                 }
 
                 $fileName = $fileInfo->getFilename();
+                $fullPath = $fileInfo->getPathname();
 
-                return $matchesFilePattern($fileName) && !$matchesExcludePattern($fileName);
+                return $matchesFilePattern($fileName) && !$matchesExcludePattern($fileName) && !$matchesExcludePattern($fullPath);
             });
         }
 
